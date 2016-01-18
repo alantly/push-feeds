@@ -17,6 +17,8 @@
 //= require react_ujs
 //= require components
 //= require_tree .
+//= stub notification/sw
+//= stub notification/main
 //= require bootstrap-sprockets
 
 $(document).ajaxComplete(function(event, xhr, settings) {
