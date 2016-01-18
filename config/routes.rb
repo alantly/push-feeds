@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'users/sign_up' => 'pages#index'
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
+
+  resources :users, only: [] do
+    resources :feeds, except: [:show, :new, :index, :edit]
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
