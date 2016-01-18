@@ -19,10 +19,10 @@
     @setState showLoginPanel: !@state.showLoginPanel
 
   showSuccessfulLogin: ->
-    React.DOM.div
-      className: 'login-signup-container'
-      React.DOM.h3 null, 'Hello World'
+    React.DOM.div null,
+      @handleUrl("/feeds")
       React.createElement Logout, setUser: @setUserSession
+      React.createElement Feeds
 
   showLoginSignupForm: ->
     React.DOM.div
@@ -36,11 +36,11 @@
         if @state.showLoginPanel
           switchText = 'Signup'
           urlText = '/users/sign_in'
-          React.createElement Login, key: 11, setUser: @setUserSession, handleErrorResponse: @setErrors
+          React.createElement Login, key: 10001, setUser: @setUserSession, handleErrorResponse: @setErrors
         else
           switchText = 'Login'
           urlText = '/users/sign_up'
-          React.createElement Signup, key: 10, setUser: @setUserSession, handleErrorResponse: @setErrors
+          React.createElement Signup, key: 10000, setUser: @setUserSession, handleErrorResponse: @setErrors
 
       @handleUrl(urlText)
       React.DOM.a
@@ -51,17 +51,20 @@
         "Click here to #{ switchText }"
 
   showPrettyLoginWall: ->
-    React.DOM.div
-      className: 'container'
+    if @state.isSignedIn
+      @showSuccessfulLogin()
+    else
       React.DOM.div
-        className: 'row'
+        className: 'container'
+        React.DOM.img
+          className: "background-video"
+          src: "/assets/donald.jpg"
         React.DOM.div
-          className: 'col-md-4 col-md-offset-4'
+          className: 'row'
           React.DOM.div
-            className: 'login-wall'
-            if @state.isSignedIn
-              @showSuccessfulLogin()
-            else
+            className: 'col-md-4 col-md-offset-4'
+            React.DOM.div
+              className: 'login-wall'
               @showLoginSignupForm()
 
   render: ->
