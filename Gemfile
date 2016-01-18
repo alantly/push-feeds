@@ -38,10 +38,10 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'react-rails', '~>1.0'
+gem 'react-rails'
 gem 'devise'
-gem 'bootstrap-sass', '~> 3.3.5'
-
+gem 'bootstrap-sass'
+gem 'rename'
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-nav'
