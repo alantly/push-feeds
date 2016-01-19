@@ -7,11 +7,8 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
 
-  resources :users, only: [] do
-    resources :feeds, except: [:show, :new, :index, :edit]
-  end
+  resources :feeds, except: [:show, :new, :edit]
 
-  get 'feeds' => redirect('/')
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

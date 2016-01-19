@@ -1,11 +1,9 @@
 @Application = React.createClass
   getInitialState: ->
-    isSignedIn: Cookies.get('signed_in') == '1'
     errorMessages: []
     showLoginPanel: @props.current_path == 'login'
 
   setUserSession: (data) ->
-    @state.isSignedIn = !@state.isSignedIn
     @setState errorMessages: []
 
   setErrors: (errors) ->
@@ -19,10 +17,7 @@
     @setState showLoginPanel: !@state.showLoginPanel
 
   showSuccessfulLogin: ->
-    React.DOM.div null,
-      @handleUrl("/feeds")
-      React.createElement Logout, setUser: @setUserSession
-      React.createElement Feeds
+    window.location.replace("/feeds");
 
   showLoginSignupForm: ->
     React.DOM.div
@@ -51,21 +46,15 @@
         "Click here to #{ switchText }"
 
   showPrettyLoginWall: ->
-    if @state.isSignedIn
-      @showSuccessfulLogin()
-    else
+    React.DOM.div
+      className: 'container'
       React.DOM.div
-        className: 'container'
-        React.DOM.img
-          className: "background-video"
-          src: "/assets/donald.jpg"
+        className: 'row'
         React.DOM.div
-          className: 'row'
+          className: 'col-md-4 col-md-offset-4'
           React.DOM.div
-            className: 'col-md-4 col-md-offset-4'
-            React.DOM.div
-              className: 'login-wall'
-              @showLoginSignupForm()
+            className: 'login-wall'
+            @showLoginSignupForm()
 
   render: ->
     React.DOM.div

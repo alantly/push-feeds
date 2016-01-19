@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160118015251) do
   add_index "clients", ["user_id"], name: "index_clients_on_user_id"
 
   create_table "feeds", force: :cascade do |t|
-    t.string   "feed"
+    t.string   "source"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
