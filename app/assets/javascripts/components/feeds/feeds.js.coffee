@@ -24,7 +24,7 @@
       className: 'feeds'
       React.DOM.h1 null,
         "Push Feeds!"
-
+        
       React.createElement FeedForm, handleNewFeed: @addFeed
       React.DOM.hr null
 

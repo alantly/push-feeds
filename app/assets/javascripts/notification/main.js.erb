@@ -1,13 +1,10 @@
 var reg;
 var sub;
 var isSubscribed = false;
-debugger;
-var subscribeButton = document.querySelector('button');
+var subscribeButton = document.querySelector('button#sub-push-notif-btn');
 if ('serviceWorker' in navigator) {
   console.log('Service Worker is supported');
-  navigator.serviceWorker.register('notification/sw.js').then(function() {
-    return navigator.serviceWorker.ready;
-  }).then(function(serviceWorkerRegistration) {
+  navigator.serviceWorker.register("<%= asset_path('notification/sw.js') %>").then(function(serviceWorkerRegistration) {
     reg = serviceWorkerRegistration;
     subscribeButton.disabled = false;
     console.log('Service Worker is ready :^)', reg);
@@ -29,6 +26,7 @@ function subscribe() {
   then(function(pushSubscription){
     sub = pushSubscription;
     console.log('Subscribed! Endpoint:', sub.endpoint);
+    //post to save endpoint
     subscribeButton.textContent = 'Unsubscribe';
     isSubscribed = true;
   });
@@ -38,6 +36,7 @@ function unsubscribe() {
   sub.unsubscribe().then(function(event) {
     subscribeButton.textContent = 'Subscribe';
     console.log('Unsubscribed!', event);
+    // delete old endpoint
     isSubscribed = false;
   }).catch(function(error) {
     console.log('Error unsubscribing', error);

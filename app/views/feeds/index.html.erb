@@ -1,2 +1,3 @@
-<%= javascript_include_tag 'notification/main' %>
 <%= react_component 'Feeds', { data: @feeds } %>
+<button type="submit" class='btn btn-primary' id='sub-push-notif-btn' disabled="true">Subscribe</button>
+<%= javascript_include_tag 'notification/main' %>
