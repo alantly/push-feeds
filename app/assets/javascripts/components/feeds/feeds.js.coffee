@@ -24,7 +24,7 @@
       className: 'feeds'
       React.DOM.h1 null,
         "Push Feeds!"
-        
+
       React.createElement FeedForm, handleNewFeed: @addFeed
       React.DOM.hr null
 
@@ -32,7 +32,7 @@
         className: 'table table-bordered'
         React.DOM.thead null,
           React.DOM.tr null,
-            React.DOM.th null, 'feed source'
+            React.DOM.th null, 'Source'
         React.DOM.tbody null,
           for feed in @state.feeds
             React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed
