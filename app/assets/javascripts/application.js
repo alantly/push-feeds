@@ -15,7 +15,6 @@
 //= require turbolinks
 //= require react
 //= require react_ujs
-//= require notification
 //= require components
 //= require bootstrap-sprockets
 
