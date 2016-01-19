@@ -22,6 +22,12 @@
   render: ->
     React.DOM.div
       className: 'feeds'
+      React.DOM.h1 null,
+        "Push Feeds!"
+
+      React.createElement FeedForm, handleNewFeed: @addFeed
+      React.DOM.hr null
+
       React.DOM.table
         className: 'table table-bordered'
         React.DOM.thead null,
