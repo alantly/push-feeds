@@ -25,7 +25,7 @@
       React.DOM.h1 null,
         "Push Feeds!"
 
-      React.createElement SubscribeBtn
+      React.DOM.hr null
       React.createElement FeedForm, handleNewFeed: @addFeed
       React.DOM.hr null
 
@@ -37,4 +37,7 @@
         React.DOM.tbody null,
           for feed in @state.feeds
             React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed
+      
+      React.DOM.hr null
+      React.createElement SubscribeBtn
   

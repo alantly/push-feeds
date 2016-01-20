@@ -7,6 +7,7 @@ class FeedsController < ApplicationController
   def create
     @feed = Feed.new(feed_params)
     if @feed.save
+      current_user.feeds << @feed
       render json: @feed
     else
       render json: @feed.errors, status: :unprocessable_entity
