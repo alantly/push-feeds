@@ -30,7 +30,11 @@
     .then( (pushSubscription) =>
       @sub = pushSubscription
       console.log('Subscribed! Endpoint:', @sub.endpoint)
-      @setState { isSubscribed: true, title: 'Unsubscribe'} 
+      $.post '/clients', { client: { source: @sub.endpoint } }, (data) =>
+        console.log('Post successful:', data)
+        @setState { isSubscribed: true, title: 'Unsubscribe'}
+      , 'JSON'
+
     )
 
   unsubscribe: ->
