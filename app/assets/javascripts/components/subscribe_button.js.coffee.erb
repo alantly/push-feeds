@@ -1,0 +1,53 @@
+@SubscribeBtn = React.createClass
+  
+  reg: null
+  sub: null
+
+  getInitialState: ->
+    self = @
+    if 'serviceWorker' of navigator
+      console.log('Service Worker is supported')
+      navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
+      .then((serviceWorkerRegistration) ->
+        self.reg = serviceWorkerRegistration
+        self.setState available: true
+        console.log('Service Worker is ready :^)', self.reg)
+      ).catch( (error) ->
+        console.log('Service Worker Error :^(', error)
+      )
+    isSubscribed: false
+    available: false
+    title: "Subscribe"
+
+  handleClick: ->
+    if @state.isSubscribed
+      @unsubscribe()
+    else
+      @subscribe()
+
+  subscribe: ->
+    self = @
+    @reg.pushManager.subscribe( userVisibleOnly: true )
+    .then( (pushSubscription) ->
+      self.sub = pushSubscription
+      console.log('Subscribed! Endpoint:', self.sub.endpoint)
+      self.setState { isSubscribed: true, title: 'Unsubscribe'} 
+    )
+
+  unsubscribe: ->
+    self = @
+    @sub.unsubscribe().then( (event) ->
+      console.log('Unsubscribed!', event)
+      self.setState { isSubscribed: false, title: 'Subscribe' }
+    ).catch( (error) ->
+      console.log('Error unsubscribing', error)
+      self.setState { title: 'Subscribe' }
+    )
+
+  render: ->
+    React.DOM.button
+      className: "btn btn-primary"
+      id: "sub-push-notif-btn"
+      disabled: !@state.available
+      onClick: @handleClick
+      @state.title

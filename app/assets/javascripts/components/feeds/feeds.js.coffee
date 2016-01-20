@@ -25,6 +25,7 @@
       React.DOM.h1 null,
         "Push Feeds!"
 
+      React.createElement SubscribeBtn
       React.createElement FeedForm, handleNewFeed: @addFeed
       React.DOM.hr null
 
