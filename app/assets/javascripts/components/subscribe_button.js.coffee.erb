@@ -4,14 +4,13 @@
   sub: null
 
   getInitialState: ->
-    self = @
     if 'serviceWorker' of navigator
       console.log('Service Worker is supported')
       navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
-      .then((serviceWorkerRegistration) ->
-        self.reg = serviceWorkerRegistration
-        self.setState available: true
-        console.log('Service Worker is ready :^)', self.reg)
+      .then((serviceWorkerRegistration) =>
+        @reg = serviceWorkerRegistration
+        @setState available: true
+        console.log('Service Worker is ready :^)', @reg)
       ).catch( (error) ->
         console.log('Service Worker Error :^(', error)
       )
@@ -19,29 +18,28 @@
     available: false
     title: "Subscribe"
 
-  handleClick: ->
+  handleClick: (e) ->
+    e.preventDefault()
     if @state.isSubscribed
       @unsubscribe()
     else
       @subscribe()
 
   subscribe: ->
-    self = @
     @reg.pushManager.subscribe( userVisibleOnly: true )
-    .then( (pushSubscription) ->
-      self.sub = pushSubscription
-      console.log('Subscribed! Endpoint:', self.sub.endpoint)
-      self.setState { isSubscribed: true, title: 'Unsubscribe'} 
+    .then( (pushSubscription) =>
+      @sub = pushSubscription
+      console.log('Subscribed! Endpoint:', @sub.endpoint)
+      @setState { isSubscribed: true, title: 'Unsubscribe'} 
     )
 
   unsubscribe: ->
-    self = @
-    @sub.unsubscribe().then( (event) ->
+    @sub.unsubscribe().then( (event) =>
       console.log('Unsubscribed!', event)
-      self.setState { isSubscribed: false, title: 'Subscribe' }
-    ).catch( (error) ->
+      @setState { isSubscribed: false, title: 'Subscribe' }
+    ).catch( (error) =>
       console.log('Error unsubscribing', error)
-      self.setState { title: 'Subscribe' }
+      @setState { title: 'Subscribe' }
     )
 
   render: ->
