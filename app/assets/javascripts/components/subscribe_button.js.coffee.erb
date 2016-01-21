@@ -9,6 +9,11 @@
       navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
       .then((serviceWorkerRegistration) =>
         @reg = serviceWorkerRegistration
+        @reg.pushManager.getSubscription().then((pushSubscription) =>
+          if pushSubscription
+            @sub = pushSubscription
+            @setState { isSubscribed: true, title: 'Unsubscribe'}
+        )
         @setState available: true
         console.log('Service Worker is ready :^)', @reg)
       ).catch( (error) ->
@@ -34,7 +39,6 @@
         console.log('Post successful:', data)
         @setState { isSubscribed: true, title: 'Unsubscribe'}
       , 'JSON'
-
     )
 
   unsubscribe: ->
