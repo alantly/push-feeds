@@ -1,21 +1,23 @@
 @SubscribeBtn = React.createClass
   
-  reg: null
-  sub: null
+  getDefaultProps:
+    reg: null
+    sub: null
+    client: null
 
   getInitialState: ->
     if 'serviceWorker' of navigator
       console.log('Service Worker is supported')
       navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
       .then((serviceWorkerRegistration) =>
-        @reg = serviceWorkerRegistration
-        @reg.pushManager.getSubscription().then((pushSubscription) =>
+        @props.reg = serviceWorkerRegistration
+        @props.reg.pushManager.getSubscription().then((pushSubscription) =>
           if pushSubscription
             @sub = pushSubscription
             @setState { isSubscribed: true, title: 'Unsubscribe'}
         )
         @setState available: true
-        console.log('Service Worker is ready :^)', @reg)
+        console.log('Service Worker is ready :^)', @props.reg)
       ).catch( (error) ->
         console.log('Service Worker Error :^(', error)
       )
@@ -31,7 +33,7 @@
       @subscribe()
 
   subscribe: ->
-    @reg.pushManager.subscribe( userVisibleOnly: true )
+    @props.reg.pushManager.subscribe( userVisibleOnly: true )
     .then( (pushSubscription) =>
       @sub = pushSubscription
       console.log('Subscribed! Endpoint:', @sub.endpoint)
@@ -44,10 +46,16 @@
   unsubscribe: ->
     @sub.unsubscribe().then( (event) =>
       console.log('Unsubscribed!', event)
-      @setState { isSubscribed: false, title: 'Subscribe' }
+      $.ajax
+        method: 'DELETE'
+        url: "/clients/#{ @props.client.id }"
+        dataType: 'JSON'
+        success: () =>
+          console.log('Delete successful')
+          @setState { isSubscribed: false, title: 'Subscribe' }
+      , 'JSON'
     ).catch( (error) =>
       console.log('Error unsubscribing', error)
-      @setState { title: 'Subscribe' }
     )
 
   render: ->
