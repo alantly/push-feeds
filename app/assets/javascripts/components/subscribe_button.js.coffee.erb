@@ -63,9 +63,10 @@
     )
 
   render: ->
-    React.DOM.button
-      className: "btn btn-primary"
-      id: "sub-push-notif-btn"
-      disabled: !@state.available
-      onClick: @handleClick
-      @state.title
+    React.DOM.div "subscribe",
+      React.createElement PushBtn, client: @state.client
+      React.DOM.button
+        className: "btn btn-primary"
+        disabled: !@state.available
+        onClick: @handleClick
+        @state.title
