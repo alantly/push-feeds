@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20160118015251) do
 
   create_table "clients", force: :cascade do |t|
-    t.string   "notification_address"
+    t.string   "subscription_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

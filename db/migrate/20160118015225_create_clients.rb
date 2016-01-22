@@ -1,7 +1,7 @@
 class CreateClients < ActiveRecord::Migration
   def change
     create_table :clients do |t|
-      t.string :notification_address
+      t.string :subscription_id
 
       t.timestamps
     end

@@ -4,9 +4,8 @@
       console.log('Service Worker is supported')
       navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
       .then((serviceWorkerRegistration) =>
-        @state.reg = serviceWorkerRegistration
-        @state.reg.pushManager.getSubscription().then(@handleSubscriptionExists)
-        @setState available: true
+        serviceWorkerRegistration.pushManager.getSubscription().then(@handleSubscriptionExists)
+        @setState { available: true, reg: serviceWorkerRegistration }
         console.log('Service Worker is ready :^)', @state.reg)
       ).catch( (error) ->
         console.log('Service Worker Error :^(', error)
@@ -18,15 +17,19 @@
     available: false
     title: "Subscribe"
 
+  formatEndpoint: (endpoint) ->
+    result = endpoint.split("/")
+    result[result.length - 1]
+
   handleSubscriptionExists: (pushSubscription) ->
     if pushSubscription
       $.get
         url: "/clients/"
-        data: subId: pushSubscription.endpoint
+        data: subscription_id: @formatEndpoint(pushSubscription.endpoint)
         dataType: 'JSON'
         success: (data) =>
           console.log('Get successful')
-          @setState { isSubscribed: true, title: 'Unsubscribe', sub: pushSubscription, client: data}
+          @setState { isSubscribed: true, title: 'Unsubscribe', sub: pushSubscription, client: data }
       , 'JSON'
 
   handleClick: (e) ->
@@ -39,9 +42,9 @@
   subscribe: ->
     @state.reg.pushManager.subscribe( userVisibleOnly: true )
     .then( (pushSubscription) =>
-      @state.sub = pushSubscription
-      console.log('Subscribed! Endpoint:', @state.sub.endpoint)
-      $.post '/clients', { client: { notification_address: @state.sub.endpoint } }, (data) =>
+      console.log('Subscribed! Endpoint:', pushSubscription.endpoint)
+      @setState sub: pushSubscription
+      $.post '/clients', { client: { subscription_id: @formatEndpoint(@state.sub.endpoint) } }, (data) =>
         console.log('Post successful:', data)
         @setState { isSubscribed: true, title: 'Unsubscribe', client: data}
       , 'JSON'

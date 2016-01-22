@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
 
   def index
-    @client = current_user.clients.find_by_notification_address params.require(:subId)
+    @client = current_user.clients.find_by_notification_address params.require(:subscription_id)
     render json: @client
   end
 
@@ -24,6 +24,6 @@ class ClientsController < ApplicationController
   private
 
   def client_params
-    params.require(:client).permit(:notification_address)
+    params.require(:client).permit(:subscription_id)
   end
 end
