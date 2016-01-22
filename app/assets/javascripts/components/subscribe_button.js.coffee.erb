@@ -1,29 +1,33 @@
 @SubscribeBtn = React.createClass
-  
-  getDefaultProps:
-    reg: null
-    sub: null
-    client: null
-
   getInitialState: ->
     if 'serviceWorker' of navigator
       console.log('Service Worker is supported')
       navigator.serviceWorker.register("<%= asset_path 'notification/sw.js' %>")
       .then((serviceWorkerRegistration) =>
-        @props.reg = serviceWorkerRegistration
-        @props.reg.pushManager.getSubscription().then((pushSubscription) =>
-          if pushSubscription
-            @sub = pushSubscription
-            @setState { isSubscribed: true, title: 'Unsubscribe'}
-        )
+        @state.reg = serviceWorkerRegistration
+        @state.reg.pushManager.getSubscription().then(@handleSubscriptionExists)
         @setState available: true
-        console.log('Service Worker is ready :^)', @props.reg)
+        console.log('Service Worker is ready :^)', @state.reg)
       ).catch( (error) ->
         console.log('Service Worker Error :^(', error)
       )
+    reg: null
+    sub: null
+    client: null
     isSubscribed: false
     available: false
     title: "Subscribe"
+
+  handleSubscriptionExists: (pushSubscription) ->
+    if pushSubscription
+      $.get
+        url: "/clients/"
+        data: subId: pushSubscription.endpoint
+        dataType: 'JSON'
+        success: (data) =>
+          console.log('Get successful')
+          @setState { isSubscribed: true, title: 'Unsubscribe', sub: pushSubscription, client: data}
+      , 'JSON'
 
   handleClick: (e) ->
     e.preventDefault()
@@ -33,22 +37,22 @@
       @subscribe()
 
   subscribe: ->
-    @props.reg.pushManager.subscribe( userVisibleOnly: true )
+    @state.reg.pushManager.subscribe( userVisibleOnly: true )
     .then( (pushSubscription) =>
-      @sub = pushSubscription
-      console.log('Subscribed! Endpoint:', @sub.endpoint)
-      $.post '/clients', { client: { notification_address: @sub.endpoint } }, (data) =>
+      @state.sub = pushSubscription
+      console.log('Subscribed! Endpoint:', @state.sub.endpoint)
+      $.post '/clients', { client: { notification_address: @state.sub.endpoint } }, (data) =>
         console.log('Post successful:', data)
-        @setState { isSubscribed: true, title: 'Unsubscribe'}
+        @setState { isSubscribed: true, title: 'Unsubscribe', client: data}
       , 'JSON'
     )
 
   unsubscribe: ->
-    @sub.unsubscribe().then( (event) =>
+    @state.sub.unsubscribe().then( (event) =>
       console.log('Unsubscribed!', event)
       $.ajax
         method: 'DELETE'
-        url: "/clients/#{ @props.client.id }"
+        url: "/clients/#{ @state.client.id }"
         dataType: 'JSON'
         success: () =>
           console.log('Delete successful')
