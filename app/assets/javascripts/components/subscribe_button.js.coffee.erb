@@ -59,7 +59,7 @@
         dataType: 'JSON'
         success: () =>
           console.log('Delete successful')
-          @setState { isSubscribed: false, title: 'Subscribe' }
+          @setState { isSubscribed: false, title: 'Subscribe', client: null }
       , 'JSON'
     ).catch( (error) =>
       console.log('Error unsubscribing', error)
