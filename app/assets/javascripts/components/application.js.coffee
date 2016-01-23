@@ -4,6 +4,7 @@
     showLoginPanel: @props.current_path == 'login'
 
   setUserSession: (data) ->
+    window.location.replace("/feeds");
     @setState errorMessages: []
 
   setErrors: (errors) ->

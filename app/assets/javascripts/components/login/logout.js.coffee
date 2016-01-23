@@ -5,10 +5,9 @@
     $.ajax
       url: '/users/sign_out.json'
       type: 'delete'
-      data: { }
-      success: (data) =>
-        @props.setUser data
-      dataType: "json"
+      success: () =>
+        window.location.replace("/");
+        console.log("Terminated Session")
 
   render: ->
     React.DOM.form
@@ -16,5 +15,5 @@
       onSubmit: @handleSubmit
       React.DOM.button
         type: 'submit'
-        className: 'btn btn-primary btn-block'
+        className: 'btn btn-danger'
         'Logout'
