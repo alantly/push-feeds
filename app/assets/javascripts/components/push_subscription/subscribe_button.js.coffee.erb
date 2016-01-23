@@ -45,7 +45,7 @@
       console.log('Subscribed! Endpoint:', pushSubscription.endpoint)
       @setState sub: pushSubscription
       $.post '/clients', { client: { subscription_id: @formatEndpoint(@state.sub.endpoint) } }, (data) =>
-        console.log('Post successful:', data)
+        console.log('Post successful')
         @setState { isSubscribed: true, title: 'Unsubscribe', client: data}
       , 'JSON'
     )
