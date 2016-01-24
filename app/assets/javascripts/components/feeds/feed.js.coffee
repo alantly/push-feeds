@@ -18,7 +18,7 @@
     handleEdit: (e) ->
       e.preventDefault()
       data =
-        source: ReactDOM.findDOMNode(@refs.source).value
+        url: ReactDOM.findDOMNode(@refs.url).value
       $.ajax
         method: 'PUT'
         url: "/feeds/#{ @props.feed.id }"
@@ -37,7 +37,7 @@
 
     feedRow: ->
       React.DOM.tr null,
-        React.DOM.td null, @props.feed.source
+        React.DOM.td null, @props.feed.url
         React.DOM.td null,
           React.DOM.a
             className: 'btn btn-default'
@@ -54,8 +54,8 @@
           React.DOM.input
             className: 'form-control'
             type: 'text'
-            defaultValue: @props.feed.source
-            ref: 'source'
+            defaultValue: @props.feed.url
+            ref: 'url'
         React.DOM.td null,
           React.DOM.a
             className: 'btn btn-default'

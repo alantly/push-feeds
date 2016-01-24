@@ -32,7 +32,7 @@ class FeedsController < ApplicationController
   private
 
   def feed_params
-    params.require(:feed).permit(:source)
+    params.require(:feed).permit(:url)
   end
 
 end

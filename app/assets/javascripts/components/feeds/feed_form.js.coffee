@@ -1,13 +1,13 @@
 @FeedForm = React.createClass
     getInitialState: ->
-      source: ''
+      url: ''
 
     handleChange: (e) ->
       name = e.target.name
       @setState "#{ name }": e.target.value
 
     valid: ->
-      @state.source
+      @state.url
 
     handleSubmit: (e) ->
       e.preventDefault()
@@ -25,9 +25,9 @@
           React.DOM.input
             type: 'text'
             className: 'form-control'
-            placeholder: 'Source'
-            name: 'source'
-            value: @state.source
+            placeholder: 'Url'
+            name: 'url'
+            value: @state.url
             onChange: @handleChange
         React.DOM.button
           type: 'submit'

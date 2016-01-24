@@ -1,7 +1,8 @@
 class CreateFeeds < ActiveRecord::Migration
   def change
     create_table :feeds do |t|
-      t.string :source
+      t.string :url
+      t.string :secret
 
       t.timestamps
     end
