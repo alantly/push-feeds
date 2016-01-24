@@ -40,11 +40,10 @@ class ClientsController < ApplicationController
     end
 
     resp.on_complete {
-      render json: resp.body
-      request.env['async.callback'].call response
+      print resp.body
     }
 
-    throw :async
+    head :no_content
   end
 
   def client_params
