@@ -40,6 +40,8 @@ gem 'spring',        group: :development
 gem 'react-rails'
 gem 'devise'
 gem 'bootstrap-sass'
+gem 'em-http-request'
+gem 'faraday'
 
 group :production do
   gem 'pg'

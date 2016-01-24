@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :feeds, except: [:show, :new, :edit]
   resources :clients, only: [:index, :create, :destroy]
+  post 'clients/send_notification' => 'clients#send_notification'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

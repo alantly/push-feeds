@@ -12,10 +12,8 @@
   handleClick: ->
     $.ajax
       method: "POST"
-      url: "https://android.googleapis.com/gcm/send"
-      contentType: "application/json"
-      headers: Authorization: "key=AIzaSyDWkWVCBzDgGMEND9BkYxfZM-XcU2t_VdY"
-      data: { registration_ids: [@props.client.subscription_id] }
+      url: "/clients/send_notification"
+      data: @props.client
       dataType: 'JSON'
-      success: (data) =>
-        console.log('Post successful:', data)
+      success: () =>
+        console.log('Send successful')
