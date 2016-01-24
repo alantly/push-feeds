@@ -28,7 +28,8 @@ class ClientsController < ApplicationController
   private
 
   def push_to sub_ids
-    conn = Faraday.new "https://android.googleapis.com", :ssl => { :ca_path => Rails.application.secrets.ssl_cert_path } do |con|
+    cert_path = Rails.application.secrets.ssl_cert_path
+    conn = Faraday.new "https://android.googleapis.com", :ssl => { :ca_path => cert_path, verify: !cert_path.empty? } do |con|
       con.adapter :em_http
     end
 
