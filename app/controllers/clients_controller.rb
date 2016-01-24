@@ -22,6 +22,12 @@ class ClientsController < ApplicationController
   end
 
   def send_notification
+    push_to [params[:subscription_id]]
+  end
+
+  private
+
+  def push_to sub_ids
     conn = Faraday.new "https://android.googleapis.com", :ssl => { :ca_path => Rails.application.secrets.ssl_cert_path } do |con|
       con.adapter :em_http
     end
@@ -30,7 +36,7 @@ class ClientsController < ApplicationController
       req.url "/gcm/send"
       req.headers['Content-Type'] = 'application/json'
       req.headers[:Authorization] = 'key=AIzaSyDWkWVCBzDgGMEND9BkYxfZM-XcU2t_VdY'
-      req.body = "{\"registration_ids\":[\"#{ params[:subscription_id] }\"]}\""
+      req.body = { registration_ids: sub_ids }.to_json
     end
 
     resp.on_complete {
@@ -40,8 +46,6 @@ class ClientsController < ApplicationController
 
     throw :async
   end
-
-  private
 
   def client_params
     params.require(:client).permit(:subscription_id)
