@@ -30,7 +30,7 @@ class ClientsController < ApplicationController
       req.url "/gcm/send"
       req.headers['Content-Type'] = 'application/json'
       req.headers[:Authorization] = 'key=AIzaSyDWkWVCBzDgGMEND9BkYxfZM-XcU2t_VdY'
-      req.body = '{"registration_ids":["#{ params[:subscription_id] }"]}'
+      req.body = "{\"registration_ids\":[\"#{ params[:subscription_id] }\"]}\""
     end
 
     resp.on_complete {
