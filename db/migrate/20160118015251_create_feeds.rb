@@ -6,6 +6,5 @@ class CreateFeeds < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_reference :feeds, :user, index: true
   end
 end

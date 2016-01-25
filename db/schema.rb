@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118015251) do
+ActiveRecord::Schema.define(version: 20160125163451) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "subscription_id"
@@ -27,10 +27,15 @@ ActiveRecord::Schema.define(version: 20160118015251) do
     t.string   "secret"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
-  add_index "feeds", ["user_id"], name: "index_feeds_on_user_id"
+  create_table "feeds_users", id: false, force: :cascade do |t|
+    t.integer "feed_id"
+    t.integer "user_id"
+  end
+
+  add_index "feeds_users", ["feed_id"], name: "index_feeds_users_on_feed_id"
+  add_index "feeds_users", ["user_id"], name: "index_feeds_users_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
