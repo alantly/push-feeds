@@ -41,6 +41,9 @@ gem 'react-rails'
 gem 'devise'
 gem 'bootstrap-sass'
 
+# Env variables
+gem "figaro"
+
 # Concurrency/HttpClient
 gem 'em-http-request'
 gem 'faraday'
