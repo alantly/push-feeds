@@ -49,7 +49,7 @@ gem 'em-http-request'
 gem 'faraday'
 
 # RSS Feed Subscription Service
-gem 'superfeedr_engine', '~> 0.1.7'
+gem 'rack-superfeedr'
 
 group :production do
   gem 'pg'
