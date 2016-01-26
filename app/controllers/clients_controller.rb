@@ -36,7 +36,7 @@ class ClientsController < ApplicationController
     resp = conn.post do |req|
       req.url "/gcm/send"
       req.headers['Content-Type'] = 'application/json'
-      req.headers[:Authorization] = 'key=AIzaSyDWkWVCBzDgGMEND9BkYxfZM-XcU2t_VdY'
+      req.headers[:Authorization] = ENV['gcm_api_key']
       req.body = { registration_ids: sub_ids }.to_json
     end
 
