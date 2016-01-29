@@ -1,15 +1,24 @@
 class FeedsController < ApplicationController
 
+  Rack::Superfeedr.host = "8099c608.ngrok.io"
+
   def index
     @feeds = current_user.feeds
   end
 
   def create
     @feed = Feed.new(feed_params)
-    if @feed.save
+    begin
+      @feed.save!
+      Rack::Superfeedr.subscribe(@feed.url, @feed.id, { format: "json" }) do |body, success, response|
+        unless success
+          @feed.destroy!
+          raise "Error with subscribing."
+        end
+      end
       current_user.feeds << @feed
       render json: @feed
-    else
+    rescue
       render json: @feed.errors, status: :unprocessable_entity
     end
   end

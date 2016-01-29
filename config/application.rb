@@ -20,6 +20,11 @@ module PushFeeds
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.middleware.use Rack::Superfeedr do |superfeedr|
+        superfeedr.on_notification do |feed_id, body, url, request|
+            FeedsHelper.hello
+        end
+    end
     config.react.addons = true
   end
 end
