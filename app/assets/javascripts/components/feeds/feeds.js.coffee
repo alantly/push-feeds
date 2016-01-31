@@ -28,7 +28,8 @@
       React.DOM.hr null
       React.createElement FeedForm, handleNewFeed: @addFeed
       React.DOM.hr null
-
+      
+      React.DOM.h2 null, "My Subscribed Feeds"
       React.DOM.table
         className: 'table table-bordered'
         React.DOM.thead null,
