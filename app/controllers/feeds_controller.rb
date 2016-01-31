@@ -1,6 +1,6 @@
 class FeedsController < ApplicationController
 
-  Rack::Superfeedr.host = "8099c608.ngrok.io"
+  Rack::Superfeedr.host = "d1da9092.ngrok.io"
 
   def index
     @feeds = current_user.feeds

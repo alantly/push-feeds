@@ -16,12 +16,15 @@ class Feed < ActiveRecord::Base
   end
 
   def normalize_url
-    resource = /^(?:https?:\/\/)?(.+)\/$/.match(self.url)
-    unless resource.nil?
-      self.url = resource[1]
-    else
-      self.url = /^(?:https?:\/\/)?(.+)$/.match(self.url)[1]
-    end
+    self.url = add_backslash_to self.url
+    self.url = add_default_protocol_to self.url
   end
 
+  def add_backslash_to url
+    url[-1] != '/' ? url + "/" : url
+  end
+
+  def add_default_protocol_to url
+    /https?:\/\// =~ url ? url : "http://" + url
+  end
 end
