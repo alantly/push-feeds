@@ -19,8 +19,10 @@ class FeedsController < ApplicationController
       end
       current_user.feeds << @feed
       render json: @feed
-    rescue
-      render json: @feed.errors, status: :unprocessable_entity
+    rescue Exception => e
+      error_msg = @feed.errors.messages
+      error_msg[:error] = e.message
+      render json: error_msg, status: :unprocessable_entity
     end
   end
 
