@@ -11,10 +11,16 @@
 
     handleSubmit: (e) ->
       e.preventDefault()
-      $.post '/feeds', { feed: @state }, (data) =>
-        @props.handleNewFeed data
-        @setState @getInitialState()
-      , 'JSON'
+      $.ajax
+        method: 'post'
+        url: '/feeds'
+        data: { feed: @state }
+        dataType: 'JSON'
+        success: (data) =>
+          @props.handleNewFeed data
+          @setState @getInitialState()
+        error: (reply) =>
+          @props.handleError reply.responseJSON.error
 
     render: ->
       React.DOM.form

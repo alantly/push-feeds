@@ -1,9 +1,16 @@
 @Feeds = React.createClass
   getInitialState: ->
     feeds: @props.data
+    errorMessage: ""
 
   getDefaultProps: ->
     feeds: []
+
+  setError: (error) ->
+    @setState errorMessage: error
+
+  removeError: ->
+    @setState errorMessage: ""
 
   addFeed: (feed) ->
     feeds = React.addons.update(@state.feeds, { $push: [feed] })
@@ -18,17 +25,20 @@
     index = @state.feeds.indexOf feed
     feeds = React.addons.update(@state.feeds, { $splice: [[index, 1]] })
     @setState feeds: feeds
-  
+
   render: ->
     React.DOM.div
       className: 'feeds'
+      if @state.errorMessage
+        React.createElement AlertBox, type: "danger", message: @state.errorMessage, remove: @removeError
+
       React.DOM.h1 null,
         "Push Feeds!"
       React.createElement Logout
       React.DOM.hr null
-      React.createElement FeedForm, handleNewFeed: @addFeed
+      React.createElement FeedForm, handleNewFeed: @addFeed, handleError: @setError
       React.DOM.hr null
-      
+
       React.DOM.h2 null, "My Subscribed Feeds"
       React.DOM.table
         className: 'table table-bordered'
@@ -38,7 +48,6 @@
         React.DOM.tbody null,
           for feed in @state.feeds
             React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed
-      
+
       React.DOM.hr null
       React.createElement SubscribeBtn
-  
