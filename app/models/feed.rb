@@ -1,7 +1,8 @@
 class Feed < ActiveRecord::Base
   has_and_belongs_to_many :users
-  before_save :normalize_url
   validates :url_valid_uri, :url, presence: true
+  before_save :normalize_url
+  after_save :create_secret
 
   private
 
@@ -21,6 +22,13 @@ class Feed < ActiveRecord::Base
       self.url = resource[1]
     else
       self.url = /^(?:https?:\/\/)?(.+)$/.match(self.url)[1]
+    end
+  end
+
+  def create_secret
+    if self.secret.nil?
+      self.secret = Digest::SHA256.hexdigest self.created_at.to_s
+      self.save!
     end
   end
 end

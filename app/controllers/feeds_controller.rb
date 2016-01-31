@@ -10,7 +10,7 @@ class FeedsController < ApplicationController
     @feed = Feed.new(feed_params)
     begin
       @feed.save!
-      Rack::Superfeedr.subscribe(@feed.url, @feed.id, { format: "json" }) do |body, success, response|
+      Rack::Superfeedr.subscribe(@feed.url, @feed.id, { format: "json", secret: @feed.secret }) do |body, success, response|
         unless success
           @feed.destroy!
           raise "Error with subscribing."
