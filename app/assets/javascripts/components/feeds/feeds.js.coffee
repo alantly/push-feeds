@@ -44,7 +44,7 @@
         className: 'table table-bordered'
         React.DOM.thead null,
           React.DOM.tr null,
-            React.DOM.th null, 'Url'
+            React.DOM.th null, 'Feed Endpoints'
         React.DOM.tbody null,
           for feed in @state.feeds
             React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed

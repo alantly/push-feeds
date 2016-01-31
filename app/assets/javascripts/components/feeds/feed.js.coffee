@@ -39,10 +39,10 @@
       React.DOM.tr null,
         React.DOM.td null, @props.feed.url
         React.DOM.td null,
-          React.DOM.a
-            className: 'btn btn-default'
-            onClick: @handleToggle
-            'Edit'
+          #React.DOM.a
+          #  className: 'btn btn-default'
+          #  onClick: @handleToggle
+          #  'Edit'
           React.DOM.a
             className: 'btn btn-danger'
             onClick: @handleDelete

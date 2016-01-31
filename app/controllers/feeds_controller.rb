@@ -26,14 +26,14 @@ class FeedsController < ApplicationController
     end
   end
 
-  def update
-    @feed = Feed.find(params[:id])
-    if @feed.update(feed_params)
-      render json: @feed
-    else
-      render json: @feed.errors, status: :unprocessable_entity
-    end
-  end
+  # def update
+  #   @feed = Feed.find(params[:id])
+  #   if @feed.update(feed_params)
+  #     render json: @feed
+  #   else
+  #     render json: @feed.errors, status: :unprocessable_entity
+  #   end
+  # end
   
   def destroy
     @feed = Feed.find(params[:id])

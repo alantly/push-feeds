@@ -31,7 +31,7 @@
           React.DOM.input
             type: 'text'
             className: 'form-control'
-            placeholder: 'Url'
+            placeholder: 'Feed Endpoint'
             name: 'url'
             value: @state.url
             onChange: @handleChange
@@ -39,5 +39,5 @@
           type: 'submit'
           className: 'btn btn-primary'
           disabled: !@valid()
-          'Create feed'
+          'Subscribe to feed'
             
