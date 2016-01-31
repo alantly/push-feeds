@@ -11,12 +11,7 @@ class FeedsController < ApplicationController
     @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
     begin
       @feed.save!
-      Rack::Superfeedr.subscribe(@feed.url, @feed.id, { format: "json", secret: @feed.secret }) do |body, success, response|
-        unless success
-          @feed.destroy!
-          raise "Error with subscribing."
-        end
-      end
+      @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
       render json: @feed
     rescue Exception => e

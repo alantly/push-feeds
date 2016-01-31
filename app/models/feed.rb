@@ -3,6 +3,15 @@ class Feed < ActiveRecord::Base
   validates :url_valid_uri, :url, presence: true
   before_save :normalize_url
 
+  def subscribe_to_superfeedr
+    Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret }) do |body, success, response|
+      unless success
+        self.destroy!
+        raise "Error with subscribing."
+      end
+    end
+  end
+
   private
 
   def url_valid_uri
