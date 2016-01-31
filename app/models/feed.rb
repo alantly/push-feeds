@@ -2,7 +2,6 @@ class Feed < ActiveRecord::Base
   has_and_belongs_to_many :users
   validates :url_valid_uri, :url, presence: true
   before_save :normalize_url
-  after_save :create_secret
 
   private
 
@@ -25,10 +24,4 @@ class Feed < ActiveRecord::Base
     end
   end
 
-  def create_secret
-    if self.secret.nil?
-      self.secret = Digest::SHA256.hexdigest self.created_at.to_s
-      self.save!
-    end
-  end
 end

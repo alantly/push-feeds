@@ -8,6 +8,7 @@ class FeedsController < ApplicationController
 
   def create
     @feed = Feed.new(feed_params)
+    @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
     begin
       @feed.save!
       Rack::Superfeedr.subscribe(@feed.url, @feed.id, { format: "json", secret: @feed.secret }) do |body, success, response|
