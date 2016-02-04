@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 20160125163451) do
     t.datetime "updated_at"
   end
 
-  create_table "feeds_users", id: false, force: :cascade do |t|
+  add_index "feeds", ["url"], name: "index_feeds_on_url"
+
+  create_table "feeds_users", force: :cascade do |t|
     t.integer "feed_id"
     t.integer "user_id"
   end
