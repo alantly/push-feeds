@@ -21,6 +21,16 @@ class FeedsController < ApplicationController
     end
   end
 
+  def subscribe
+    @feed = Feed.find_by_url(feed_params[:url])
+    if @feed
+      current_user.feeds << @feed
+      render json: @feed
+    else
+      create
+    end
+  end
+
   # def update
   #   @feed = Feed.find(params[:id])
   #   if @feed.update(feed_params)
@@ -32,7 +42,11 @@ class FeedsController < ApplicationController
   
   def destroy
     @feed = Feed.find(params[:id])
-    @feed.destroy
+    current_user.feeds.delete @feed
+    # if @feed.users.empty?
+    #   @feed.unsubscribe
+    #   @feed.destroy
+    # end
     head :no_content
   end
 

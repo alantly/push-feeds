@@ -13,7 +13,7 @@
       e.preventDefault()
       $.ajax
         method: 'post'
-        url: '/feeds'
+        url: '/feeds/subscribe'
         data: { feed: @state }
         dataType: 'JSON'
         success: (data) =>

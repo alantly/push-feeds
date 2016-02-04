@@ -1,6 +1,7 @@
 class Feed < ActiveRecord::Base
   has_and_belongs_to_many :users
-  validates :url_valid_uri, :url, presence: true
+  validate :url_valid_uri
+  validates :url, presence: true, uniqueness: true
   before_save :normalize_url
 
   def subscribe_to_superfeedr
