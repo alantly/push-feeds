@@ -1,6 +1,6 @@
 class FeedsController < ApplicationController
 
-  Rack::Superfeedr.host = "d1da9092.ngrok.io"
+  Rack::Superfeedr.host = "c7307993.ngrok.io"
 
   def index
     @feeds = current_user.feeds
@@ -14,9 +14,10 @@ class FeedsController < ApplicationController
       @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
       render json: @feed
-    rescue Exception => e
+    rescue IOError => e
+      puts "Unable to create #{feed_params} due to: #{e}."
       error_msg = @feed.errors.messages
-      error_msg[:error] = e.message
+      error_msg[:error] = e
       render json: error_msg, status: :unprocessable_entity
     end
   end
@@ -39,15 +40,23 @@ class FeedsController < ApplicationController
   #     render json: @feed.errors, status: :unprocessable_entity
   #   end
   # end
-  
+
   def destroy
-    @feed = Feed.find(params[:id])
+    @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
-    # if @feed.users.empty?
-    #   @feed.unsubscribe
-    #   @feed.destroy
-    # end
-    head :no_content
+    begin
+      if @feed.users.empty?
+        @feed.unsubscribe_to_superfeedr
+        @feed.destroy
+      end
+      head :no_content
+    rescue IOError => e
+      puts "Feed #{@feed.id}: #{e}."
+      render json: {error: e}, status: :unprocessable_entity
+    rescue NoMethodError => e
+      puts "Could not find #{@feed.id}: #{e}."
+      render json: {error: e}, status: :unprocessable_entity
+    end
   end
 
   private
