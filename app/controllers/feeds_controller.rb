@@ -15,9 +15,9 @@ class FeedsController < ApplicationController
       current_user.feeds << @feed
       render json: @feed
     rescue IOError => e
-      puts "Unable to create #{feed_params} due to: #{e}."
+      puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = @feed.errors.messages
-      error_msg[:error] = e
+      error_msg[:error] = e.message
       render json: error_msg, status: :unprocessable_entity
     end
   end
@@ -51,11 +51,11 @@ class FeedsController < ApplicationController
       end
       head :no_content
     rescue IOError => e
-      puts "Feed #{@feed.id}: #{e}."
-      render json: {error: e}, status: :unprocessable_entity
+      puts "Feed #{@feed.id}: #{e.message}."
+      render json: {error: e.message}, status: :unprocessable_entity
     rescue NoMethodError => e
-      puts "Could not find #{@feed.id}: #{e}."
-      render json: {error: e}, status: :unprocessable_entity
+      puts "Could not find #{@feed.id}: #{e.message}."
+      render json: {error: e.message}, status: :unprocessable_entity
     end
   end
 
