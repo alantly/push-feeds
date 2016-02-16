@@ -22,7 +22,7 @@ module PushFeeds
 
     config.middleware.use Rack::Superfeedr do |superfeedr|
       superfeedr.on_notification do |feed_id, body, url, request|
-        FeedsHelper.push_feed_to_users feed_id, body, url, request
+        puts feed_id, body, url, request
       end
     end
     config.react.addons = true

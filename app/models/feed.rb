@@ -21,6 +21,9 @@ class Feed < ActiveRecord::Base
     end
   end
 
+  def push_feed_to_users body, request
+  end
+
   private
 
   def url_valid_uri
