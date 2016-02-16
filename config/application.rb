@@ -21,9 +21,9 @@ module PushFeeds
     # config.i18n.default_locale = :de
 
     config.middleware.use Rack::Superfeedr do |superfeedr|
-        superfeedr.on_notification do |feed_id, body, url, request|
-            FeedsHelper.hello
-        end
+      superfeedr.on_notification do |feed_id, body, url, request|
+        FeedsHelper.push_feed_to_users feed_id, body, url, request
+      end
     end
     config.react.addons = true
   end
