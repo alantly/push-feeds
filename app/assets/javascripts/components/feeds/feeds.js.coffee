@@ -47,7 +47,7 @@
             React.DOM.th null, 'Feed Endpoints'
         React.DOM.tbody null,
           for feed in @state.feeds
-            React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed
+            React.createElement Feed, key: feed.id, feed: feed, handleDeleteFeed: @deleteFeed, handleEditFeed: @updateFeed, handleError: @setError
 
       React.DOM.hr null
       React.createElement SubscribeBtn

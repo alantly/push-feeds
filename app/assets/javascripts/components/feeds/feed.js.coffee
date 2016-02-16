@@ -5,7 +5,7 @@
     handleToggle: (e) ->
       e.preventDefault()
       @setState edit: !@state.edit
-    
+
     handleDelete: (e) ->
       e.preventDefault()
       $.ajax
@@ -14,6 +14,8 @@
         dataType: 'JSON'
         success: () =>
           @props.handleDeleteFeed @props.feed
+        error: (reply) =>
+          @props.handleError reply.responseJSON.error
 
     handleEdit: (e) ->
       e.preventDefault()

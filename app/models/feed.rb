@@ -8,16 +8,15 @@ class Feed < ActiveRecord::Base
     Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret }) do |body, success, response|
       unless success
         self.destroy!
-        raise IOError, "Error with subscribing."
+        raise IOError, "Error with subscribing to #{self.url}"
       end
     end
   end
 
   def unsubscribe_to_superfeedr
     Rack::Superfeedr.unsubscribe(self.url, self.id) do |body, success, response|
-      binding.pry
       unless success
-        raise IOError, "Error with unsubscribing."
+        raise IOError, "Error with unsubscribing from #{self.url}"
       end
     end
   end
