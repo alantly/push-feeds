@@ -2,7 +2,7 @@ class Client < ActiveRecord::Base
   belongs_to :user
 
   def notify
-    push_to [self.subscription_id]
+    self.class.push_to [self.subscription_id]
   end
 
   def self.push_to sub_ids

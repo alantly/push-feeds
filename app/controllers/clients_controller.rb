@@ -22,7 +22,6 @@ class ClientsController < ApplicationController
   end
 
   def send_notification
-    binding.pry
     @client = Client.find_by_subscription_id(params.require(:subscription_id))
     @client.notify
   end
