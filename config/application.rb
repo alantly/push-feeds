@@ -22,6 +22,7 @@ module PushFeeds
 
     config.middleware.use Rack::Superfeedr do |superfeedr|
       superfeedr.on_notification do |feed_id, body, url, request|
+        puts feed_id, body
         FeedsController.superfeedr_callback feed_id, body
       end
     end
