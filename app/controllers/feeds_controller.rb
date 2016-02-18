@@ -59,6 +59,11 @@ class FeedsController < ApplicationController
     end
   end
 
+  def self.superfeedr_callback feed_id, body
+    feed = Feed.find_by_id(feed_id)
+    feed.push_feed_to_users
+  end
+
   private
 
   def feed_params
