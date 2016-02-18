@@ -15,7 +15,7 @@ self.addEventListener('push', function(event) {
   event.waitUntil(
     self.registration.showNotification(title, {
       body: 'The Message',
-      icon: 'images/icon.png',
+      // icon: 'images/icon.png',
       tag: 'my-tag'
     }));
 });
@@ -23,7 +23,7 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
     console.log('Notification click: tag ', event.notification.tag);
     event.notification.close();
-    var url = 'https://youtu.be/gYMkEMCHtJ4';
+    var url = 'https://google.com';
     event.waitUntil(
         clients.matchAll({
             type: 'window'

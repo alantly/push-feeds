@@ -24,6 +24,7 @@ class ClientsController < ApplicationController
   def send_notification
     @client = Client.find_by_subscription_id(params.require(:subscription_id))
     @client.notify
+    head :no_content
   end
 
   private

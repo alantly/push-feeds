@@ -21,7 +21,5 @@ class Client < ActiveRecord::Base
     resp.on_complete {
       print resp.body
     }
-
-    head :no_content
   end
 end
