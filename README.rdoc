@@ -1,28 +1,36 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Description:
+Implementation of a RSS feed Notifier using a webapp with Chrome Push Notification API.
+Users need to be subscribed to a RSS Feed to be notified.
+To receive push notifications, users need to be subscribed to the app.
+Both are required to get push notifications on the RSS Feed.
 
-Things you may want to cover:
+Technologies:
+ReactJS, Rails, Devise, Superfeedr, ServiceWorkers,
+Google Cloud Messaging, Chrome Push Notifications
 
-* Ruby version
+Supported Browsers:
+* Chrome
 
-* System dependencies
+Overview:
+- ReactJS to make API calls to a rails server.
+- Devise is used for handling user registration. Implemented Devise using JSON.
+- Client push notification handled using ServiceWorkers.
+- GCM is used server side to push messages to clients.
+- Superfeedr service is used to detect updates in RSS Feeds.
 
-* Configuration
+Required Configuration:
+- config/application.yml
+  * superfeedr_login
+  * superfeedr_auth_token
+  * gcm_api_key
+  * production
+    * hostname
+  * development
+    * hostname
+    * port
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Required API Keys:
+  * GCM API key
+  * Superfeedr key
