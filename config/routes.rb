@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
 
-  resources :feeds, except: [:show, :new, :edit] do
+  resources :feeds, only: [:index, :destroy] do
     post :subscribe, on: :collection
   end
   resources :clients, only: [:index, :create, :destroy]

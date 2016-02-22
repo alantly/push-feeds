@@ -14,6 +14,7 @@ class FeedsController < ApplicationController
       @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
       render json: @feed
+      @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = @feed.errors.messages
@@ -28,8 +29,9 @@ class FeedsController < ApplicationController
       current_user.feeds << @feed
       render json: @feed
     else
-      create
+      @feed = create
     end
+     cookies[@feed.id] = @feed.updated_at.to_s unless @feed.nil?
   end
 
   # def update
@@ -44,6 +46,7 @@ class FeedsController < ApplicationController
   def destroy
     @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
+    cookies.delete @feed.id
     begin
       if @feed.users.empty?
         @feed.unsubscribe_to_superfeedr
