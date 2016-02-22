@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :feeds, only: [:index, :destroy] do
     post :subscribe, on: :collection
+    get :updated, on: :collection
   end
   resources :clients, only: [:index, :create, :destroy]
   post 'clients/send_notification' => 'clients#send_notification'

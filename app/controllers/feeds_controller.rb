@@ -13,8 +13,8 @@ class FeedsController < ApplicationController
       @feed.save!
       @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
-      @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = @feed.errors.messages
@@ -27,11 +27,26 @@ class FeedsController < ApplicationController
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
       current_user.feeds << @feed
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     else
-      @feed = create
+      redirect_to create
     end
-     cookies[@feed.id] = @feed.updated_at.to_s unless @feed.nil?
+  end
+
+  def updated
+    resp = { message: "No Updates!"}
+    current_user.feeds.each do |feed|
+      if cookies[feed.id] != feed.updated_at.to_i.to_s
+        if cookies[feed.id].nil?
+          resp = { message: "A Feed has been updated." }
+        else
+          resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
+        end
+        cookies[feed.id] = feed.updated_at.to_i
+      end
+    end
+    render json: resp
   end
 
   # def update
@@ -64,6 +79,7 @@ class FeedsController < ApplicationController
 
   def self.superfeedr_callback feed_id, body
     feed = Feed.find_by_id(feed_id)
+    # update feed.updated_at
     feed.push_feed_to_users
   end
 
