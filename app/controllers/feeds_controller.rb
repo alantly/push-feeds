@@ -41,6 +41,7 @@ class FeedsController < ApplicationController
         if cookies[feed.id].nil?
           resp = { message: "A Feed has been updated." }
         else
+          # TODO: Exit sooner when datetime mismatch found. Focus on common case.
           resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
         end
         cookies[feed.id] = feed.updated_at.to_i
@@ -79,7 +80,7 @@ class FeedsController < ApplicationController
 
   def self.superfeedr_callback feed_id, body
     feed = Feed.find_by_id(feed_id)
-    # update feed.updated_at
+    feed.touch :updated_at
     feed.push_feed_to_users
   end
 
