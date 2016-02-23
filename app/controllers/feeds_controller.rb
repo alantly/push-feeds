@@ -1,7 +1,5 @@
 class FeedsController < ApplicationController
 
-  # Rack::Superfeedr.host = "c7307993.ngrok.io"
-
   def index
     @feeds = current_user.feeds
   end
@@ -12,6 +10,7 @@ class FeedsController < ApplicationController
     begin
       @feed.save!
       @feed.subscribe_to_superfeedr
+      # TODO: Make Cookies secure
       current_user.feeds << @feed
       cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
@@ -35,6 +34,7 @@ class FeedsController < ApplicationController
   end
 
   def updated
+    # TODO: pass in clientID, and use it to find user. No need to be logged in.
     resp = { message: "No Updates!"}
     current_user.feeds.each do |feed|
       if cookies[feed.id] != feed.updated_at.to_i.to_s
