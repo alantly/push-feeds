@@ -10,9 +10,8 @@ class FeedsController < ApplicationController
     begin
       @feed.save!
       @feed.subscribe_to_superfeedr
-      # TODO: Make Cookies secure
       current_user.feeds << @feed
-      cookies[@feed.id] = @feed.updated_at.to_i
+      sessions[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
@@ -26,7 +25,7 @@ class FeedsController < ApplicationController
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
       current_user.feeds << @feed
-      cookies[@feed.id] = @feed.updated_at.to_i
+      sessions[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     else
       redirect_to create
@@ -34,17 +33,19 @@ class FeedsController < ApplicationController
   end
 
   def updated
-    # TODO: pass in clientID, and use it to find user. No need to be logged in.
+    user = User.find_by_id(sessions[:user_id])
     resp = { message: "No Updates!"}
-    current_user.feeds.each do |feed|
-      if cookies[feed.id] != feed.updated_at.to_i.to_s
-        if cookies[feed.id].nil?
-          resp = { message: "A Feed has been updated." }
-        else
-          # TODO: Exit sooner when datetime mismatch found. Focus on common case.
-          resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
+    if user
+      user.feeds.each do |feed|
+        if sessions[feed.id] != feed.updated_at.to_i.to_s
+          if sessions[feed.id].nil?
+            resp = { message: "A Feed has been updated." }
+          else
+            # TODO: Exit sooner when datetime mismatch found. Focus on common case.
+            resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
+          end
+          sessions[feed.id] = feed.updated_at.to_i
         end
-        cookies[feed.id] = feed.updated_at.to_i
       end
     end
     render json: resp
@@ -62,7 +63,7 @@ class FeedsController < ApplicationController
   def destroy
     @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
-    cookies.delete @feed.id
+    sessions.delete @feed.id
     begin
       if @feed.users.empty?
         @feed.unsubscribe_to_superfeedr

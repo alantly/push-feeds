@@ -10,9 +10,10 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('push', function(event) {
-  debugger;
   console.log('Push message', event);
-  $.get("<%= 'https://'+ENV['hostname']+'/feeds/updated' %>", function(response) {
+  debugger;
+  fetch("/feeds/updated", function(response) {
+    debugger;
     var title = 'New Feed Update!';
     event.waitUntil(
       self.registration.showNotification(title, {
