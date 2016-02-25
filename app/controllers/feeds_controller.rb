@@ -2,6 +2,8 @@ class FeedsController < ApplicationController
 
   def index
     @feeds = current_user.feeds
+    # TODO: user id should be stored in cookiescontroller
+    cookies[:user_id] = current_user.id
   end
 
   def create
@@ -11,7 +13,7 @@ class FeedsController < ApplicationController
       @feed.save!
       @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
-      sessions[@feed.id] = @feed.updated_at.to_i
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
@@ -25,26 +27,26 @@ class FeedsController < ApplicationController
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
       current_user.feeds << @feed
-      sessions[@feed.id] = @feed.updated_at.to_i
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     else
-      redirect_to create
+      create
     end
   end
 
   def updated
-    user = User.find_by_id(sessions[:user_id])
+    user = User.find_by_id(cookies[:user_id])
     resp = { message: "No Updates!"}
     if user
       user.feeds.each do |feed|
-        if sessions[feed.id] != feed.updated_at.to_i.to_s
-          if sessions[feed.id].nil?
+        if cookies[feed.id] != feed.updated_at.to_i.to_s
+          if cookies[feed.id].nil?
             resp = { message: "A Feed has been updated." }
           else
             # TODO: Exit sooner when datetime mismatch found. Focus on common case.
             resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
           end
-          sessions[feed.id] = feed.updated_at.to_i
+          cookies[feed.id] = feed.updated_at.to_i
         end
       end
     end
@@ -63,7 +65,7 @@ class FeedsController < ApplicationController
   def destroy
     @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
-    sessions.delete @feed.id
+    cookies.delete @feed.id
     begin
       if @feed.users.empty?
         @feed.unsubscribe_to_superfeedr

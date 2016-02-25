@@ -11,21 +11,23 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
-  debugger;
-  fetch("/feeds/updated", function(response) {
-    debugger;
-    var title = 'New Feed Update!';
-    event.waitUntil(
-      self.registration.showNotification(title, {
-        body: response.message,
-        // icon: 'images/icon.png',
-      }));
-  }, "json");
+  fetch("/feeds/updated", {credentials: 'include'}).then(function(response) {
+    if (!response.ok) {
+      return;
+    }
+    response.json().then(function(data) {
+      var title = 'New Push-Feeds Notification';
+      event.waitUntil(
+        self.registration.showNotification(title, {
+          body: data.message,
+          // icon: 'images/icon.png',
+        }));
+    });
+  });
 });
 
 self.addEventListener('notificationclick', function(event) {
     console.log('Notification click: tag ', event.notification.tag);
-    debugger;
     event.notification.close();
     var url = 'https://google.com';
     event.waitUntil(
