@@ -16,12 +16,13 @@ self.addEventListener('push', function(event) {
       return;
     }
     response.json().then(function(data) {
-      var title = 'New Push-Feeds Notification';
+      var title = 'Push-Feeds Notification';
       event.waitUntil(
         self.registration.showNotification(title, {
           body: data.message,
           // icon: 'images/icon.png',
-        }));
+        })
+      );
     });
   });
 });

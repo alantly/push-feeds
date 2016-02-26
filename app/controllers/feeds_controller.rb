@@ -2,7 +2,6 @@ class FeedsController < ApplicationController
 
   def index
     @feeds = current_user.feeds
-    # TODO: user id should be stored in cookiescontroller
     cookies[:user_id] = current_user.id
   end
 
