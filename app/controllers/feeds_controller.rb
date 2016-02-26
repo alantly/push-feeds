@@ -35,15 +35,17 @@ class FeedsController < ApplicationController
 
   def updated
     user = User.find_by_id(cookies[:user_id])
-    resp = { message: "No Updates!"}
+    resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: ENV['hostname']}
     if user
       user.feeds.each do |feed|
         if cookies[feed.id] != feed.updated_at.to_i.to_s
           if cookies[feed.id].nil?
-            resp = { message: "A Feed has been updated." }
+            # TODO: Be creative on the title. Could use third party service word generator
+            resp = { title: "New Notification", message: "A Feed has been updated!", url: ENV['hostname']}
           else
             # TODO: Exit sooner when datetime mismatch found. Focus on common case.
-            resp = { message: "#{feed.url} Updated!", url: "#{feed.url}" }
+            # TODO: Website title, and new article title
+            resp = { title: "A Feed has been updated!", message: "#{feed.url}", url: "#{feed.url}" }
           end
           cookies[feed.id] = feed.updated_at.to_i
         end

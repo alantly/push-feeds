@@ -16,9 +16,8 @@ self.addEventListener('push', function(event) {
       return;
     }
     response.json().then(function(data) {
-      var title = 'Push-Feeds Notification';
       event.waitUntil(
-        self.registration.showNotification(title, {
+        self.registration.showNotification(data.title, {
           body: data.message,
           // icon: 'images/icon.png',
         })
