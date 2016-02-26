@@ -2,7 +2,6 @@ class FeedsController < ApplicationController
 
   def index
     @feeds = current_user.feeds
-    cookies[:user_id] = current_user.id
   end
 
   def create
@@ -34,10 +33,9 @@ class FeedsController < ApplicationController
   end
 
   def updated
-    user = User.find_by_id(cookies[:user_id])
     resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: ENV['hostname']}
-    if user
-      user.feeds.each do |feed|
+    if current_user
+      current_user.feeds.each do |feed|
         if cookies[feed.id] != feed.updated_at.to_i.to_s
           if cookies[feed.id].nil?
             # TODO: Be creative on the title. Could use third party service word generator
