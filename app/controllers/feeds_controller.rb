@@ -33,17 +33,16 @@ class FeedsController < ApplicationController
   end
 
   def updated
-    resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: ENV['hostname']}
+    resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: "https://"+ENV['hostname']}
     if current_user
       current_user.feeds.each do |feed|
         if cookies[feed.id] != feed.updated_at.to_i.to_s
           if cookies[feed.id].nil?
             # TODO: Be creative on the title. Could use third party service word generator
-            resp = { title: "New Notification", message: "A Feed has been updated!", url: ENV['hostname']}
+            resp = { title: "New Push-Feeds Notification", message: "A Feed has been updated!", url: "https://"+ENV['hostname']}
           else
             # TODO: Exit sooner when datetime mismatch found. Focus on common case.
-            # TODO: Website title, and new article title
-            resp = { title: "A Feed has been updated!", message: "#{feed.url}", url: "#{feed.url}" }
+            resp = { title: "New PF Notification!", message: feed.latest_feed_title, url: feed.latest_feed_url }
           end
           cookies[feed.id] = feed.updated_at.to_i
         end
@@ -82,7 +81,10 @@ class FeedsController < ApplicationController
 
   def self.superfeedr_callback feed_id, body
     feed = Feed.find_by_id(feed_id)
-    feed.touch :updated_at
+    new_update = body["items"][0]
+    feed.latest_feed_title = new_update["title"]
+    feed.latest_feed_url = new_update["permalinkUrl"]
+    feed.save!
     feed.push_feed_to_users
   end
 
