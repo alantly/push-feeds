@@ -54,6 +54,6 @@ function showNotification(title, message, url) {
 
   self.registration.showNotification(title, {
     body: message,
-    icon: 'whale.png',
+    icon: '<%= asset_path("whale.png") %>',
   });
 }
