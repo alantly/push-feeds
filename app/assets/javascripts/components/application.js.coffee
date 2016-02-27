@@ -29,14 +29,15 @@
       React.createFactory(React.addons.CSSTransitionGroup)
         transitionName: 'login-transition'
         transitionLeave: false
+        transitionEnterTimeout: 500
         if @state.showLoginPanel
           switchText = 'Signup'
           urlText = '/users/sign_in'
-          React.createElement Login, key: 10001, setUser: @setUserSession, handleErrorResponse: @setErrors
+          React.createElement Login, key: -1, setUser: @setUserSession, handleErrorResponse: @setErrors
         else
           switchText = 'Login'
           urlText = '/users/sign_up'
-          React.createElement Signup, key: 10000, setUser: @setUserSession, handleErrorResponse: @setErrors
+          React.createElement Signup, key: -2, setUser: @setUserSession, handleErrorResponse: @setErrors
 
       @handleUrl(urlText)
       React.DOM.a
@@ -65,6 +66,7 @@
       @showPrettyLoginWall()
 
   displayErrors: ->
-    i = 0
+    # TODO: Remove hard constant. Too hacky. Could cause key issues.
+    i = -3
     for message in @state.errorMessages
-      React.createElement AlertBox, key: i++, type: "danger", message: message
+      React.createElement AlertBox, key: i--, type: "danger", message: message

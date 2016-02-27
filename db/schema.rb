@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125163451) do
+ActiveRecord::Schema.define(version: 20160227020435) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "subscription_id"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20160125163451) do
     t.string   "secret"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "latest_feed_title", default: ""
+    t.string   "latest_feed_url",   default: ""
   end
 
   add_index "feeds", ["url"], name: "index_feeds_on_url"

@@ -1,7 +1,5 @@
 class FeedsController < ApplicationController
 
-  # Rack::Superfeedr.host = "c7307993.ngrok.io"
-
   def index
     @feeds = current_user.feeds
   end
@@ -13,6 +11,7 @@ class FeedsController < ApplicationController
       @feed.save!
       @feed.subscribe_to_superfeedr
       current_user.feeds << @feed
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
@@ -26,10 +25,30 @@ class FeedsController < ApplicationController
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
       current_user.feeds << @feed
+      cookies[@feed.id] = @feed.updated_at.to_i
       render json: @feed
     else
       create
     end
+  end
+
+  def updated
+    resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: "https://"+ENV['hostname']}
+    if current_user
+      current_user.feeds.each do |feed|
+        if cookies[feed.id] != feed.updated_at.to_i.to_s
+          if cookies[feed.id].nil?
+            # TODO: Be creative on the title. Could use third party service word generator
+            resp = { title: "New Push-Feeds Notification", message: "A Feed has been updated!", url: "https://"+ENV['hostname']}
+          else
+            # TODO: Exit sooner when datetime mismatch found. Focus on common case.
+            resp = { title: "New PF Notification!", message: feed.latest_feed_title, url: feed.latest_feed_url }
+          end
+          cookies[feed.id] = feed.updated_at.to_i
+        end
+      end
+    end
+    render json: resp
   end
 
   # def update
@@ -44,6 +63,7 @@ class FeedsController < ApplicationController
   def destroy
     @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
+    cookies.delete @feed.id
     begin
       if @feed.users.empty?
         @feed.unsubscribe_to_superfeedr
@@ -61,6 +81,10 @@ class FeedsController < ApplicationController
 
   def self.superfeedr_callback feed_id, body
     feed = Feed.find_by_id(feed_id)
+    new_update = body["items"][0]
+    feed.latest_feed_title = new_update["title"]
+    feed.latest_feed_url = new_update["permalinkUrl"]
+    feed.save!
     feed.push_feed_to_users
   end
 

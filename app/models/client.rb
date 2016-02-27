@@ -6,6 +6,7 @@ class Client < ActiveRecord::Base
   end
 
   def self.push_to sub_ids
+    # TODO: Try and catch faraday.client exception
     cert_path = Rails.application.secrets.ssl_cert_path
     conn = Faraday.new "https://android.googleapis.com", :ssl => { :ca_path => cert_path, verify: !cert_path.empty? } do |con|
       con.adapter :em_http
