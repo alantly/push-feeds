@@ -80,10 +80,11 @@ class FeedsController < ApplicationController
   end
 
   def self.superfeedr_callback feed_id, body
+    puts feed_id, body
     feed = Feed.find_by_id(feed_id)
-    new_update = body["items"][0]
-    feed.latest_feed_title = new_update["title"]
-    feed.latest_feed_url = new_update["permalinkUrl"]
+    new_update_item = JSON.parse(body)["items"][0]
+    feed.latest_feed_title = new_update_item["title"]
+    feed.latest_feed_url = new_update_item["permalinkUrl"]
     feed.save!
     feed.push_feed_to_users
   end

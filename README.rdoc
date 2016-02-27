@@ -29,7 +29,6 @@ Required Configuration:
     * hostname
   * development
     * hostname
-    * port
 
 Required API Keys:
   * GCM API key
