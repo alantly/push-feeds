@@ -54,6 +54,6 @@ function showNotification(title, message, url) {
 
   self.registration.showNotification(title, {
     body: message,
-    // icon: 'images/icon.png',
+    icon: 'whale.png',
   });
 }
