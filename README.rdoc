@@ -11,7 +11,8 @@ ReactJS, Rails, Devise, Superfeedr, ServiceWorkers,
 Google Cloud Messaging, Chrome Push Notifications
 
 Supported Browsers:
-* Chrome
+* Chrome Desktop
+* Chrome for Android
 
 Overview:
 - ReactJS to make API calls to a rails server.
@@ -31,5 +32,20 @@ Required Configuration:
     * hostname
 
 Required API Keys:
-  * GCM API key
-  * Superfeedr key
+  - GCM API key
+  - Superfeedr key
+
+To Test Locally:
+  - Use ngrok to an open url to localhost:3000.
+  - Set url for development/hostname in application.yml.
+  - Start rails server.
+
+TODO:
+- Ensure Authentication when using app else redirect to homepage.
+- Setup Unit test.
+- Setup code coverage/CI.
+- Ability to filter an rss update to get specific feeds.
+- Improve UI.
+- Improve Landing page background.
+- Setup notifications for Safari/iOS?
+- Minor code improvement TODOs
