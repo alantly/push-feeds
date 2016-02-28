@@ -1,35 +1,34 @@
 == README
 
 Description:
-Implementation of a RSS feed Notifier using a webapp with Chrome Push Notification API.
-Users need to be subscribed to a RSS Feed to be notified.
-To receive push notifications, users need to be subscribed to the app.
+Implementation of a RSS Feed Notifier web service using service workers and Chrome Push Notification API.
+To receive push notifications, the user must be subscribed to a feed, and subscribed to the web service.
 Both are required to get push notifications on the RSS Feed.
 
 Technologies:
 ReactJS, Rails, Devise, Superfeedr, ServiceWorkers,
-Google Cloud Messaging, Chrome Push Notifications
+Google Cloud Messaging Service, Chrome Push Notifications
 
 Supported Browsers:
-* Chrome Desktop
-* Chrome for Android
+  * Chrome Desktop
+  * Chrome for Android
 
 Overview:
-- ReactJS to make API calls to a rails server.
-- Devise is used for handling user registration. Implemented Devise using JSON.
-- Client push notification handled using ServiceWorkers.
-- GCM is used server side to push messages to clients.
-- Superfeedr service is used to detect updates in RSS Feeds.
+  - ReactJS to make API calls to a rails server.
+  - Devise is used for handling user registration. Implemented Devise using JSON.
+  - Client push notification handled using ServiceWorkers.
+  - GCM is used server side to push messages to clients.
+  - Superfeedr service is used to detect updates in RSS Feeds.
 
 Required Configuration:
-- config/application.yml
-  * superfeedr_login
-  * superfeedr_auth_token
-  * gcm_api_key
-  * production
-    * hostname
-  * development
-    * hostname
+  - config/application.yml
+    * superfeedr_login
+    * superfeedr_auth_token
+    * gcm_api_key
+    * production
+      * hostname
+    * development
+      * hostname
 
 Required API Keys:
   - GCM API key
@@ -41,11 +40,11 @@ To Test Locally:
   - Start rails server.
 
 TODO:
-- Ensure Authentication when using app else redirect to homepage.
-- Setup Unit test.
-- Setup code coverage/CI.
-- Ability to filter an rss update to get specific feeds.
-- Improve UI.
-- Improve Landing page background.
-- Setup notifications for Safari/iOS?
-- Minor code improvement TODOs
+  - Ensure Authentication when using app else redirect to homepage.
+  - Setup Unit test.
+  - Setup code coverage/CI.
+  - Ability to filter an rss update to get specific feeds.
+  - Improve UI.
+  - Improve Landing page background.
+  - Setup notifications for Safari/iOS?
+  - Minor code improvement TODOs
