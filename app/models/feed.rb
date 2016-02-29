@@ -5,6 +5,7 @@ class Feed < ActiveRecord::Base
   before_save :normalize_url
 
   def subscribe_to_superfeedr
+    # TODO: Set website name on success
     Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret }) do |body, success, response|
       unless success
         self.destroy!
