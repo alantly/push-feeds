@@ -12,7 +12,7 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
   event.waitUntil(
-    fetch("/feeds/updated", {
+    fetch("/notifications/recent", {
       credentials: 'same-origin',
       mode: 'same-origin'
     }).then(function(response) {

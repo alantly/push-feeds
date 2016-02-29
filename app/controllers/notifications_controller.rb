@@ -10,13 +10,15 @@ class NotificationsController < ApplicationController
     render json: response
   end
 
-  def self.superfeedr_callback feed_id, body
+  def self.create_notification feed_id, body
     puts feed_id, body
     feed = Feed.find_by_id(feed_id)
     superfeedr_update = JSON.parse(body)
     superfeedr_update["items"].each do |item|
       feed.users.each do |user|
-        notification = Notification.create title: item["title"], url: item["permalinkUrl"], feed: feed
+        # TODO: Need to check if created and dont do anything if added. Due to superfeedr timeout
+        # TODO: Create one notification table and have it all linked instead
+        notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
         user.notifications << notification
       end
     end
