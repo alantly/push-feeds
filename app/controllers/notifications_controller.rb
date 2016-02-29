@@ -22,7 +22,7 @@ class NotificationsController < ApplicationController
         notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
       end
       feed.users.each do |user|
-        user.notifications << notification
+        user.notifications << notification unless user.notifications.include? notification
       end
     end
     feed.push_feed_to_users
