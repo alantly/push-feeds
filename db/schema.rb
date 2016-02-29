@@ -45,13 +45,12 @@ ActiveRecord::Schema.define(version: 20160229052647) do
     t.string   "title",      default: ""
     t.string   "url",        default: ""
     t.integer  "feed_id"
-    t.integer  "user_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
   add_index "notifications", ["feed_id"], name: "index_notifications_on_feed_id"
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+  add_index "notifications", ["site_id"], name: "index_notifications_on_site_id"
 
   create_table "notifications_users", force: :cascade do |t|
     t.integer "notification_id"

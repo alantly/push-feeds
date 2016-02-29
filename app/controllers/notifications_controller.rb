@@ -18,9 +18,11 @@ class NotificationsController < ApplicationController
     feed = Feed.find_by_id(feed_id)
     superfeedr_update = JSON.parse(body)
     superfeedr_update["items"].each do |item|
-      notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
+      notification = Notification.find_by_site_id item["id"]
+      if notification.nil?
+        notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
+      end
       feed.users.each do |user|
-        # TODO: Need to check if created and dont do anything if added. Due to superfeedr timeout
         user.notifications << notification
       end
     end
