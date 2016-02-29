@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229001011) do
+ActiveRecord::Schema.define(version: 20160229052647) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "subscription_id"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 20160229001011) do
 
   add_index "notifications", ["feed_id"], name: "index_notifications_on_feed_id"
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+
+  create_table "notifications_users", force: :cascade do |t|
+    t.integer "notification_id"
+    t.integer "user_id"
+  end
+
+  add_index "notifications_users", ["notification_id"], name: "index_notifications_users_on_notification_id"
+  add_index "notifications_users", ["user_id"], name: "index_notifications_users_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

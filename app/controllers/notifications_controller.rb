@@ -2,10 +2,13 @@ class NotificationsController < ApplicationController
 
   def recent
     resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: "https://"+ENV['hostname']}
-    if current_user
-      top_notification = current_user.notifications.first
-      response = { title: "New Push-Feeds Notification!", message: top_notification.title, url: top_notification.url }
-      top_notification.destroy!
+    if current_user and not current_user.notifications.empty?
+      @top_notification = current_user.notifications.first
+      response = { title: "New Push-Feeds Notification!", message: @top_notification.title, url: @top_notification.url }
+      current_user.notifications.delete @top_notification
+      if @top_notification.users.empty?
+        @top_notification.destroy
+      end
     end
     render json: response
   end
@@ -15,10 +18,9 @@ class NotificationsController < ApplicationController
     feed = Feed.find_by_id(feed_id)
     superfeedr_update = JSON.parse(body)
     superfeedr_update["items"].each do |item|
+      notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
       feed.users.each do |user|
         # TODO: Need to check if created and dont do anything if added. Due to superfeedr timeout
-        # TODO: Create one notification table and have it all linked instead
-        notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
         user.notifications << notification
       end
     end
