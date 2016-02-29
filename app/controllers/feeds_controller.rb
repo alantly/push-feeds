@@ -23,7 +23,9 @@ class FeedsController < ApplicationController
   def subscribe
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
-      current_user.feeds << @feed
+      unless current_user.feeds.include? @feed
+        current_user.feeds << @feed
+      end
       render json: @feed
     else
       create
