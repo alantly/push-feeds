@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
 
   def recent
-    resp = { title: "Push-Feeds Notification", message: "No New Updates!", url: "https://"+ENV['hostname']}
+    response = { title: "Push-Feeds Notification", message: "No New Updates!", url: "https://"+ENV['hostname']}
     if current_user and not current_user.notifications.empty?
       @top_notification = current_user.notifications.first
       response = { title: "New Push-Feeds Notification!", message: @top_notification.title, url: @top_notification.url }
