@@ -1,5 +1,6 @@
 class Feed < ActiveRecord::Base
-  has_and_belongs_to_many :users
+  has_many :subscriptions
+  has_many :users, through: :subscriptions
   validate :url_valid_uri
   validates :url, presence: true, uniqueness: true
   before_save :normalize_url
