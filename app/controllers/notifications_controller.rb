@@ -20,6 +20,7 @@ class NotificationsController < ApplicationController
           Notification.create site_id: item["id"], \
             title: item["title"], url: item["permalinkUrl"], subscription: subscription
         end
+      end
     end
     feed.push_feed_to_users
   end
