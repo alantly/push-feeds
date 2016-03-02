@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229052647) do
+ActiveRecord::Schema.define(version: 20160302061557) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "subscription_id"
@@ -32,33 +32,28 @@ ActiveRecord::Schema.define(version: 20160229052647) do
 
   add_index "feeds", ["url"], name: "index_feeds_on_url"
 
-  create_table "feeds_users", force: :cascade do |t|
-    t.integer "feed_id"
-    t.integer "user_id"
-  end
-
-  add_index "feeds_users", ["feed_id"], name: "index_feeds_users_on_feed_id"
-  add_index "feeds_users", ["user_id"], name: "index_feeds_users_on_user_id"
-
   create_table "notifications", force: :cascade do |t|
-    t.string   "site_id",                 null: false
-    t.string   "title",      default: ""
-    t.string   "url",        default: ""
-    t.integer  "feed_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "site_id",                      null: false
+    t.string   "title",           default: ""
+    t.string   "url",             default: ""
+    t.integer  "subscription_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
-  add_index "notifications", ["feed_id"], name: "index_notifications_on_feed_id"
   add_index "notifications", ["site_id"], name: "index_notifications_on_site_id"
+  add_index "notifications", ["subscription_id"], name: "index_notifications_on_subscription_id"
 
-  create_table "notifications_users", force: :cascade do |t|
-    t.integer "notification_id"
-    t.integer "user_id"
+  create_table "subscriptions", force: :cascade do |t|
+    t.string   "filter"
+    t.integer  "feed_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "notifications_users", ["notification_id"], name: "index_notifications_users_on_notification_id"
-  add_index "notifications_users", ["user_id"], name: "index_notifications_users_on_user_id"
+  add_index "subscriptions", ["feed_id"], name: "index_subscriptions_on_feed_id"
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
