@@ -5,10 +5,7 @@ class NotificationsController < ApplicationController
     if current_user and not current_user.notifications.empty?
       @top_notification = current_user.notifications.first
       response = { title: "New Push-Feeds Notification!", message: @top_notification.title, url: @top_notification.url }
-      current_user.notifications.delete @top_notification
-      if @top_notification.users.empty?
-        @top_notification.destroy
-      end
+      @top_notification.destroy
     end
     render json: response
   end
@@ -19,11 +16,10 @@ class NotificationsController < ApplicationController
     superfeedr_update["items"].each do |item|
       notification = Notification.find_by_site_id item["id"]
       if notification.nil?
-        notification = Notification.create site_id: item["id"], title: item["title"], url: item["permalinkUrl"], feed: feed
-      end
-      feed.users.each do |user|
-        user.notifications << notification unless user.notifications.include? notification
-      end
+        feed.subscriptions.each do |subscription|
+          Notification.create site_id: item["id"], \
+            title: item["title"], url: item["permalinkUrl"], subscription: subscription
+        end
     end
     feed.push_feed_to_users
   end
