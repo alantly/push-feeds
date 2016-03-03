@@ -34,14 +34,14 @@ function showNotification(title, message, url) {
   self.registration.showNotification(title, {
     body: message,
     icon: '<%= asset_path("whale.png") %>',
-    tag: url
+    data: url
   });
 }
 
 self.addEventListener('notificationclick', function(event) {
     console.log('Notification click');
     event.notification.close();
-    var url = event.notification.tag;
+    var url = event.notification.data;
     event.waitUntil(
         clients.matchAll({
             type: 'window'
