@@ -30,30 +30,31 @@ self.addEventListener('push', function(event) {
 });
 
 function showNotification(title, message, url) {
-
-  self.addEventListener('notificationclick', function(event) {
-      console.log('Notification click: tag ', event.notification.tag);
-      event.notification.close();
-      event.waitUntil(
-          clients.matchAll({
-              type: 'window'
-          })
-          .then(function(windowClients) {
-              for (var i = 0; i < windowClients.length; i++) {
-                  var client = windowClients[i];
-                  if (client.url === url && 'focus' in client) {
-                      return client.focus();
-                  }
-              }
-              if (clients.openWindow) {
-                  return clients.openWindow(url);
-              }
-          })
-      );
-  });
-
   self.registration.showNotification(title, {
     body: message,
     icon: '<%= asset_path("whale.png") %>',
+    tag: url
   });
 }
+
+self.addEventListener('notificationclick', function(event) {
+    console.log('Notification click');
+    event.notification.close();
+    var url = event.notification.tag;
+    event.waitUntil(
+        clients.matchAll({
+            type: 'window'
+        })
+        .then(function(windowClients) {
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                if (client.url === url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(url);
+            }
+        })
+    );
+});
