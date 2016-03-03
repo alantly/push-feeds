@@ -20,7 +20,8 @@ self.addEventListener('push', function(event) {
         return;
       }
       response.json().then(function(data) {
-        showNotification(data.title, data.message, data.url);
+        if (data.new_updates || data.notify)
+          showNotification(data.title, data.message, data.url);
       });
     }).catch(function(error) {
       console.log("There was an error", error);
