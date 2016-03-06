@@ -17,7 +17,7 @@ self.addEventListener('push', function(event) {
       mode: 'same-origin'
     }).then(function(response) {
       if (!response.ok) {
-        return;
+        throw "Response from server not good.";
       }
       response.json().then(function(data) {
         showNotification(data.title, data.message, data.url);
