@@ -19,18 +19,18 @@ self.addEventListener('push', function(event) {
       if (!response.ok) {
         throw "Response from server not good.";
       }
-      response.json().then(function(data) {
-        showNotification(data.title, data.message, data.url);
+      return response.json().then(function(data) {
+        return showNotification(data.title, data.message, data.url);
       });
     }).catch(function(error) {
       console.log("There was an error", error);
-      showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
+      return showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
     })
   );
 });
 
 function showNotification(title, message, url) {
-  self.registration.showNotification(title, {
+  return self.registration.showNotification(title, {
     body: message,
     icon: '<%= asset_path("whale.png") %>',
     data: url
