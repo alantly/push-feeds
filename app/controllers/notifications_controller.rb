@@ -1,4 +1,5 @@
 class NotificationsController < ApplicationController
+  skip_before_filter :authenticate_user!, :only => :recent
 
   def recent
     response = { title: "Push-Feeds Notification", message: "No New Updates!", \
