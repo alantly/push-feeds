@@ -24,7 +24,7 @@ class Feed < ActiveRecord::Base
   end
 
   def push_feed_to_users
-    subscription_ids = Client.joins(user: :feeds).where(feeds: {id: self.id}).pluck(:subscription_id)
+    subscription_ids = Client.find_subscription_ids_for self.id
     Client.push_to subscription_ids
   end
 

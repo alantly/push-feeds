@@ -5,6 +5,10 @@ class Client < ActiveRecord::Base
     self.class.push_to [self.subscription_id]
   end
 
+  def self.find_subscription_ids_for feed_id
+    Client.joins(user: :feeds).where(feeds: {id: feed_id}).pluck(:subscription_id)
+  end
+
   def self.push_to sub_ids
     # TODO: Try and catch faraday.client exception
     cert_path = Rails.application.secrets.ssl_cert_path
