@@ -61,4 +61,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-nav'
+  gem 'rspec-rails', '~> 3.0'
 end
