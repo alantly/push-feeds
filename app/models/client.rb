@@ -1,5 +1,6 @@
 class Client < ActiveRecord::Base
   belongs_to :user
+  has_many :notifications
 
   def notify
     self.class.push_to [self.subscription_id]
