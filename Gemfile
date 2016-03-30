@@ -62,4 +62,6 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.0'
+  gem 'simplecov'
+  gem 'factory_girl_rails'
 end
