@@ -33,16 +33,16 @@ ActiveRecord::Schema.define(version: 20160302061557) do
   add_index "feeds", ["url"], name: "index_feeds_on_url"
 
   create_table "notifications", force: :cascade do |t|
-    t.string   "site_id",                      null: false
-    t.string   "title",           default: ""
-    t.string   "url",             default: ""
-    t.integer  "subscription_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.string   "site_id",                 null: false
+    t.string   "title",      default: ""
+    t.string   "url",        default: ""
+    t.integer  "client_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
+  add_index "notifications", ["client_id"], name: "index_notifications_on_client_id"
   add_index "notifications", ["site_id"], name: "index_notifications_on_site_id"
-  add_index "notifications", ["subscription_id"], name: "index_notifications_on_subscription_id"
 
   create_table "subscriptions", force: :cascade do |t|
     t.string   "filter"

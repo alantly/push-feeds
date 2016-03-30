@@ -12,22 +12,29 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
   event.waitUntil(
-    fetch("/notifications/recent", {
-      credentials: 'same-origin',
-      mode: 'same-origin'
-    }).then(function(response) {
-      if (!response.ok) {
-        throw "Response from server not good.";
-      }
-      return response.json().then(function(data) {
-        return showNotification(data.title, data.message, data.url);
+    self.registration.pushManager.getSubscription().then(function(subscription) {
+      fetch("/notifications/recent?sub_id=" + formatEndpoint(subscription.endpoint), {
+        credentials: 'same-origin',
+        mode: 'same-origin'
+      }).then(function(response) {
+        if (!response.ok) {
+          throw "Response from server not good.";
+        }
+        return response.json().then(function(data) {
+          return showNotification(data.title, data.message, data.url);
+        });
+      }).catch(function(error) {
+        console.log("There was an error", error);
+        return showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
       });
-    }).catch(function(error) {
-      console.log("There was an error", error);
-      return showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
     })
   );
 });
+
+function formatEndpoint(endpoint) {
+  result = endpoint.split("/");
+  return result[result.length - 1];
+}
 
 function showNotification(title, message, url) {
   return self.registration.showNotification(title, {
