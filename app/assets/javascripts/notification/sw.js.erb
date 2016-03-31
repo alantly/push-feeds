@@ -13,7 +13,7 @@ self.addEventListener('push', function(event) {
   console.log('Push message', event);
   event.waitUntil(
     self.registration.pushManager.getSubscription().then(function(subscription) {
-      fetch("/notifications/recent?sub_id=" + formatEndpoint(subscription.endpoint), {
+      return fetch("/notifications/recent?sub_id=" + formatEndpoint(subscription.endpoint), {
         credentials: 'same-origin',
         mode: 'same-origin'
       }).then(function(response) {
