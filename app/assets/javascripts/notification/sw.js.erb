@@ -25,7 +25,7 @@ self.addEventListener('push', function(event) {
         });
       }).catch(function(error) {
         console.log("There was an error", error);
-        return showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
+        return showNotification("Push-Feeds","A wild notification has appeared!", "<%= 'https://'+ENV['hostname'] %>");
       });
     })
   );
