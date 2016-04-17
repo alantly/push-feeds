@@ -26,7 +26,7 @@
       console.log('Subscription exists!')
       $.get
         url: "/clients/"
-        data: subscription_id: @formatEndpoint(pushSubscription.endpoint)
+        data: endpoint: @formatEndpoint(pushSubscription.endpoint)
         dataType: 'JSON'
         success: (data) =>
           console.log('Get successful')
@@ -47,23 +47,22 @@
   subscribe: ->
     @state.reg.pushManager.subscribe( userVisibleOnly: true )
     .then( (pushSubscription) =>
-      console.log('Subscribed! Endpoint:', pushSubscription.endpoint)
       @setState sub: pushSubscription
-      $.post '/clients', { client: { subscription_id: @formatEndpoint(@state.sub.endpoint) } }, (data) =>
-        console.log('Post successful')
+      $.post '/clients', { client: pushSubscription.toJSON() }
+      , (data) =>
+        console.log('Subscribed successful')
         @setState { isSubscribed: true, title: 'Unsubscribe', client: data}
       , 'JSON'
     )
 
   unsubscribe: ->
     @state.sub.unsubscribe().then( (event) =>
-      console.log('Unsubscribed!', event)
       $.ajax
         method: 'DELETE'
         url: "/clients/#{ @state.client.id }"
         dataType: 'JSON'
         success: () =>
-          console.log('Delete successful')
+          console.log('Unsubscribed!')
           @setState { isSubscribed: false, title: 'Subscribe', client: null }
       , 'JSON'
     ).catch( (error) =>

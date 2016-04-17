@@ -1,13 +1,14 @@
 class Client < ActiveRecord::Base
   belongs_to :user
   has_many :notifications
+  before_save :normalize_endpoint
 
   def notify
-    self.class.push_to [self.subscription_id]
+    self.class.push_to [self.endpoint]
   end
 
   def self.find_subscription_ids_for feed_id
-    Client.joins(user: :feeds).where(feeds: {id: feed_id}).pluck(:subscription_id)
+    Client.joins(user: :feeds).where(feeds: {id: feed_id}).pluck(:endpoint)
   end
 
   def self.push_to sub_ids
@@ -28,4 +29,12 @@ class Client < ActiveRecord::Base
       print resp.body
     }
   end
+
+  private
+
+  def normalize_endpoint
+    result = self.endpoint.split("/")
+    self.endpoint = result[-1]
+  end
+
 end
