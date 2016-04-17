@@ -14,7 +14,9 @@
 ActiveRecord::Schema.define(version: 20160302061557) do
 
   create_table "clients", force: :cascade do |t|
-    t.string   "subscription_id"
+    t.string   "endpoint"
+    t.string   "auth"
+    t.string   "p256dh"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

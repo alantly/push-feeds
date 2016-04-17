@@ -4,7 +4,7 @@ class NotificationsController < ApplicationController
   def recent
     response = { title: "Push-Feeds Notification", message: "No New Updates!", \
       url: "https://"+ENV['hostname'] }
-    client = Client.find_by_subscription_id(client_params)
+    client = Client.find_by_endpoint(client_params)
     if client and not client.notifications.empty?
       @top_notification = client.notifications.first
       response = { title: "New Push-Feeds Notification!", message: @top_notification.title, \
@@ -32,7 +32,7 @@ class NotificationsController < ApplicationController
   private
 
   def client_params
-    params.permit(:sub_id).require(:sub_id)
+    params.permit(:endpoint).require(:endpoint)
   end
 
 end

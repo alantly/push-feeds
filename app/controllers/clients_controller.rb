@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
 
   def index
-    @client = current_user.clients.find_by_subscription_id params.require(:subscription_id)
+    @client = current_user.clients.find_by_endpoint params.require(:endpoint)
     render json: @client
   end
 
@@ -22,15 +22,17 @@ class ClientsController < ApplicationController
   end
 
   def send_notification
-    @client = Client.find_by_subscription_id(params.require(:subscription_id))
+    @client = Client.find_by_endpoint(params.require(:endpoint))
     @client.notify
-    cookies[:notify] = true
     head :no_content
   end
 
   private
 
   def client_params
-    params.require(:client).permit(:subscription_id)
+    require_params = params.require(:client)
+    client = require_params.permit(:endpoint)
+    keys = require_params.require(:keys).permit(:auth,:p256dh)
+    client.merge keys
   end
 end

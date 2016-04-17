@@ -13,7 +13,7 @@ self.addEventListener('push', function(event) {
   console.log('Push message', event);
   event.waitUntil(
     self.registration.pushManager.getSubscription().then(function(subscription) {
-      return fetch("/notifications/recent?sub_id=" + formatEndpoint(subscription.endpoint), {
+      return fetch("/notifications/recent?endpoint=" + formatEndpoint(subscription.endpoint), {
         credentials: 'same-origin',
         mode: 'same-origin'
       }).then(function(response) {
@@ -25,7 +25,7 @@ self.addEventListener('push', function(event) {
         });
       }).catch(function(error) {
         console.log("There was an error", error);
-        return showNotification("Push-Feeds","A wild notification has appeared!","https://www.google.com");
+        return showNotification("Push-Feeds","A wild notification has appeared!", "<%= 'https://'+ENV['hostname'] %>");
       });
     })
   );
