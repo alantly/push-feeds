@@ -25,7 +25,6 @@ class ClientsController < ApplicationController
   def send_notification
     @client = Client.find_by_endpoint(params.require(:endpoint))
     @client.notify
-    cookies[:notify] = true
     head :no_content
   end
 
