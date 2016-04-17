@@ -23,7 +23,7 @@ class ClientsController < ApplicationController
 
   def send_notification
     @client = Client.find_by_endpoint(params.require(:endpoint))
-    @client.notify
+    # contact nodejs server
     head :no_content
   end
 
