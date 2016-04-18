@@ -11,9 +11,9 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
-  console.log('push payload:', event.data.json());
+  var data = event.data.json();
   event.waitUntil(
-    showNotification("data.title", "data.message", "https://google.com")
+    showNotification(data.title, data.message, data.url)
   );
 });
 
