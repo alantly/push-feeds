@@ -5,9 +5,10 @@ class NotificationsController < ApplicationController
     superfeedr_update = JSON.parse(body)
     superfeedr_update["items"].each do |item|
       notification = {
+        id: item['id'],
         title: "New Push-Feeds Notification!",
-        message: notification[:message],
-        url: notification[:url],
+        message: item['title'],
+        url: item['permalinkUrl']
       }
       feed.clients.each do |client|
         client.push notification
