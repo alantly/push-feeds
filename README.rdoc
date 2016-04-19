@@ -1,50 +1,51 @@
-== README
-
-Description:
+= Push-Feeds
+== Description:
 Implementation of a RSS Feed Notifier web service using service workers and Chrome Push Notification API.
-To receive push notifications, the user must be subscribed to a feed, and subscribed to the web service.
+To receive push notifications, the user must be link a feed, and subscribed to the web service.
 Both are required to get push notifications on the RSS Feed.
+The purpose of the app is to read web novels without having to refresh
+for a new chapter.
 
-Technologies:
+== Technologies:
 ReactJS, Rails, Devise, Superfeedr, ServiceWorkers,
 Google Cloud Messaging Service, Chrome Push Notifications
 
-Supported Browsers:
-  * Chrome Desktop
-  * Chrome for Android
+== Supported Browsers:
+- Chrome Desktop v50+
+- Chrome for Android v50+
 
-Overview:
-  - ReactJS to make API calls to a rails server.
-  - Devise is used for handling user registration. Implemented Devise using JSON.
-  - Client push notification handled using ServiceWorkers.
-  - GCM is used server side to push messages to clients.
-  - Superfeedr service is used to detect updates in RSS Feeds.
+== Overview:
+- ReactJS to make API calls to a rails server.
+- Devise is used for handling user registration. Implemented Devise using JSON.
+- Client push notification handled using ServiceWorkers.
+- GCM is used server side to push messages to clients.
+- Superfeedr service is used to detect updates in RSS Feeds.
 
-Required Configuration:
-  - config/application.yml
-    * superfeedr_login
-    * superfeedr_auth_token
-    * gcm_api_key
-    * production
-      * hostname
-    * development
-      * hostname
+== Push Notifications with Payload:
+- As of Chrome v50, push notifications with payload is done with another service.
+- https://github.com/alantly/glowing-eureka-push-api
 
-Required API Keys:
-  - GCM API key
-  - Superfeedr key
+== Required Configuration for config/application.yml:
+- superfeedr_login
+- superfeedr_auth_token
+- gcm_api_key
+- hostname
+- push_service_hostname
 
-To Test Locally:
-  - Use ngrok to an open url to localhost:3000.
-  - Set url for development/hostname in application.yml.
-  - Start rails server.
+== Required API Keys:
+- GCM API key
+- Superfeedr key
 
-TODO:
-  - Ensure Authentication when using app else redirect to homepage.
-  - Setup Unit test.
-  - Setup code coverage/CI.
-  - Ability to filter an rss update to get specific feeds.
-  - Improve UI.
-  - Improve Landing page background.
-  - Setup notifications for Safari/iOS?
-  - Minor code improvement TODOs
+== To Test Locally:
+- Use ngrok to an open url to localhost:3000.
+- Set url hostname to ngrok proxy url.
+- Start rails server.
+
+== TODO:
+- Setup Unit test.
+- Setup code coverage/CI.
+- Ability to filter an rss update to get specific feeds.
+- Improve UI.
+- Improve Landing page background.
+- Setup notifications for Safari/iOS?
+- Minor code improvement TODOs
