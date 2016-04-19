@@ -17,7 +17,7 @@ class ClientsController < ApplicationController
 
   def destroy
     @client = Client.find(params.require(:id))
-    @client.destroy
+    @client.destroy if @client
     head :no_content
   end
 
