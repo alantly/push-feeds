@@ -13,7 +13,7 @@ self.addEventListener('push', function(event) {
   console.log('Push message', event);
   var data = getPayload(event);
   event.waitUntil(
-    showNotification(data.title, data.message, data.url)
+    showNotification(data.title, data.message, data.url, data.id)
   );
 });
 
@@ -24,7 +24,8 @@ function getPayload(event) {
     return {
       'title': 'Push-Feed',
       'message': 'No New Updates!',
-      'url': '<%= "https://"+ENV["hostname"] %>'
+      'url': '<%= "https://"+ENV["hostname"] %>',
+      'id': 'push_feed_default_id'
     };
 }
 
@@ -33,11 +34,12 @@ function formatEndpoint(endpoint) {
   return result[result.length - 1];
 }
 
-function showNotification(title, message, url) {
+function showNotification(title, message, url, id) {
   return self.registration.showNotification(title, {
     body: message,
     icon: '<%= asset_path("whale.png") %>',
-    data: url
+    data: url,
+    tag: id
   });
 }
 
