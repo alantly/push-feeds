@@ -24,11 +24,6 @@ class Feed < ActiveRecord::Base
     end
   end
 
-  def push_feed_to_users
-    subscription_ids = Client.find_subscription_ids_for self.id
-    Client.push_to subscription_ids
-  end
-
   private
 
   def url_valid_uri
