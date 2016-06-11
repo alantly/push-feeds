@@ -25,7 +25,7 @@
       className: 'login-signup-container'
       React.DOM.h1
         className: 'app-title'
-        'Welcome'
+        'Push-Feeds'
       React.createFactory(React.addons.CSSTransitionGroup)
         transitionName: 'login-transition'
         transitionLeave: false
@@ -41,7 +41,7 @@
 
       @handleUrl(urlText)
       React.DOM.a
-        className: 'btn btn-danger btn-block'
+        className: 'btn btn-primary btn-block'
         id: 'toggle-login-signup-btn'
         href: urlText
         onClick: @toggleLogin

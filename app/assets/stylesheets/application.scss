@@ -17,18 +17,27 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-.background-video
-{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -100;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  // background: url(donald.jpg) no-repeat;
-  background-size: cover;
+body {
+  background-color: #eff1f2;
+}
+
+.app-title {
+  color: #0A5D53;
+}
+
+#logout-btn {
+  margin-top: 25px;
+}
+
+#feed-form {
+  margin-top: 20px;
+  padding-left: 60px;
+}
+
+#push-btn {
+  margin-top: 5px;
+}
+
+#feed-submit-input {
+  margin-right: 5px;
 }

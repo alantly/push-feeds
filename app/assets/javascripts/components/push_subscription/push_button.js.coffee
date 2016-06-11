@@ -4,10 +4,11 @@
 
   render: ->
     React.DOM.button
+      id: 'push-btn'
       className: "btn btn-primary"
       disabled: if @props.client then false else true
       onClick: @handleClick
-      "Notify me!"
+      "Check Push Notifications from Push-Feeds"
 
   handleClick: ->
     $.ajax

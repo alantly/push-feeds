@@ -15,5 +15,6 @@
       onSubmit: @handleSubmit
       React.DOM.button
         type: 'submit'
-        className: 'btn btn-danger'
+        className: 'btn btn-primary'
+        id: 'logout-btn'
         'Logout'

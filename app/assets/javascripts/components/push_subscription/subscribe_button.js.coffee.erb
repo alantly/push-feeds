@@ -15,7 +15,7 @@
     client: null
     isSubscribed: false
     available: false
-    title: "Subscribe"
+    title: "Subscribe to Push Notifications"
 
   formatEndpoint: (endpoint) ->
     result = endpoint.split("/")
@@ -31,7 +31,7 @@
         success: (data) =>
           console.log('Get successful')
           if data
-            @setState { isSubscribed: true, title: 'Unsubscribe', sub: pushSubscription, client: data }
+            @setState { isSubscribed: true, title: 'Unsubscribe to Push Notifications', sub: pushSubscription, client: data }
           else
             console.log('Not found in server: Unsubscribing!')
             pushSubscription.unsubscribe()
@@ -51,7 +51,7 @@
       $.post '/clients', { client: pushSubscription.toJSON() }
       , (data) =>
         console.log('Subscribed successful')
-        @setState { isSubscribed: true, title: 'Unsubscribe', client: data}
+        @setState { isSubscribed: true, title: 'Unsubscribe to Push Notifications', client: data}
       , 'JSON'
     )
 
@@ -63,17 +63,25 @@
         dataType: 'JSON'
         success: () =>
           console.log('Unsubscribed!')
-          @setState { isSubscribed: false, title: 'Subscribe', client: null }
+          @setState { isSubscribed: false, title: 'Subscribe to Push Notifications', client: null }
       , 'JSON'
     ).catch( (error) =>
       console.log('Error unsubscribing', error)
     )
 
   render: ->
-    React.DOM.div "subscribe",
-      React.createElement PushBtn, client: @state.client
-      React.DOM.button
-        className: "btn btn-primary"
-        disabled: !@state.available
-        onClick: @handleClick
-        @state.title
+    React.DOM.div null,
+      React.DOM.div
+        className: "row"
+        React.DOM.div
+          className: 'col-md-12'
+          React.DOM.button
+            className: "btn btn-primary"
+            disabled: !@state.available
+            onClick: @handleClick
+            @state.title
+      React.DOM.div
+        className: 'row'
+        React.DOM.div
+          className: 'col-md-12'
+          React.createElement PushBtn, client: @state.client

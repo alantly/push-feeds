@@ -23,21 +23,24 @@
           @props.handleError reply.responseJSON.error
 
     render: ->
-      React.DOM.form
-        className: 'form-inline'
-        onSubmit: @handleSubmit
-        React.DOM.div
-          className: 'form-group'
-          React.DOM.input
-            type: 'text'
-            className: 'form-control'
-            placeholder: 'Feed Endpoint'
-            name: 'url'
-            value: @state.url
-            onChange: @handleChange
-        React.DOM.button
-          type: 'submit'
-          className: 'btn btn-primary'
-          disabled: !@valid()
-          'Subscribe to feed'
-            
+      React.DOM.div
+        className: 'col-md-4'
+        id: 'feed-form'
+        React.DOM.form
+          className: 'form-inline'
+          onSubmit: @handleSubmit
+          React.DOM.div
+            className: 'form-group'
+            React.DOM.input
+              type: 'text'
+              id: 'feed-submit-input'
+              className: 'form-control'
+              placeholder: 'Feed Endpoint'
+              name: 'url'
+              value: @state.url
+              onChange: @handleChange
+            React.DOM.button
+              type: 'submit'
+              className: 'btn btn-primary'
+              disabled: !@valid()
+              'Subscribe to feed'
