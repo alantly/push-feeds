@@ -65,7 +65,7 @@
       React.DOM.div
         className: 'row'
         React.DOM.h2
-          className: 'col-md-8'
+          className: 'col-md-4'
           "My Subscribed Feeds"
         React.createElement FeedForm, handleNewFeed: @addFeed, handleError: @setError
       React.DOM.div

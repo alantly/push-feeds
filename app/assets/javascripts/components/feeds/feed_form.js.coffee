@@ -24,7 +24,7 @@
 
     render: ->
       React.DOM.div
-        className: 'col-md-4'
+        className: 'col-md-4 col-md-offset-4 pull-right'
         id: 'feed-form'
         React.DOM.form
           className: 'form-inline'
