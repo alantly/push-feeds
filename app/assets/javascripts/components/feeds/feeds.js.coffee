@@ -38,6 +38,12 @@
           className: 'col-md-11'
           "Push-Feeds"
         React.createElement Logout
+
+      React.DOM.div
+        className: 'row'
+        React.DOM.hr
+          className: 'style-one'
+
       React.DOM.div
         className: 'row'
         React.DOM.div
@@ -50,6 +56,11 @@
             "2. Subscribe to Push Notifications from Push-Feeds."
           React.DOM.div null,
             "3. Enjoy instant Chrome push notifications on your favorite Feed updates."
+
+      React.DOM.div
+        className: 'row'
+        React.DOM.hr
+          className: ''
 
       React.DOM.div
         className: 'row'
