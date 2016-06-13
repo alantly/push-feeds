@@ -15,29 +15,4 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 
-var index = require('./index.jsx');
-
-$(document).ajaxComplete(function(event, xhr, settings) {
-  var csrf_param = xhr.getResponseHeader('X-CSRF-Param');
-  var csrf_token = xhr.getResponseHeader('X-CSRF-Token');
-
-  if (csrf_param) {
-    $('meta[name="csrf-param"]').attr('content', csrf_param);
-  }
-  if (csrf_token) {
-    $('meta[name="csrf-token"]').attr('content', csrf_token);
-  }
-});
-
-const APIBaseURL = '/api';
-function query(request) {
-  const url = `${APIBaseURL}${request.path}`;
-  return fetch(url, {
-    method: request.method,
-    credentials: 'same-origin',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify(request.body),
-  });
-}
+const index = require('./index'); // eslint-disable-line no-unused-vars

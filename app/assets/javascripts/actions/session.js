@@ -1,8 +1,9 @@
 import { push } from 'react-router-redux';
+import { query } from '../helpers/push_feeds';
 
-const PROCESS_USER = 'PROCESS_USER';
-const SIGNED_IN = 'SIGNED_IN';
-const SIGNED_OUT = 'SIGNED_OUT';
+export const PROCESS_USER = 'PROCESS_USER';
+export const SIGNED_IN = 'SIGNED_IN';
+export const SIGNED_OUT = 'SIGNED_OUT';
 
 function processUser() {
   return {
@@ -10,7 +11,7 @@ function processUser() {
   };
 }
 
-function signedIn(json) {
+export function signedIn(json) {
   return {
     type: SIGNED_IN,
     email: json.email,
@@ -27,10 +28,9 @@ function createSession(request) {
   return dispatch => {
     dispatch(processUser());
     return query(request)
-      .then(response => response.json())
       .then(json => {
         dispatch(signedIn(json));
-        dispatch(push('/packages'));
+        dispatch(push('/feeds'));
       });
   };
 }
@@ -46,34 +46,38 @@ function destroySession(request) {
   };
 }
 
-function registerUser(email, password, confirmPassword) {
+export function registerUser(email, password, confirmPassword) {
   const request = {
-    path: '/user',
+    path: '/users.json',
     method: 'POST',
     body: {
-      email,
-      password,
-      confirmPassword,
+      user: {
+        email,
+        password,
+        password_confirmation: confirmPassword,
+      },
     },
   };
   return (dispatch, getState) => dispatch(createSession(request));
 }
 
-function loginUser(email, password) {
+export function loginUser(email, password) {
   const request = {
-    path: '/session',
+    path: '/users/sign_in.json',
     method: 'POST',
     body: {
-      email,
-      password,
+      user: {
+        email,
+        password,
+      },
     },
   };
   return (dispatch, getState) => dispatch(createSession(request));
 }
 
-function logoutUser() {
+export function logoutUser() {
   const request = {
-    path: '/session',
+    path: '/users/sign_out.json',
     method: 'DELETE',
   };
   return (dispatch, getState) => dispatch(destroySession(request));
