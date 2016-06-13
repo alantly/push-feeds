@@ -13,10 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require react
-//= require react_ujs
-//= require components
 //= require bootstrap-sprockets
+
+var index = require('./index.jsx');
 
 $(document).ajaxComplete(function(event, xhr, settings) {
   var csrf_param = xhr.getResponseHeader('X-CSRF-Param');
@@ -29,3 +28,16 @@ $(document).ajaxComplete(function(event, xhr, settings) {
     $('meta[name="csrf-token"]').attr('content', csrf_token);
   }
 });
+
+const APIBaseURL = '/api';
+function query(request) {
+  const url = `${APIBaseURL}${request.path}`;
+  return fetch(url, {
+    method: request.method,
+    credentials: 'same-origin',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(request.body),
+  });
+}

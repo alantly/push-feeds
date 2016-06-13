@@ -37,9 +37,9 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'react-rails'
 gem 'devise'
 gem 'bootstrap-sass'
+gem 'browserify-rails'
 
 # Env variables
 gem "figaro"
