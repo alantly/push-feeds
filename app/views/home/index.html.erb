@@ -3,7 +3,7 @@
 <script>
   $(document).ready(function() {
     window.landingPageApp();
-    window.setRoute("<%= @current_path %>")
     window.setSession("<%= @user_email %>")
+    window.setRoute("<%= @current_path %>")
   });
 </script>
