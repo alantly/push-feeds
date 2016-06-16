@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedsTable from './feedsTable';
 
-export default function Feeds() {
+export default function SubscribedFeeds() {
   return (
     <div className="container">
       <h1>
