@@ -38,4 +38,4 @@ function session(state = {}, action) {
   }
 }
 
-module.exports = session;
+export default session;
