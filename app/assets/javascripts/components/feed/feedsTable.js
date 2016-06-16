@@ -4,26 +4,22 @@ import Feed from './feed';
 
 function FeedsTable({ feeds }) {
   return (
-    <div className="row">
-      <div className="col-md-12">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Your Feed Subscriptions</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {feeds.map(feed =>
-              <Feed
-                key={feed.id}
-                {...feed}
-              />
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table className="table table-striped">
+      <thead>
+        <tr>
+          <th>Your Feed Subscriptions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {feeds.map(feed =>
+          <Feed
+            key={feed.id}
+            {...feed}
+          />
+        )}
+      </tbody>
+    </table>
   );
 }
 

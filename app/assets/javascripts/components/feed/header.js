@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 function Header({ user }) {
   return (
-    <div className="row">
+    <div>
       <h2>
         Hello {user}
       </h2>
