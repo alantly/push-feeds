@@ -1,4 +1,5 @@
 import React from 'react';
+import FeedsTable from './feedsTable';
 
 export default function Feeds() {
   return (
@@ -6,6 +7,7 @@ export default function Feeds() {
       <h1>
         Hello User
       </h1>
+      <FeedsTable />
     </div>
   );
 }
