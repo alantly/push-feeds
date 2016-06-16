@@ -11,10 +11,10 @@ function processUser() {
   };
 }
 
-export function signedIn(json) {
+export function signedIn(email) {
   return {
     type: SIGNED_IN,
-    email: json.email,
+    email,
   };
 }
 
@@ -29,7 +29,7 @@ function createSession(request) {
     dispatch(processUser());
     return query(request)
       .then(json => {
-        dispatch(signedIn(json));
+        dispatch(signedIn(json.email));
         dispatch(push('/feeds'));
       });
   };

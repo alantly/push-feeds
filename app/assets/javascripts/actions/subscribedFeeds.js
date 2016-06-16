@@ -26,7 +26,7 @@ function fetchFeedsFromServer(request) {
   };
 }
 
-export function getFeeds() {
+export function getSubscribedFeeds() {
   const request = {
     path: '/feeds',
     method: 'GET',

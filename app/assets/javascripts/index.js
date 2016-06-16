@@ -23,8 +23,8 @@ window.setRoute = (path) => {
   store.dispatch(push(path));
 };
 
-window.setSession = (loggedIn) => {
-  if (loggedIn) {
-    store.dispatch(signedIn(loggedIn));
+window.setSession = (user) => {
+  if (user) {
+    store.dispatch(signedIn(user));
   }
 };

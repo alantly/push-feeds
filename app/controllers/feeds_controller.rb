@@ -2,6 +2,7 @@ class FeedsController < ApplicationController
 
   def index
     @feeds = current_user.feeds
+    render json: @feeds
   end
 
   def create
