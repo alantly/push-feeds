@@ -1,9 +1,13 @@
 import React from 'react';
 
-export default function Landing() {
+export default function Feed({ url }) {
   return (
-    <div>
-      <h1>Hello Home</h1>
-    </div>
+    <tr>
+      <td>{url}</td>
+    </tr>
   );
 }
+
+Feed.propTypes = {
+  url: React.PropTypes.string,
+};

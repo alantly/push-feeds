@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import Feed from './feed';
 
-export default function FeedsTable() {
+function FeedsTable({ feeds }) {
   return (
     <div className="row">
       <div className="col-md-12">
@@ -12,17 +14,27 @@ export default function FeedsTable() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Jill</td>
-              <td>Smith</td>
-            </tr>
-            <tr>
-              <td>Eve</td>
-              <td>Jackson</td>
-            </tr>
+            {feeds.map(feed =>
+              <Feed
+                key={feed.id}
+                {...feed}
+              />
+            )}
           </tbody>
         </table>
       </div>
     </div>
   );
 }
+
+FeedsTable.propTypes = {
+  feeds: React.PropTypes.array,
+};
+
+function mapStateToProps(state) {
+  return {
+    feeds: state.subscribedFeeds.items,
+  };
+}
+
+export default connect(mapStateToProps)(FeedsTable);
