@@ -57,7 +57,7 @@ function feeds(state = {
       });
     case DELETE_FEED:
       return Object.assign({}, state, {
-        items: state.items.filter((item) => item.id !== action.id && item.isProcessingDelete),
+        items: state.items.filter((item) => item.id !== action.id),
       });
     default:
       return state;

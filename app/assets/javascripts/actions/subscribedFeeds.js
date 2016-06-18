@@ -26,9 +26,10 @@ function processAddFeed() {
   };
 }
 
-function processDeleteFeed() {
+function processDeleteFeed(id) {
   return {
     type: PROCESS_DELETE_FEED,
+    id,
   };
 }
 
@@ -40,10 +41,10 @@ function addFeed(id, url) {
   };
 }
 
-function deleteFeed(feed) {
+function deleteFeed(id) {
   return {
     type: DELETE_FEED,
-    feed,
+    id,
   };
 }
 
@@ -76,17 +77,14 @@ export function requestToAddFeed(url) {
   }));
 }
 
-export function requestToDeleteFeed(feed) {
+export function requestToDeleteFeed(id) {
   const request = {
-    path: '/feeds',
+    path: `/feeds/${id}`,
     method: 'DELETE',
-    body: {
-      feed,
-    },
   };
   return (dispatch, getState) => dispatch(updateServer(request, () => {
-    dispatch(processDeleteFeed());
-  }, (json) => {
-    dispatch(deleteFeed(json));
+    dispatch(processDeleteFeed(id));
+  }, () => {
+    dispatch(deleteFeed(id));
   }));
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function Feed({ url }) {
+export default function Feed({ url, onDeleteClick }) {
   return (
     <tr>
       <td>{url}</td>
       <td>
-        <button className="btn btn-danger">
+        <button className="btn btn-danger" onClick={onDeleteClick}>
           <i className="fa fa-remove" aria-hidden="true"></i>
         </button>
       </td>
@@ -15,4 +15,5 @@ export default function Feed({ url }) {
 
 Feed.propTypes = {
   url: React.PropTypes.string,
+  onDeleteClick: React.PropTypes.func,
 };
