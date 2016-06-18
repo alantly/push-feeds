@@ -35,6 +35,7 @@ function feeds(state = {
     case REQUEST_FEEDS:
       return Object.assign({}, state, {
         isFetching: true,
+        items: [],
       });
     case RECEIVED_FEEDS:
       return Object.assign({}, state, {

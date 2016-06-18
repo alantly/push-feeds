@@ -1,5 +1,5 @@
 import { push } from 'react-router-redux';
-import { query } from '../helpers/push_feeds';
+import { updateServer } from '../helpers/push_feeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -24,28 +24,6 @@ function signedOut() {
   };
 }
 
-function createSession(request) {
-  return dispatch => {
-    dispatch(processUser());
-    return query(request)
-      .then(json => {
-        dispatch(signedIn(json.email));
-        dispatch(push('/feeds'));
-      });
-  };
-}
-
-function destroySession(request) {
-  return dispatch => {
-    dispatch(processUser());
-    return query(request)
-    .then(() => {
-      dispatch(signedOut());
-      dispatch(push('/'));
-    });
-  };
-}
-
 export function registerUser(email, password, confirmPassword) {
   const request = {
     path: '/users.json',
@@ -58,7 +36,12 @@ export function registerUser(email, password, confirmPassword) {
       },
     },
   };
-  return (dispatch, getState) => dispatch(createSession(request));
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(processUser());
+  }, (json) => {
+    dispatch(signedIn(json.email));
+    dispatch(push('/feeds'));
+  }));
 }
 
 export function loginUser(email, password) {
@@ -72,7 +55,12 @@ export function loginUser(email, password) {
       },
     },
   };
-  return (dispatch, getState) => dispatch(createSession(request));
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(processUser());
+  }, (json) => {
+    dispatch(signedIn(json.email));
+    dispatch(push('/feeds'));
+  }));
 }
 
 export function logoutUser() {
@@ -80,5 +68,10 @@ export function logoutUser() {
     path: '/users/sign_out.json',
     method: 'DELETE',
   };
-  return (dispatch, getState) => dispatch(destroySession(request));
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(processUser());
+  }, (json) => {
+    dispatch(signedOut());
+    dispatch(push('/'));
+  }));
 }
