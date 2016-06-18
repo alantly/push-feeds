@@ -32,10 +32,11 @@ function processDeleteFeed() {
   };
 }
 
-function addFeed(feed) {
+function addFeed(id, url) {
   return {
     type: ADD_FEED,
-    feed,
+    id,
+    url,
   };
 }
 
@@ -60,7 +61,7 @@ export function getSubscribedFeeds() {
 
 export function requestToAddFeed(url) {
   const request = {
-    path: '/feed',
+    path: '/feeds/subscribe',
     method: 'POST',
     body: {
       feed: {
@@ -71,13 +72,13 @@ export function requestToAddFeed(url) {
   return (dispatch, getState) => dispatch(updateServer(request, () => {
     dispatch(processAddFeed());
   }, (json) => {
-    dispatch(addFeed(json));
+    dispatch(addFeed(json.id, json.url));
   }));
 }
 
 export function requestToDeleteFeed(feed) {
   const request = {
-    path: '/feed',
+    path: '/feeds',
     method: 'DELETE',
     body: {
       feed,

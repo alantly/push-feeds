@@ -11,7 +11,7 @@ function feed(item, action) {
     case ADD_FEED:
       return {
         id: action.id,
-        url: action.text,
+        url: action.url,
         isProcessingDelete: false,
       };
     case PROCESS_DELETE_FEED:

@@ -1,27 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { requestToAddFeed } from '../../actions/subscribedFeeds';
 
 const AddFeed = ({ dispatch, id }) => {
-  let input;
+  let inputUrl;
 
   return (
     <form
       id={id}
+      className="form-inline"
       onSubmit={e => {
         e.preventDefault();
-        if (!input.value.trim()) {
+        if (!inputUrl.value.trim()) {
           return;
         }
-        // dispatch(addTodo(input.value));
-        input.value = '';
+        dispatch(requestToAddFeed(inputUrl.value));
+        inputUrl.value = '';
       }}
     >
-      <input
-        ref={node => {
-          input = node;
-        }}
-      />
-      <button type="submit">
+      <div className="form-group">
+        <input
+          className="form-control"
+          placeholder="Feed URL"
+          type="url"
+          ref={node => {
+            inputUrl = node;
+          }}
+        />
+      </div>
+      <button type="submit" className="btn btn-primary">
         Add Feed Subscription
       </button>
     </form>
