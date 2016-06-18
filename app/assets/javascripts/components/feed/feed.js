@@ -5,7 +5,7 @@ export default function Feed({ url, onDeleteClick, isProcessingDelete }) {
     <tr>
       <td>{url}</td>
       <td>
-        <button className="btn btn-danger" onClick={onDeleteClick}>
+        <button className="btn btn-danger" onClick={onDeleteClick} disabled={isProcessingDelete}>
           {isProcessingDelete
             ? <i className="fa fa-spinner fa-spin" aria-hidden="true"></i>
             : <i className="fa fa-remove" aria-hidden="true"></i>
