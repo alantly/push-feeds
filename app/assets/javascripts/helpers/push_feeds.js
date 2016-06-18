@@ -19,3 +19,11 @@ export function query(request) {
     return response.json();
   });
 }
+
+export function updateServer(request, beforeQuery, afterQuery) {
+  return dispatch => {
+    beforeQuery();
+    return query(request)
+      .then(afterQuery);
+  };
+}

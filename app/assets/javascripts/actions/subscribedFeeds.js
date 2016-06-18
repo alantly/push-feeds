@@ -1,7 +1,11 @@
-import { query } from '../helpers/push_feeds';
+import { updateServer } from '../helpers/push_feeds';
 
 export const REQUEST_FEEDS = 'REQUEST_FEEDS';
 export const RECEIVED_FEEDS = 'RECEIVED_FEEDS';
+export const ADD_FEED = 'ADD_FEED';
+export const DELETE_FEED = 'DELETE_FEED';
+export const PROCESS_ADD_FEED = 'PROCESS_ADD_FEED';
+export const PROCESS_DELETE_FEED = 'PROCESS_DELETE_FEED';
 
 function requestFeeds() {
   return {
@@ -16,13 +20,29 @@ function receivedFeeds(feeds) {
   };
 }
 
-function fetchFeedsFromServer(request) {
-  return dispatch => {
-    dispatch(requestFeeds());
-    return query(request)
-      .then(json => {
-        dispatch(receivedFeeds(json));
-      });
+function processAddFeed() {
+  return {
+    type: PROCESS_ADD_FEED,
+  };
+}
+
+function processDeleteFeed() {
+  return {
+    type: PROCESS_DELETE_FEED,
+  };
+}
+
+function addFeed(feed) {
+  return {
+    type: ADD_FEED,
+    feed,
+  };
+}
+
+function deleteFeed(feed) {
+  return {
+    type: DELETE_FEED,
+    feed,
   };
 }
 
@@ -31,5 +51,41 @@ export function getSubscribedFeeds() {
     path: '/feeds',
     method: 'GET',
   };
-  return (dispatch, getState) => dispatch(fetchFeedsFromServer(request));
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(requestFeeds());
+  }, (json) => {
+    dispatch(receivedFeeds(json));
+  }));
+}
+
+export function requestToAddFeed(url) {
+  const request = {
+    path: '/feed',
+    method: 'POST',
+    body: {
+      feed: {
+        url,
+      },
+    },
+  };
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(processAddFeed());
+  }, (json) => {
+    dispatch(addFeed(json));
+  }));
+}
+
+export function requestToDeleteFeed(feed) {
+  const request = {
+    path: '/feed',
+    method: 'DELETE',
+    body: {
+      feed,
+    },
+  };
+  return (dispatch, getState) => dispatch(updateServer(request, () => {
+    dispatch(processDeleteFeed());
+  }, (json) => {
+    dispatch(deleteFeed(json));
+  }));
 }
