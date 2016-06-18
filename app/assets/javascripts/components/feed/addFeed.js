@@ -36,7 +36,7 @@ const AddFeed = ({ dispatch, id, isAdding }) => {
       >
         {isAdding
           ? <i className="fa fa-spinner fa-spin" aria-hidden="true"></i>
-          : 'Add Feed Subscription'
+          : <i className="fa fa-plus" aria-hidden="true"></i>
         }
       </button>
     </form>
