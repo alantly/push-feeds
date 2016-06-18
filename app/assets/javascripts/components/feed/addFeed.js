@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { requestToAddFeed } from '../../actions/subscribedFeeds';
 
-const AddFeed = ({ dispatch, id }) => {
+const AddFeed = ({ dispatch, id, isAdding }) => {
   let inputUrl;
 
   return (
@@ -17,6 +17,7 @@ const AddFeed = ({ dispatch, id }) => {
         dispatch(requestToAddFeed(inputUrl.value));
         inputUrl.value = '';
       }}
+      disabled={isAdding}
     >
       <div className="form-group">
         <input
@@ -28,8 +29,15 @@ const AddFeed = ({ dispatch, id }) => {
           }}
         />
       </div>
-      <button type="submit" className="btn btn-primary">
-        Add Feed Subscription
+      <button
+        type="submit"
+        className="btn btn-primary"
+        disabled={isAdding}
+      >
+        {isAdding
+          ? <i className="fa fa-spinner fa-spin" aria-hidden="true"></i>
+          : 'Add Feed Subscription'
+        }
       </button>
     </form>
   );
@@ -38,6 +46,13 @@ const AddFeed = ({ dispatch, id }) => {
 AddFeed.propTypes = {
   dispatch: React.PropTypes.func,
   id: React.PropTypes.string,
+  isAdding: React.PropTypes.bool,
 };
 
-export default connect()(AddFeed);
+function mapStateToProps(state) {
+  return {
+    isAdding: state.subscribedFeeds.isAdding,
+  };
+}
+
+export default connect(mapStateToProps)(AddFeed);
