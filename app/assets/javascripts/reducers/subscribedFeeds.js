@@ -71,7 +71,7 @@ function subscribedFeeds(state = {}, action) {
     case PROCESS_DELETE_FEED:
     case ADD_FEED:
     case DELETE_FEED:
-      return Object.assign({}, state, feeds(state.subscribedFeeds, action));
+      return Object.assign({}, state, feeds(state, action));
     default:
       return state;
   }
