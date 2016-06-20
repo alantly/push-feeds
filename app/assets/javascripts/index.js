@@ -6,9 +6,19 @@ import { syncHistoryWithStore, push } from 'react-router-redux';
 import configureStore from './store/configureStore';
 import getRoutes from './routes';
 import { signedIn } from './actions/session';
+import { registerServiceWorker,
+  getPushSubscriptionLocal,
+  syncServerPushSubscription } from './serviceWorker/serviceWorkerSetup';
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
+
+module.exports = function setUpPushNotifications(serviceWorkerPath) {
+  registerServiceWorker(serviceWorkerPath)
+    .then(getPushSubscriptionLocal)
+    .then(syncServerPushSubscription)
+    .catch((error) => console.log(error));
+};
 
 window.landingPageApp = () => {
   render(

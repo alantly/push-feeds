@@ -5,7 +5,7 @@ import Landing from './components/landing/landing';
 import Session from './components/session/session';
 import SubscribedFeeds from './components/feed/subscribedFeeds';
 import Rekt from './components/error/rekt';
-import { getSubscribedFeeds } from './actions/subscribedFeeds'
+import { getSubscribedFeeds } from './actions/subscribedFeeds';
 
 export default function getRoutes(store) {
   // client route authorization

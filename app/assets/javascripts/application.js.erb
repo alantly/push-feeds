@@ -15,4 +15,6 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 
-const index = require('./index'); // eslint-disable-line no-unused-vars
+const serviceWorkerPath = "<%= asset_path('serviceWorker/sw.js') %>";
+const index = require('./index');
+index(serviceWorkerPath);
