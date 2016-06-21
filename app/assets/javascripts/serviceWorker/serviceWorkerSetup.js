@@ -1,4 +1,5 @@
 import { query } from '../helpers/push_feeds';
+import { registerPushManager, receivePushSubscription } from '../actions/pushNotification';
 
 export function registerServiceWorker(serviceWorker) {
   if ('serviceWorker' in navigator) {
@@ -25,13 +26,12 @@ function getServerPushSubscription(pushSubscription) {
 export function registerPushSubscription(store) {
   return (serviceWorkerRegistration) => {
     const pushManager = serviceWorkerRegistration.pushManager;
-    // redux store pushManager into store
+    store.dispatch(registerPushManager(pushManager));
     pushManager.getSubscription().then((pushSubscription) => {
       if (pushSubscription) {
         console.log('Subscription exists!');
         getServerPushSubscription(pushSubscription).then((json) => {
-          // redux store client key
-          // redux store pushSubscription
+          store.dispatch(receivePushSubscription(pushSubscription, json.endpoint));
         }).catch((error) => pushSubscription.unsubscribe());
       }
     });
