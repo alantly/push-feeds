@@ -18,11 +18,11 @@ function processPushSubscription() {
   };
 }
 
-export function receivePushSubscription(pushSubscription, endpoint) {
+export function receivePushSubscription(pushSubscription, id) {
   return {
     type: RECEIVE_PUSH_SUBSCRIPTION,
     pushSubscription,
-    endpoint,
+    id,
   };
 }
 
@@ -30,22 +30,22 @@ function createSubscription(request, subscription) {
   return dispatch => {
     dispatch(processPushSubscription());
     return query(request).then((json) => {
-      dispatch(receivePushSubscription(subscription, json.endpoint));
+      dispatch(receivePushSubscription(subscription, json.id));
     });
   };
 }
 
-function createServerSubscription(subscription) {
-  const request = {
-    path: '/clients',
-    method: 'POST',
-    body: {
-      client: subscription,
-    },
-  };
-  return (dispatch, getState) => dispatch(createSubscription(request, subscription));
-}
-
 export function requestPushSubscription(pushManager) {
-  return pushManager.getSubscription().then(createServerSubscription);
+  return (dispatch, getState) => {
+    pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
+      const request = {
+        path: '/clients',
+        method: 'POST',
+        body: {
+          client: subscription,
+        },
+      };
+      dispatch(createSubscription(request, subscription));
+    });
+  };
 }

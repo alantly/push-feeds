@@ -1,13 +1,13 @@
 import { REGISTER_PUSH_MANAGER,
   PROCESS_PUSH_SUBSCRIPTION,
   RECEIVE_PUSH_SUBSCRIPTION,
-  RECEIVE_REMOVE_SUBSCRIPTION } from '../actions/session';
+  RECEIVE_REMOVE_SUBSCRIPTION } from '../actions/pushNotification';
 
 function subscription(state = {
   isProcessing: false,
-  pushManager: null,
-  pushSubscription: null,
-  endpoint: '',
+  pushManager: {},
+  pushSubscription: {},
+  id: '',
 }, action) {
   switch (action.type) {
     case REGISTER_PUSH_MANAGER:
@@ -22,13 +22,13 @@ function subscription(state = {
       return Object.assign({}, state, {
         isProcessing: false,
         pushSubscription: action.pushSubscription,
-        endpoint: action.endpoint,
+        id: action.id,
       });
     case RECEIVE_REMOVE_SUBSCRIPTION:
       return Object.assign({}, state, {
         isProcessing: false,
-        pushSubscription: null,
-        endpoint: '',
+        pushSubscription: {},
+        id: '',
       });
     default:
       return state;

@@ -15,7 +15,6 @@ function getEndpointKey(endpoint) {
 }
 
 function getServerPushSubscription(pushSubscription) {
-  debugger;
   const request = {
     path: `/clients?endpoint=${getEndpointKey(pushSubscription.endpoint)}`,
     method: 'GET',
@@ -31,7 +30,7 @@ export function registerPushSubscription(store) {
       if (pushSubscription) {
         console.log('Subscription exists!');
         getServerPushSubscription(pushSubscription).then((json) => {
-          store.dispatch(receivePushSubscription(pushSubscription, json.endpoint));
+          store.dispatch(receivePushSubscription(pushSubscription, json.id));
         }).catch((error) => pushSubscription.unsubscribe());
       }
     });
