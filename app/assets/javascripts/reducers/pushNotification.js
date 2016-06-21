@@ -7,7 +7,7 @@ function subscription(state = {
   isProcessing: false,
   pushManager: {},
   pushSubscription: {},
-  id: '',
+  id: -1,
 }, action) {
   switch (action.type) {
     case REGISTER_PUSH_MANAGER:
@@ -28,7 +28,7 @@ function subscription(state = {
       return Object.assign({}, state, {
         isProcessing: false,
         pushSubscription: {},
-        id: '',
+        id: -1,
       });
     default:
       return state;

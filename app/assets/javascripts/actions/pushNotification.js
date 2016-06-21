@@ -26,17 +26,21 @@ export function receivePushSubscription(pushSubscription, id) {
   };
 }
 
-function createSubscription(request, subscription) {
-  return dispatch => {
-    dispatch(processPushSubscription());
-    return query(request).then((json) => {
-      dispatch(receivePushSubscription(subscription, json.id));
-    });
+function receiveRemoveSubscription() {
+  return {
+    type: RECEIVE_PUSH_SUBSCRIPTION,
   };
+}
+
+function createSubscription(request, subscription) {
+  return dispatch => query(request).then((json) => {
+    dispatch(receivePushSubscription(subscription, json.id));
+  });
 }
 
 export function requestPushSubscription(pushManager) {
   return (dispatch, getState) => {
+    dispatch(processPushSubscription());
     pushManager.subscribe({ userVisibleOnly: true }).then((subscription) => {
       const request = {
         path: '/clients',
@@ -46,6 +50,25 @@ export function requestPushSubscription(pushManager) {
         },
       };
       dispatch(createSubscription(request, subscription));
+    });
+  };
+}
+
+function removeSubscription(request) {
+  return dispatch => query(request).then(() => {
+    dispatch(receiveRemoveSubscription());
+  });
+}
+
+export function requestSubscribeRemove(subscription, subscriptionId) {
+  return (dispatch, getState) => {
+    dispatch(processPushSubscription());
+    subscription.unsubscribe().then(() => {
+      const request = {
+        path: `/clients/${subscriptionId}`,
+        method: 'DELETE',
+      };
+      dispatch(removeSubscription(request));
     });
   };
 }
