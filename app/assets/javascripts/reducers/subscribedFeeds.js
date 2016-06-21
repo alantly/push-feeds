@@ -64,7 +64,7 @@ function feeds(state = {
   }
 }
 
-function subscribedFeeds(state = {}, action) {
+export default function subscribedFeeds(state = {}, action) {
   switch (action.type) {
     case REQUEST_FEEDS:
     case RECEIVED_FEEDS:
@@ -77,5 +77,3 @@ function subscribedFeeds(state = {}, action) {
       return state;
   }
 }
-
-export default subscribedFeeds;

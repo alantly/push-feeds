@@ -1,6 +1,6 @@
 import { PROCESS_USER, SIGNED_IN, SIGNED_OUT } from '../actions/session';
 
-const user = function user(state = {
+function user(state = {
   isProcessing: false,
   signedIn: false,
   email: '',
@@ -25,9 +25,9 @@ const user = function user(state = {
     default:
       return state;
   }
-};
+}
 
-function session(state = {}, action) {
+export default function session(state = {}, action) {
   switch (action.type) {
     case PROCESS_USER:
     case SIGNED_IN:
@@ -37,5 +37,3 @@ function session(state = {}, action) {
       return state;
   }
 }
-
-export default session;
