@@ -1,0 +1,38 @@
+{
+  "extends": ["airbnb", "plugin:react/recommended"],
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "jquery": true
+  },
+  "rules": {
+    "max-len": [1, 120, 2, {
+      "ignoreComments": true
+    }],
+    "quote-props": [1, "consistent-as-needed"],
+    "no-cond-assign": [2, "except-parens"],
+    "space-infix-ops": 0,
+    "no-unused-vars": [1, {
+      "vars": "local",
+      "args": "none"
+    }],
+    "no-else-return": 1,
+    "quotes": [1, "single", "avoid-escape"],
+    "new-cap": [2, {
+      "capIsNewExceptions": ["express.Router"]
+    }],
+    "prefer-arrow-callback": 1,
+    "padded-blocks": 1,
+    "comma-dangle": 1,
+    "semi": [1, "always"],
+    "react/prefer-stateless-function": 1
+  }
+}

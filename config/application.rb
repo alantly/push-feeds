@@ -25,6 +25,5 @@ module PushFeeds
         NotificationsController.create_notification feed_id, body
       end
     end
-    config.react.addons = true
   end
 end

@@ -1,0 +1,9 @@
+<div id="root"></div>
+
+<script>
+  $(document).ready(function() {
+    window.landingPageApp();
+    window.setSession("<%= @user_email %>")
+    window.setRoute("<%= @current_path %>")
+  });
+</script>

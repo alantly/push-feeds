@@ -1,51 +1,59 @@
 = Push-Feeds
 == Description:
 Implementation of a RSS Feed Notifier web service using service workers and Chrome Push Notification API.
-To receive push notifications, the user must be link a feed, and subscribed to the web service.
-Both are required to get push notifications on the RSS Feed.
-The purpose of the app is to read web novels without having to refresh
-for a new chapter.
+To receive push notifications, the user submit a feed url, and subscribed to Push Notifications from Push-Feeds.
+Both are required to get push notifications updates for the submitted RSS Feed.
+This is a concept of what is usually a chrome extension or android app, but implemented as progressive web app.
+https://developers.google.com/web/progressive-web-apps/
 
-== Technologies:
-ReactJS, Rails, Devise, Superfeedr, ServiceWorkers,
-Google Cloud Messaging Service, Chrome Push Notifications
+=== How to install packages/gems for dev:
+Install NPM/node and run:
+  npm install
+  bundle install --without production
 
-== Supported Browsers:
+=== How to start
+Install ngrok and run:
+  ngrok http 3000
+Copy proxy url and update development/hostname entry in "config/application.yml".
+In a another terminal, run:
+  rails s
+
+=== Required Configuration for ex. config/application.yml:
+  superfeedr_login: "superfeedr_username"
+  superfeedr_auth_token: "superfeedr_auth_token"
+  gcm_api_key: "key"
+  push_service_hostname: "push-api.herokuapp.com"
+  production:
+    hostname: "push-feeds.herokuapp.com/api"
+  development:
+    hostname: "f56dd825.ngrok.io/api"
+Note: Since the server serves the initial client page. /api is required to show that we are using
+a server route. Ideally the server and client would be two separate apps running on different servers.
+
+=== Supported Browsers:
 - Chrome Desktop v50+
 - Chrome for Android v50+
 
-== Overview:
-- ReactJS to make API calls to a rails server.
-- Devise is used for handling user registration. Implemented Devise using JSON.
-- Client push notification handled using ServiceWorkers.
-- GCM is used server side to push messages to clients.
-- Superfeedr service is used to detect updates in RSS Feeds.
+== Frontend:
+- We use browserify-rails to integrate NPM libraries such as react, redux, react-routes, and babelify to code in es6.
+- Clients are served a ServiceWorker js file to register chrome to Google Clould Messaging (GCM) for Push Notifications. The service workers will wait for a new notification from GCM then update the user. To receive updates, Chrome needs to be running on the desktop, while Android Chrome does not need to be active for mobile.
+
+== Backend:
+- Devise implemented as a JSON API is used for user registration and sessions.
+- We subscribe each feed url to Superfeedr to detect for updates RSS updates. On our callback, we send the notification information to an external push service to update our users.
+- See Push Notifications with Payload for more info on the external push service.
 
 == Push Notifications with Payload:
-- As of Chrome v50, push notifications with payload is done with another service.
+- As of Chrome v50, push notifications with payload is done with another service to apply encryption.
 - https://github.com/alantly/glowing-eureka-push-api
 
-== Required Configuration for config/application.yml:
-- superfeedr_login
-- superfeedr_auth_token
-- gcm_api_key
-- hostname
-- push_service_hostname
-
-== Required API Keys:
-- GCM API key
-- Superfeedr key
-
-== To Test Locally:
-- Use ngrok to an open url to localhost:3000.
-- Set url hostname to ngrok proxy url.
-- Start rails server.
+== Heroku
+.buildpacks is used to run npm then bundler in production.
 
 == TODO:
-- Setup Unit test.
-- Setup code coverage/CI.
-- Ability to filter an rss update to get specific feeds.
-- Improve UI.
-- Improve Landing page background.
-- Setup notifications for Safari/iOS?
+- setup redux view for bad cases
+- consider middleware instead of a catch all GET route to load initial state
+- design landing page with instructions on how to use
+- change home button icon
+- deploy in heroku
 - Minor code improvement TODOs

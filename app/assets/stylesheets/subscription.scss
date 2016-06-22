@@ -1,0 +1,11 @@
+
+.toggle-btn {
+  cursor: pointer;
+  &:hover {
+    color: #23527c;
+  }
+}
+
+.toggle-btn-disabled {
+  cursor: not-allowed;
+}
