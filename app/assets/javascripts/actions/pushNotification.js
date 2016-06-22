@@ -12,7 +12,7 @@ export function registerPushManager(pushManager) {
   };
 }
 
-function processPushSubscription() {
+export function processPushSubscription() {
   return {
     type: PROCESS_PUSH_SUBSCRIPTION,
   };

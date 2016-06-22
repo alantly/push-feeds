@@ -1,5 +1,5 @@
 import { query } from '../helpers/push_feeds';
-import { registerPushManager, receivePushSubscription } from '../actions/pushNotification';
+import { registerPushManager, receivePushSubscription, processPushSubscription } from '../actions/pushNotification';
 
 export function registerServiceWorker(serviceWorker) {
   if ('serviceWorker' in navigator) {
@@ -29,6 +29,7 @@ export function registerPushSubscription(store) {
     pushManager.getSubscription().then((pushSubscription) => {
       if (pushSubscription) {
         console.log('Subscription exists!');
+        store.dispatch(processPushSubscription());
         getServerPushSubscription(pushSubscription).then((json) => {
           store.dispatch(receivePushSubscription(pushSubscription, json.id));
         }).catch((error) => pushSubscription.unsubscribe());
