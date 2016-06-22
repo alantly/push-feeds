@@ -3,32 +3,42 @@ import { connect } from 'react-redux';
 import { requestPushSubscription, requestSubscribeRemove } from '../../actions/pushNotification';
 
 function SubscribePushBtn({ pushManager, pushSubscription, subscriptionId, dispatch }) {
+  let subscribeBtn;
+  if (pushSubscription) {
+    subscribeBtn = (
+      <i
+        className="fa fa-toggle-on fa-lg toggle-btn"
+        aria-hidden="true"
+        onClick={() => {
+          dispatch(requestSubscribeRemove(pushSubscription, subscriptionId));
+        }}
+      >
+        <span className="fa-tag-text">Subscribed!</span>
+      </i>
+    );
+  } else {
+    subscribeBtn = (
+      <i
+        className={`fa fa-toggle-off fa-lg ${pushManager? 'toggle-btn': 'toggle-btn-disabled'}`}
+        aria-hidden="true"
+        onClick={() => {
+          if (pushManager) {
+            dispatch(requestPushSubscription(pushManager));
+          }
+        }}
+      >
+        <span className="fa-tag-text">Not Subscribed</span>
+      </i>
+    );
+  }
+
   return (
     <div>
-      {!pushManager?
-        <p>Push Notifications not supported on your browser.</p> : false
-      }
-      {pushSubscription?
-        <i
-          className="fa fa-toggle-on fa-lg toggle-btn"
-          aria-hidden="true"
-          onClick={() => {
-            dispatch(requestSubscribeRemove(pushSubscription, subscriptionId));
-          }}
-        >
-          <span className="toggle-btn-tag">Subscribed!</span>
-        </i>
+      {pushManager?
+        subscribeBtn
         :
-        <i
-          className={`fa fa-toggle-off fa-lg ${pushManager? 'toggle-btn': 'toggle-btn-disabled'}`}
-          aria-hidden="true"
-          onClick={() => {
-            if (pushManager) {
-              dispatch(requestPushSubscription(pushManager));
-            }
-          }}
-        >
-          <span className="toggle-btn-tag">Not Subscribed</span>
+        <i className="fa fa-warning fa-lg" aria-hidden="true">
+          <span className="fa-tag-text">Push Notifications are not supported on your browser.</span>
         </i>
       }
     </div>
