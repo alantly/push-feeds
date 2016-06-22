@@ -6,7 +6,7 @@ import { logoutUser } from '../../actions/session';
 const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick }) {
   return (
     <div>
-      <nav className="navbar navbar-inverse navbar-static-top">
+      <nav className="navbar navbar-static-top">
         <div className="container">
           <div className="navbar-header">
             <button
@@ -21,7 +21,7 @@ const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick })
               <span className="icon-bar"></span>
             </button>
             <Link to="/" className="navbar-brand">
-              <img alt="Flywheel-Mile" height="30" width="200" />
+              <img alt="Push-Feeds" height="30" width="200" />
             </Link>
           </div>
           <div id="navbar3" className="navbar-collapse collapse">

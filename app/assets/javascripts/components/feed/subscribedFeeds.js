@@ -12,7 +12,7 @@ export default function SubscribedFeeds() {
           <Header />
         </div>
         <div className="col-md-6 text-right">
-          <AddFeed id="addFeed" />
+          <AddFeed id="add-feed" />
         </div>
       </div>
       <div className="row">

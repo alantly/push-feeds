@@ -1,0 +1,15 @@
+
+.toggle-btn-tag {
+  margin-left: 10px;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  &:hover {
+    color: #23527c;
+  }
+}
+
+.toggle-btn-disabled {
+  cursor: not-allowed;
+}

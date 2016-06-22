@@ -9,24 +9,27 @@ function SubscribePushBtn({ pushManager, pushSubscription, subscriptionId, dispa
         <p>Push Notifications not supported on your browser.</p> : false
       }
       {pushSubscription?
-        <button
-          onClick={(e) => {
-            e.preventDefault();
+        <i
+          className="fa fa-toggle-on fa-lg toggle-btn"
+          aria-hidden="true"
+          onClick={() => {
             dispatch(requestSubscribeRemove(pushSubscription, subscriptionId));
           }}
         >
-          Unsubscribe
-        </button>
+          <span className="toggle-btn-tag">Subscribed!</span>
+        </i>
         :
-        <button
-          disabled={!pushManager}
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(requestPushSubscription(pushManager));
+        <i
+          className={`fa fa-toggle-off fa-lg ${pushManager? 'toggle-btn': 'toggle-btn-disabled'}`}
+          aria-hidden="true"
+          onClick={() => {
+            if (pushManager) {
+              dispatch(requestPushSubscription(pushManager));
+            }
           }}
         >
-          Subscribe
-        </button>
+          <span className="toggle-btn-tag">Not Subscribed</span>
+        </i>
       }
     </div>
   );
