@@ -72,3 +72,38 @@ export function requestSubscribeRemove(subscription, subscriptionId) {
     });
   };
 }
+
+// Setup initial subscription
+
+function getEndpointKey(endpoint) {
+  const result = endpoint.split('/');
+  return result[result.length - 1];
+}
+
+function getServerPushSubscription(pushSubscription) {
+  const request = {
+    path: `/clients?endpoint=${getEndpointKey(pushSubscription.endpoint)}`,
+    method: 'GET',
+  };
+  return query(request);
+}
+
+export function registerPushSubscription(serviceWorkerRegistration) {
+  return (dispatch) => {
+    const pushManager = serviceWorkerRegistration.pushManager;
+    dispatch(registerPushManager(pushManager));
+    pushManager.getSubscription().then((pushSubscription) => {
+      if (pushSubscription) {
+        console.log('Subscription exists!');
+        dispatch(processPushSubscription());
+        getServerPushSubscription(pushSubscription).then((json) => {
+          if (json) {
+            dispatch(receivePushSubscription(pushSubscription, json.id));
+          } else {
+            pushSubscription.unsubscribe();
+          }
+        });
+      }
+    });
+  };
+}
