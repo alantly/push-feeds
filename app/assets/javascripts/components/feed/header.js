@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 function Header({ user }) {
   return (
     <div>
-      <h2>
+      <h3>
         Hello {user}
-      </h2>
+      </h3>
     </div>
   );
 }
