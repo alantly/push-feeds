@@ -51,7 +51,6 @@ a server route. Ideally the server and client would be two separate apps running
 .buildpacks is used to run npm then bundler in production.
 
 == TODO:
-- create new feed into a txn
 - setup redux view for bad cases
 - consider middleware instead of a catch all GET route to load initial state
 - design landing page with instructions on how to use
