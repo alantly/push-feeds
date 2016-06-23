@@ -2,9 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { requestPushSubscription, requestSubscribeRemove } from '../../actions/pushNotification';
 
-function SubscribePushBtn({ pushManager, pushSubscription, subscriptionId, dispatch }) {
+function SubscribePushBtn({ pushManager, pushSubscription, subscriptionId, isProcessing, dispatch }) {
   let subscribeBtn;
-  if (pushSubscription) {
+  if (isProcessing) {
+    subscribeBtn = (
+      <i className="fa fa-spinner fa-lg" aria-hidden="true">
+        <span className="fa-tag-text">Loading...</span>
+      </i>
+    );
+  } else if (pushSubscription) {
     subscribeBtn = (
       <i
         className="fa fa-toggle-on fa-lg toggle-btn"
@@ -50,6 +56,7 @@ SubscribePushBtn.propTypes = {
   pushSubscription: React.PropTypes.object,
   subscriptionId: React.PropTypes.number,
   dispatch: React.PropTypes.func,
+  isProcessing: React.PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -57,6 +64,7 @@ function mapStateToProps(state) {
     pushManager: state.pushNotification.pushManager,
     pushSubscription: state.pushNotification.pushSubscription,
     subscriptionId: state.pushNotification.id,
+    isProcessing: state.pushNotification.isProcessing,
   };
 }
 
