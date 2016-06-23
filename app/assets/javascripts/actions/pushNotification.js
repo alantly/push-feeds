@@ -101,6 +101,7 @@ export function registerPushSubscription(serviceWorkerRegistration) {
             dispatch(receivePushSubscription(pushSubscription, json.id));
           } else {
             pushSubscription.unsubscribe();
+            dispatch(receiveRemoveSubscription());
           }
         });
       }
