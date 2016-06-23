@@ -9,9 +9,11 @@ class FeedsController < ApplicationController
     @feed = Feed.new(feed_params)
     @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
     begin
-      @feed.save!
-      @feed.subscribe_to_superfeedr
-      current_user.feeds << @feed
+      ActiveRecord::Base.transaction do
+        @feed.save!
+        @feed.subscribe_to_superfeedr
+        current_user.feeds << @feed
+      end
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
