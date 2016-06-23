@@ -3,45 +3,33 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/session';
 
-const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick }) {
+const NavigationBar = function navigationBar({ email, signedIn, atLanding, onLogoutClick }) {
   return (
     <div>
-      <nav className="navbar navbar-static-top">
+      <nav className={`navbar ${atLanding? 'navbar-static-top':'navbar-default'}`} >
         <div className="container">
           <div className="navbar-header">
-            <button
-              type="button"
-              className="navbar-toggle collapsed"
-              data-toggle="collapse"
-              data-target="#navbar3"
-            >
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-            <Link to="/" className="navbar-brand">
-              <img alt="Push-Feeds" height="30" width="200" />
+            <Link to="/" className="navbar-brand" id="logo">
+              <i className="fa fa-rss fa-lg"></i>
+              <span className="fa-tag-text" id="app-title">Push-Feeds</span>
             </Link>
           </div>
-          <div id="navbar3" className="navbar-collapse collapse">
-            <ul className="nav navbar-nav navbar-right">
-              {signedIn?
-                <li>
-                  <Link to="/feeds">My Feeds</Link>
-                </li> : false
-              }
-              {signedIn?
-                <li>
-                  <Link to="/" onClick={onLogoutClick}>Logout</Link>
-                </li>
-              :
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-              }
-            </ul>
-          </div>
+          <ul className="nav navbar-nav navbar-right">
+            {signedIn?
+              <li>
+                <Link to="/feeds">My Feeds</Link>
+              </li> : false
+            }
+            {signedIn?
+              <li>
+                <Link to="/" onClick={onLogoutClick}>Logout</Link>
+              </li>
+            :
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            }
+          </ul>
         </div>
       </nav>
     </div>
@@ -51,13 +39,15 @@ const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick })
 NavigationBar.propTypes = {
   email: React.PropTypes.string,
   signedIn: React.PropTypes.bool,
+  atLanding: React.PropTypes.bool,
   onLogoutClick: React.PropTypes.func,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     email: state.session.email,
     signedIn: state.session.signedIn,
+    atLanding: ownProps.pathname === '/',
   };
 }
 
