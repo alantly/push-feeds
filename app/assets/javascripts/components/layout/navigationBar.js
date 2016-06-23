@@ -3,10 +3,10 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/session';
 
-const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick }) {
+const NavigationBar = function navigationBar({ email, signedIn, atLanding, onLogoutClick }) {
   return (
     <div>
-      <nav className="navbar navbar-default">
+      <nav className={`navbar ${atLanding? 'navbar-static-top':'navbar-default'}`} >
         <div className="container">
           <div className="navbar-header">
             <Link to="/" className="navbar-brand" id="logo">
@@ -39,13 +39,15 @@ const NavigationBar = function navigationBar({ email, signedIn, onLogoutClick })
 NavigationBar.propTypes = {
   email: React.PropTypes.string,
   signedIn: React.PropTypes.bool,
+  atLanding: React.PropTypes.bool,
   onLogoutClick: React.PropTypes.func,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     email: state.session.email,
     signedIn: state.session.signedIn,
+    atLanding: ownProps.pathname === '/',
   };
 }
 
