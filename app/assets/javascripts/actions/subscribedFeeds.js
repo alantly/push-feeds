@@ -1,4 +1,4 @@
-import { updateServer } from '../helpers/push_feeds';
+import { query } from '../helpers/push_feeds';
 
 export const REQUEST_FEEDS = 'REQUEST_FEEDS';
 export const RECEIVED_FEEDS = 'RECEIVED_FEEDS';
@@ -48,20 +48,27 @@ function deleteFeed(id) {
   };
 }
 
-export function getSubscribedFeeds() {
-  const request = {
+function createGetFeedsRequest() {
+  return {
     path: '/feeds',
     method: 'GET',
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
-    dispatch(requestFeeds());
-  }, (json) => {
-    dispatch(receivedFeeds(json));
-  }));
 }
 
-export function requestToAddFeed(url) {
-  const request = {
+export function getSubscribedFeeds() {
+  const request = createGetFeedsRequest();
+  return (dispatch, getState) => {
+    dispatch(requestFeeds());
+    query(request).then((json) => {
+      dispatch(receivedFeeds(json));
+    }).catch((error) => {
+      debugger;
+    });
+  };
+}
+
+function createAddFeedRequest(url) {
+  return {
     path: '/feeds/subscribe',
     method: 'POST',
     body: {
@@ -70,21 +77,35 @@ export function requestToAddFeed(url) {
       },
     },
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
-    dispatch(processAddFeed());
-  }, (json) => {
-    dispatch(addFeed(json.id, json.url));
-  }));
 }
 
-export function requestToDeleteFeed(id) {
-  const request = {
+export function requestToAddFeed(url) {
+  const request = createAddFeedRequest(url);
+  return (dispatch, getState) => {
+    dispatch(processAddFeed());
+    query(request).then((json) => {
+      dispatch(addFeed(json.id, json.url));
+    }).catch((error) => {
+      debugger;
+    });
+  };
+}
+
+function createDeleteFeedRequest(id) {
+  return {
     path: `/feeds/${id}`,
     method: 'DELETE',
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
+}
+
+export function requestToDeleteFeed(id) {
+  const request = createDeleteFeedRequest(id);
+  return (dispatch, getState) => {
     dispatch(processDeleteFeed(id));
-  }, () => {
-    dispatch(deleteFeed(id));
-  }));
+    query(request).then((json) => {
+      dispatch(deleteFeed(id));
+    }).catch((error) => {
+      debugger;
+    });
+  };
 }
