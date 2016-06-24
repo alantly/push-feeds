@@ -15,15 +15,8 @@ export function query(request) {
   .then(response => {
     $('meta[name="csrf-param"]').attr('content', response.headers.get('Csrf-Param'));
     $('meta[name="csrf-token"]').attr('content', response.headers.get('Csrf-Token'));
+    if (!response.ok) return response.json().then(err => { throw err; });
     if (response.status === 204) return {};
     return response.json();
   });
-}
-
-export function updateServer(request, beforeQuery, afterQuery) {
-  return dispatch => {
-    beforeQuery();
-    return query(request)
-      .then(afterQuery);
-  };
 }

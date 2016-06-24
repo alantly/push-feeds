@@ -1,5 +1,5 @@
 import { push } from 'react-router-redux';
-import { updateServer } from '../helpers/push_feeds';
+import { query } from '../helpers/push_feeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -24,8 +24,8 @@ function signedOut() {
   };
 }
 
-export function registerUser(email, password, confirmPassword) {
-  const request = {
+function createRegisterRequest(email, password, confirmPassword) {
+  return {
     path: '/users.json',
     method: 'POST',
     body: {
@@ -36,16 +36,23 @@ export function registerUser(email, password, confirmPassword) {
       },
     },
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
-    dispatch(processUser());
-  }, (json) => {
-    dispatch(signedIn(json.email));
-    dispatch(push('/feeds'));
-  }));
 }
 
-export function loginUser(email, password) {
-  const request = {
+export function registerUser(email, password, confirmPassword) {
+  const request = createRegisterRequest(email, password, confirmPassword);
+  return (dispatch, getState) => {
+    dispatch(processUser());
+    query(request).then((json) => {
+      dispatch(signedIn(json.email));
+      dispatch(push('/feeds'));
+    }).catch((error) => {
+      debugger;
+    });
+  };
+}
+
+function createLoginRequest(email, password) {
+  return {
     path: '/users/sign_in.json',
     method: 'POST',
     body: {
@@ -55,23 +62,37 @@ export function loginUser(email, password) {
       },
     },
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
-    dispatch(processUser());
-  }, (json) => {
-    dispatch(signedIn(json.email));
-    dispatch(push('/feeds'));
-  }));
 }
 
-export function logoutUser() {
-  const request = {
+export function loginUser(email, password) {
+  const request = createLoginRequest(email, password);
+  return (dispatch, getState) => {
+    dispatch(processUser());
+    query(request).then((json) => {
+      dispatch(signedIn(json.email));
+      dispatch(push('/feeds'));
+    }).catch((error) => {
+      debugger;
+    });
+  };
+}
+
+function createLogoutRequest() {
+  return {
     path: '/users/sign_out.json',
     method: 'DELETE',
   };
-  return (dispatch, getState) => dispatch(updateServer(request, () => {
+}
+
+export function logoutUser() {
+  const request = createLogoutRequest();
+  return (dispatch, getState) => {
     dispatch(processUser());
-  }, (json) => {
-    dispatch(signedOut());
-    dispatch(push('/'));
-  }));
+    query(request).then((json) => {
+      dispatch(signedOut());
+      dispatch(push('/'));
+    }).catch((error) => {
+      debugger;
+    });
+  };
 }
