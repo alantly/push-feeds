@@ -4,6 +4,7 @@ import { query } from '../helpers/push_feeds';
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGNED_OUT = 'SIGNED_OUT';
+export const SESSION_ERRORS = 'SESSION_ERRORS';
 
 function processUser() {
   return {
@@ -22,6 +23,31 @@ function signedOut() {
   return {
     type: SIGNED_OUT,
   };
+}
+
+function sessionError(errors) {
+  return {
+    type: SESSION_ERRORS,
+    errors,
+  };
+}
+
+function parseRegistrationErrorResponse(errors) {
+  let errorMsgs = [];
+  if (errors.email) {
+    errorMsgs = errorMsgs.concat(errors.email.map((msg) => `Email ${msg}`));
+  }
+  if (errors.password) {
+    errorMsgs = errorMsgs.concat(errors.password.map((msg) => `Password ${msg}`));
+  }
+  if (errors.password_confirmation) {
+    errorMsgs = errorMsgs.concat(errors.password_confirmation.map((msg) => `Password Confirmation ${msg}`));
+  }
+  return errorMsgs;
+}
+
+function parseLoginErrorResponse(errors) {
+  return [errors];
 }
 
 function createRegisterRequest(email, password, confirmPassword) {
@@ -46,7 +72,7 @@ export function registerUser(email, password, confirmPassword) {
       dispatch(signedIn(json.email));
       dispatch(push('/feeds'));
     }).catch((error) => {
-      debugger;
+      dispatch(sessionError(parseRegistrationErrorResponse(error.errors)));
     });
   };
 }
@@ -72,7 +98,7 @@ export function loginUser(email, password) {
       dispatch(signedIn(json.email));
       dispatch(push('/feeds'));
     }).catch((error) => {
-      debugger;
+      dispatch(sessionError(parseLoginErrorResponse(error.error)));
     });
   };
 }
@@ -91,8 +117,6 @@ export function logoutUser() {
     query(request).then((json) => {
       dispatch(signedOut());
       dispatch(push('/'));
-    }).catch((error) => {
-      debugger;
     });
   };
 }
