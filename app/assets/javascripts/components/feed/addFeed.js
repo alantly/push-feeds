@@ -44,7 +44,7 @@ const AddFeed = ({ dispatch, id, isAdding }) => {
 };
 
 AddFeed.propTypes = {
-  dispatch: React.PropTypes.func,
+  dispatch: React.PropTypes.func.isRequired,
   id: React.PropTypes.string,
   isAdding: React.PropTypes.bool,
 };

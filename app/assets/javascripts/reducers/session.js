@@ -1,10 +1,6 @@
 import { PROCESS_USER, SIGNED_IN, SIGNED_OUT } from '../actions/session';
 
-function user(state = {
-  isProcessing: false,
-  signedIn: false,
-  email: '',
-}, action) {
+function user(state, action) {
   switch (action.type) {
     case PROCESS_USER:
       return Object.assign({}, state, {
@@ -27,7 +23,11 @@ function user(state = {
   }
 }
 
-export default function session(state = {}, action) {
+export default function session(state = {
+  isProcessing: false,
+  signedIn: false,
+  email: '',
+}, action) {
   switch (action.type) {
     case PROCESS_USER:
     case SIGNED_IN:
