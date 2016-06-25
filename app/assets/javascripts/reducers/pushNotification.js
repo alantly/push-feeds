@@ -3,12 +3,7 @@ import { REGISTER_PUSH_MANAGER,
   RECEIVE_PUSH_SUBSCRIPTION,
   RECEIVE_REMOVE_SUBSCRIPTION } from '../actions/pushNotification';
 
-function subscription(state = {
-  isProcessing: false,
-  pushManager: {},
-  pushSubscription: {},
-  id: -1,
-}, action) {
+function subscription(state, action) {
   switch (action.type) {
     case REGISTER_PUSH_MANAGER:
       return Object.assign({}, state, {
@@ -28,14 +23,19 @@ function subscription(state = {
       return Object.assign({}, state, {
         isProcessing: false,
         pushSubscription: {},
-        id: -1,
+        id: false,
       });
     default:
       return state;
   }
 }
 
-export default function pushNotification(state = {}, action) {
+export default function pushNotification(state = {
+  isProcessing: false,
+  pushManager: {},
+  pushSubscription: {},
+  id: false,
+}, action) {
   switch (action.type) {
     case REGISTER_PUSH_MANAGER:
     case PROCESS_PUSH_SUBSCRIPTION:

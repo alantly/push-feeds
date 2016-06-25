@@ -26,11 +26,7 @@ function feed(item, action) {
   }
 }
 
-function feeds(state = {
-  isFetching: false,
-  isAdding: false,
-  items: [],
-}, action) {
+function feeds(state, action) {
   switch (action.type) {
     case REQUEST_FEEDS:
       return Object.assign({}, state, {
@@ -64,7 +60,11 @@ function feeds(state = {
   }
 }
 
-export default function subscribedFeeds(state = {}, action) {
+export default function subscribedFeeds(state = {
+  isFetching: false,
+  isAdding: false,
+  items: [],
+}, action) {
   switch (action.type) {
     case REQUEST_FEEDS:
     case RECEIVED_FEEDS:

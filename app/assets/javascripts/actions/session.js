@@ -1,5 +1,6 @@
 import { push } from 'react-router-redux';
 import { query } from '../helpers/push_feeds';
+import { serverError } from './serverError';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -24,6 +25,34 @@ function signedOut() {
   };
 }
 
+let errorKeys = 0;
+function parseRegistrationErrorResponse(errors) {
+  let errorMsgs = [];
+  if (errors.email) {
+    errorMsgs = errorMsgs.concat(errors.email.map((msg) => ({
+      msg: `Email ${msg}`,
+      key: errorKeys++,
+    })));
+  }
+  if (errors.password) {
+    errorMsgs = errorMsgs.concat(errors.password.map((msg) => ({
+      msg: `Password ${msg}`,
+      key: errorKeys++,
+    })));
+  }
+  if (errors.password_confirmation) {
+    errorMsgs = errorMsgs.concat(errors.password_confirmation.map((msg) => ({
+      msg: `Password Confirmation ${msg}`,
+      key: errorKeys++,
+    })));
+  }
+  return errorMsgs;
+}
+
+function parseLoginErrorResponse(error) {
+  return [{ msg: error, key: errorKeys++ }];
+}
+
 function createRegisterRequest(email, password, confirmPassword) {
   return {
     path: '/users.json',
@@ -46,7 +75,7 @@ export function registerUser(email, password, confirmPassword) {
       dispatch(signedIn(json.email));
       dispatch(push('/feeds'));
     }).catch((error) => {
-      debugger;
+      dispatch(serverError(parseRegistrationErrorResponse(error.errors)));
     });
   };
 }
@@ -72,7 +101,7 @@ export function loginUser(email, password) {
       dispatch(signedIn(json.email));
       dispatch(push('/feeds'));
     }).catch((error) => {
-      debugger;
+      dispatch(serverError(parseLoginErrorResponse(error.error)));
     });
   };
 }
@@ -91,8 +120,6 @@ export function logoutUser() {
     query(request).then((json) => {
       dispatch(signedOut());
       dispatch(push('/'));
-    }).catch((error) => {
-      debugger;
     });
   };
 }

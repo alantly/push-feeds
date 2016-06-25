@@ -6,6 +6,7 @@ import Session from './components/session/session';
 import SubscribedFeeds from './components/feed/subscribedFeeds';
 import Rekt from './components/error/rekt';
 import { getSubscribedFeeds } from './actions/subscribedFeeds';
+import { clearErrors } from './actions/serverError';
 
 export default function getRoutes(store) {
   // client route authorization
@@ -20,10 +21,14 @@ export default function getRoutes(store) {
     store.dispatch(getSubscribedFeeds());
   };
 
+  const clearServerErrorMsgs = () => {
+    store.dispatch(clearErrors());
+  };
+
   return (
     <Route path="/" component={App}>
       <IndexRoute component={Landing} />
-      <Route path="login" component={Session} />
+      <Route path="login" onLeave={clearServerErrorMsgs} component={Session} />
       <Route onEnter={requireLogin}>
         <Route path="feeds" onEnter={getFeeds} component={SubscribedFeeds} />
       </Route>
