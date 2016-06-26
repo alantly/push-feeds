@@ -5,3 +5,17 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+def create_a_user(email, password)
+	User.create({:email => email, :password => password})
+end
+
+def create_a_client(endpoint, device_set)
+  Client.create({ endpoint: endpoint, device_set: device_set })
+end
+
+user = create_a_user('a@b.c', 'user1234')
+devices = DeviceSet.create()
+
+client1 = create_a_client('endpoint/somefunkyhash', devices)
+client2 = create_a_client('endpoint/hashhashhash', devices)

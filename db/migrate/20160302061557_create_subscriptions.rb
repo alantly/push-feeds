@@ -3,7 +3,7 @@ class CreateSubscriptions < ActiveRecord::Migration
     create_table :subscriptions do |t|
       t.string :filter
       t.belongs_to :feed, index: true
-      t.belongs_to :group, index: true
+      t.belongs_to :device_set, index: true
       t.timestamps null: false
     end
   end
