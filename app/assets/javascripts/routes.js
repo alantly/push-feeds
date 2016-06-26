@@ -9,14 +9,6 @@ import { getSubscribedFeeds } from './actions/subscribedFeeds';
 import { clearErrors } from './actions/serverError';
 
 export default function getRoutes(store) {
-  // client route authorization
-  const requireLogin = (nextState, replace) => {
-    const { session: { signedIn } } = store.getState();
-    if (!signedIn) {
-      replace('/');
-    }
-  };
-
   const getFeeds = () => {
     store.dispatch(getSubscribedFeeds());
   };
@@ -27,11 +19,9 @@ export default function getRoutes(store) {
 
   return (
     <Route path="/" component={App}>
-      <IndexRoute component={Landing} />
+      <IndexRoute onEnter={getFeeds} component={SubscribedFeeds} />
       <Route path="login" onLeave={clearServerErrorMsgs} component={Session} />
-      <Route onEnter={requireLogin}>
-        <Route path="feeds" onEnter={getFeeds} component={SubscribedFeeds} />
-      </Route>
+      <Route path="description" component={Landing} />
       <Route path="*" component={Rekt} />
     </Route>
   );

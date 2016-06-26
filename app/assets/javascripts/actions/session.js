@@ -73,7 +73,7 @@ export function registerUser(email, password, confirmPassword) {
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
-      dispatch(push('/feeds'));
+      dispatch(push('/'));
     }).catch((error) => {
       dispatch(serverError(parseRegistrationErrorResponse(error.errors)));
     });
@@ -99,7 +99,7 @@ export function loginUser(email, password) {
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
-      dispatch(push('/feeds'));
+      dispatch(push('/'));
     }).catch((error) => {
       dispatch(serverError(parseLoginErrorResponse(error.error)));
     });
