@@ -4,9 +4,9 @@ class CreateClients < ActiveRecord::Migration
       t.string :endpoint
       t.string :auth
       t.string :p256dh
+      t.belongs_to :group, index: true
 
       t.timestamps
     end
-    add_reference :clients, :user, index: true
   end
 end

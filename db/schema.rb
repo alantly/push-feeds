@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302061557) do
+ActiveRecord::Schema.define(version: 20160626181656) do
 
   create_table "clients", force: :cascade do |t|
     t.string   "endpoint"
     t.string   "auth"
     t.string   "p256dh"
+    t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
-  add_index "clients", ["user_id"], name: "index_clients_on_user_id"
+  add_index "clients", ["group_id"], name: "index_clients_on_group_id"
 
   create_table "feeds", force: :cascade do |t|
     t.string   "name",       default: ""
@@ -34,28 +34,22 @@ ActiveRecord::Schema.define(version: 20160302061557) do
 
   add_index "feeds", ["url"], name: "index_feeds_on_url"
 
-  create_table "notifications", force: :cascade do |t|
-    t.string   "site_id",                 null: false
-    t.string   "title",      default: ""
-    t.string   "url",        default: ""
-    t.integer  "client_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+  create_table "group_tables", force: :cascade do |t|
+    t.integer "user_id"
   end
 
-  add_index "notifications", ["client_id"], name: "index_notifications_on_client_id"
-  add_index "notifications", ["site_id"], name: "index_notifications_on_site_id"
+  add_index "group_tables", ["user_id"], name: "index_group_tables_on_user_id"
 
   create_table "subscriptions", force: :cascade do |t|
     t.string   "filter"
     t.integer  "feed_id"
-    t.integer  "user_id"
+    t.integer  "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_index "subscriptions", ["feed_id"], name: "index_subscriptions_on_feed_id"
-  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
+  add_index "subscriptions", ["group_id"], name: "index_subscriptions_on_group_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
