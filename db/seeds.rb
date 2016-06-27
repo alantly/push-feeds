@@ -19,3 +19,6 @@ devices = DeviceSet.create()
 
 client1 = create_a_client('endpoint/somefunkyhash', devices)
 client2 = create_a_client('endpoint/hashhashhash', devices)
+
+feed = Feed.create({ url: 'www.google.com' })
+subscription = Subscription.create({ device_set: devices, feed: feed})

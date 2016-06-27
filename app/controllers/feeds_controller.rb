@@ -1,4 +1,5 @@
 class FeedsController < ApplicationController
+  before_filter :set_current_user
 
   def index
     @feeds = current_user.feeds
@@ -33,15 +34,6 @@ class FeedsController < ApplicationController
     end
   end
 
-  # def update
-  #   @feed = Feed.find(params[:id])
-  #   if @feed.update(feed_params)
-  #     render json: @feed
-  #   else
-  #     render json: @feed.errors, status: :unprocessable_entity
-  #   end
-  # end
-
   def destroy
     @feed = Feed.find_by_id(params[:id])
     current_user.feeds.delete @feed
@@ -61,6 +53,16 @@ class FeedsController < ApplicationController
   end
 
   private
+
+  def set_current_user
+    unless current_user
+      current_user = Client.find_by_id client_params
+    end
+  end
+
+  def client_params
+    params.require(:client).permit(:id)
+  end
 
   def feed_params
     params.require(:feed).permit(:url)
