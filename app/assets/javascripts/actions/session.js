@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import { query } from '../helpers/push_feeds';
 import { serverError } from './serverError';
+import { getSubscribedFeeds } from './subscribedFeeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -99,6 +100,7 @@ export function loginUser(email, password) {
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
+      dispatch(getSubscribedFeeds());
       dispatch(push('/'));
     }).catch((error) => {
       dispatch(serverError(parseLoginErrorResponse(error.error)));
