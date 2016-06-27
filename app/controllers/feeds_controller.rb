@@ -54,13 +54,16 @@ class FeedsController < ApplicationController
   private
 
   def get_current_user
-    unless current_user
-      current_user = Client.find_by_id client_params
+    if current_user
+      current_user.device_set
+    else
+      client = Client.find_by_id client_params
+      client.device_set
     end
   end
 
   def client_params
-    params.require(:id)
+    params.require(:cid)
   end
 
   def feed_params

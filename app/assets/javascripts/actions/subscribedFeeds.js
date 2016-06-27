@@ -50,7 +50,7 @@ function deleteFeed(id) {
 
 function createGetFeedsRequest(clientId) {
   return {
-    path: `/feeds?id=${clientId}`,
+    path: `/feeds?cid=${clientId}`,
     method: 'GET',
   };
 }
@@ -67,11 +67,12 @@ export function getSubscribedFeeds(clientId) {
   };
 }
 
-function createAddFeedRequest(url) {
+function createAddFeedRequest(url, clientId) {
   return {
     path: '/feeds/subscribe',
     method: 'POST',
     body: {
+      cid: clientId,
       feed: {
         url,
       },
@@ -80,8 +81,8 @@ function createAddFeedRequest(url) {
 }
 
 export function requestToAddFeed(url) {
-  const request = createAddFeedRequest(url);
   return (dispatch, getState) => {
+    const request = createAddFeedRequest(url, getState().pushNotification.id);
     dispatch(processAddFeed());
     query(request).then((json) => {
       dispatch(addFeed(json.id, json.url));
@@ -91,16 +92,16 @@ export function requestToAddFeed(url) {
   };
 }
 
-function createDeleteFeedRequest(id) {
+function createDeleteFeedRequest(id, clientId) {
   return {
-    path: `/feeds/${id}`,
+    path: `/feeds/${id}?cid=${clientId}`,
     method: 'DELETE',
   };
 }
 
 export function requestToDeleteFeed(id) {
-  const request = createDeleteFeedRequest(id);
   return (dispatch, getState) => {
+    const request = createDeleteFeedRequest(id, getState().pushNotification.id);
     dispatch(processDeleteFeed(id));
     query(request).then((json) => {
       dispatch(deleteFeed(id));
