@@ -17,7 +17,13 @@ class ClientsController < ApplicationController
 
   def destroy
     @client = Client.find(params.require(:id))
-    @client.destroy if @client
+    if @client
+      if @client.device_set.clients.length == 1
+        @client.device_set.destroy
+      else
+        @client.destroy
+      end
+    end
     head :no_content
   end
 
