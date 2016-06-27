@@ -1,8 +1,7 @@
 class FeedsController < ApplicationController
-  before_filter :set_current_user
 
   def index
-    @feeds = current_user.feeds
+    @feeds = get_current_user.feeds
     render json: @feeds
   end
 
@@ -13,7 +12,7 @@ class FeedsController < ApplicationController
       ActiveRecord::Base.transaction do
         @feed.save!
         @feed.subscribe_to_superfeedr
-        current_user.feeds << @feed
+        get_current_user.feeds << @feed
       end
       render json: @feed
     rescue IOError => e
@@ -27,7 +26,7 @@ class FeedsController < ApplicationController
   def subscribe
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
-      current_user.feeds << @feed unless current_user.feeds.include? @feed
+      get_current_user.feeds << @feed unless get_current_user.feeds.include? @feed
       render json: @feed
     else
       create
@@ -36,7 +35,7 @@ class FeedsController < ApplicationController
 
   def destroy
     @feed = Feed.find_by_id(params[:id])
-    current_user.feeds.delete @feed
+    get_current_user.feeds.delete @feed
     begin
       if @feed.subscriptions.empty?
         @feed.unsubscribe_to_superfeedr
@@ -54,14 +53,14 @@ class FeedsController < ApplicationController
 
   private
 
-  def set_current_user
+  def get_current_user
     unless current_user
       current_user = Client.find_by_id client_params
     end
   end
 
   def client_params
-    params.require(:client).permit(:id)
+    params.require(:id)
   end
 
   def feed_params

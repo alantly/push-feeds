@@ -22,7 +22,7 @@ function subscription(state, action) {
     case RECEIVE_REMOVE_SUBSCRIPTION:
       return Object.assign({}, state, {
         isProcessing: false,
-        pushSubscription: {},
+        pushSubscription: null,
         id: -1,
       });
     default:

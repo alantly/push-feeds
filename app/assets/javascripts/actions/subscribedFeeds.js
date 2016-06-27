@@ -48,15 +48,15 @@ function deleteFeed(id) {
   };
 }
 
-function createGetFeedsRequest() {
+function createGetFeedsRequest(clientId) {
   return {
-    path: '/feeds',
+    path: `/feeds?id=${clientId}`,
     method: 'GET',
   };
 }
 
-export function getSubscribedFeeds() {
-  const request = createGetFeedsRequest();
+export function getSubscribedFeeds(clientId) {
+  const request = createGetFeedsRequest(clientId);
   return (dispatch, getState) => {
     dispatch(requestFeeds());
     query(request).then((json) => {
