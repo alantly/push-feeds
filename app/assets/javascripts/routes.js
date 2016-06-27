@@ -10,7 +10,7 @@ import { clearErrors } from './actions/serverError';
 
 export default function getRoutes(store) {
   const getFeeds = () => {
-    store.dispatch(getSubscribedFeeds());
+    // store.dispatch(getSubscribedFeeds());
   };
 
   const clearServerErrorMsgs = () => {

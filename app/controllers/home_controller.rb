@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-  skip_before_filter :authenticate_user!, :only => :index
   skip_after_filter :set_csrf_headers
 
   def index
