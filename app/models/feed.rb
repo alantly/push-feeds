@@ -1,7 +1,7 @@
 class Feed < ActiveRecord::Base
   has_many :subscriptions
-  has_many :users, through: :subscriptions
-  has_many :clients, through: :users
+  has_many :device_sets, through: :subscriptions
+  has_many :clients, through: :device_sets
   validate :url_valid_uri
   validates :url, presence: true, uniqueness: true
   before_save :normalize_url

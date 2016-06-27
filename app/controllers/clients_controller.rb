@@ -1,14 +1,14 @@
 class ClientsController < ApplicationController
 
   def index
-    @client = current_user.clients.find_by_endpoint params.require(:endpoint)
+    @client = Client.find_by_endpoint params.require(:endpoint)
     render json: @client
   end
 
   def create
     @client = Client.new(client_params)
     if @client.save
-      current_user.clients << @client
+      current_device_set.clients << @client
       render json: @client
     else
       render json: @client.errors, status: :unprocessable_entity
@@ -17,7 +17,13 @@ class ClientsController < ApplicationController
 
   def destroy
     @client = Client.find(params.require(:id))
-    @client.destroy if @client
+    if @client
+      if @client.device_set.clients.length == 1
+        @client.device_set.destroy
+      else
+        @client.destroy
+      end
+    end
     head :no_content
   end
 
@@ -34,5 +40,13 @@ class ClientsController < ApplicationController
     client = require_params.permit(:endpoint)
     keys = require_params.require(:keys).permit(:auth,:p256dh)
     client.merge keys
+  end
+
+  def current_device_set
+    if current_user
+      current_user.device_set
+    else
+      DeviceSet.create
+    end
   end
 end

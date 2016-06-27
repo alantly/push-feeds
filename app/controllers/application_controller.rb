@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery
   force_ssl if: :ssl_configured?
-  before_filter :authenticate_user!
   after_filter :set_csrf_headers
 
   private

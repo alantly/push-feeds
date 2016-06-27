@@ -1,4 +1,5 @@
 import { query } from '../helpers/push_feeds';
+import { getSubscribedFeeds } from './subscribedFeeds';
 
 export const REGISTER_PUSH_MANAGER = 'REGISTER_PUSH_MANAGER';
 export const PROCESS_PUSH_SUBSCRIPTION = 'PROCESS_PUSH_SUBSCRIPTION';
@@ -99,6 +100,7 @@ export function registerPushSubscription(serviceWorkerRegistration) {
         getServerPushSubscription(pushSubscription).then((json) => {
           if (json) {
             dispatch(receivePushSubscription(pushSubscription, json.id));
+            dispatch(getSubscribedFeeds(json.id));
           } else {
             pushSubscription.unsubscribe();
             dispatch(receiveRemoveSubscription());

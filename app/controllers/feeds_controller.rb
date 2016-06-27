@@ -1,7 +1,7 @@
 class FeedsController < ApplicationController
 
   def index
-    @feeds = current_user.feeds
+    @feeds = get_current_user.feeds
     render json: @feeds
   end
 
@@ -12,7 +12,7 @@ class FeedsController < ApplicationController
       ActiveRecord::Base.transaction do
         @feed.save!
         @feed.subscribe_to_superfeedr
-        current_user.feeds << @feed
+        get_current_user.feeds << @feed
       end
       render json: @feed
     rescue IOError => e
@@ -26,25 +26,16 @@ class FeedsController < ApplicationController
   def subscribe
     @feed = Feed.find_by_url(feed_params[:url])
     if @feed
-      current_user.feeds << @feed unless current_user.feeds.include? @feed
+      get_current_user.feeds << @feed unless get_current_user.feeds.include? @feed
       render json: @feed
     else
       create
     end
   end
 
-  # def update
-  #   @feed = Feed.find(params[:id])
-  #   if @feed.update(feed_params)
-  #     render json: @feed
-  #   else
-  #     render json: @feed.errors, status: :unprocessable_entity
-  #   end
-  # end
-
   def destroy
     @feed = Feed.find_by_id(params[:id])
-    current_user.feeds.delete @feed
+    get_current_user.feeds.delete @feed
     begin
       if @feed.subscriptions.empty?
         @feed.unsubscribe_to_superfeedr
@@ -61,6 +52,19 @@ class FeedsController < ApplicationController
   end
 
   private
+
+  def get_current_user
+    if current_user
+      current_user.device_set
+    else
+      client = Client.find_by_id client_params
+      client.device_set
+    end
+  end
+
+  def client_params
+    params.require(:cid)
+  end
 
   def feed_params
     params.require(:feed).permit(:url)

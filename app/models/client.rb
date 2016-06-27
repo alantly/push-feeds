@@ -1,6 +1,6 @@
 class Client < ActiveRecord::Base
-  belongs_to :user
-  has_many :notifications
+  belongs_to :device_set
+  has_many :feeds, through: :device_set
   before_save :normalize_endpoint
 
   def notify
