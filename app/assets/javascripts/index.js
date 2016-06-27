@@ -7,6 +7,7 @@ import configureStore from './store/configureStore';
 import getRoutes from './routes';
 import { signedIn } from './actions/session';
 import { registerPushSubscription } from './actions/pushNotification';
+import { getSubscribedFeeds } from './actions/subscribedFeeds';
 import { registerServiceWorker } from './serviceWorker/serviceWorkerSetup';
 
 const store = configureStore(browserHistory);
@@ -34,5 +35,6 @@ window.setRoute = (path) => {
 window.setSession = (user) => {
   if (user) {
     store.dispatch(signedIn(user));
+    store.dispatch(getSubscribedFeeds());
   }
 };
