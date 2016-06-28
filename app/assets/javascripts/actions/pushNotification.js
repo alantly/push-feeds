@@ -1,5 +1,5 @@
 import { query } from '../helpers/push_feeds';
-import { getSubscribedFeeds } from './subscribedFeeds';
+import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
 
 export const REGISTER_PUSH_MANAGER = 'REGISTER_PUSH_MANAGER';
 export const PROCESS_PUSH_SUBSCRIPTION = 'PROCESS_PUSH_SUBSCRIPTION';
@@ -56,8 +56,11 @@ export function requestPushSubscription(pushManager) {
 }
 
 function removeSubscription(request) {
-  return dispatch => query(request).then(() => {
+  return (dispatch, getState) => query(request).then(() => {
     dispatch(receiveRemoveSubscription());
+    if (!getState().session.signedIn) {
+      dispatch(clearFeeds());
+    }
   });
 }
 
@@ -100,7 +103,7 @@ export function registerPushSubscription(serviceWorkerRegistration) {
         getServerPushSubscription(pushSubscription).then((json) => {
           if (json) {
             dispatch(receivePushSubscription(pushSubscription, json.id));
-            dispatch(getSubscribedFeeds(json.id));
+            dispatch(getSubscribedFeeds());
           } else {
             pushSubscription.unsubscribe();
             dispatch(receiveRemoveSubscription());

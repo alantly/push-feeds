@@ -41,6 +41,25 @@ class Client < ActiveRecord::Base
     }
   end
 
+  def linked
+    self.device_set.user
+  end
+
+  def delete_local_account
+    device_set = self.device_set
+    self.device_set = nil
+    self.save
+    device_set.destroy
+  end
+
+  def link user
+    self.device_set.user = user
+  end
+
+  def local_account
+    self.device_set.clients.length == 1 and not self.linked
+  end
+
   private
 
   def normalize_endpoint

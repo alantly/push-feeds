@@ -6,6 +6,7 @@ export const ADD_FEED = 'ADD_FEED';
 export const DELETE_FEED = 'DELETE_FEED';
 export const PROCESS_ADD_FEED = 'PROCESS_ADD_FEED';
 export const PROCESS_DELETE_FEED = 'PROCESS_DELETE_FEED';
+export const CLEAR_FEEDS = 'CLEAR_FEEDS';
 
 function requestFeeds() {
   return {
@@ -48,6 +49,12 @@ function deleteFeed(id) {
   };
 }
 
+export function clearFeeds() {
+  return {
+    type: CLEAR_FEEDS,
+  };
+}
+
 function createGetFeedsRequest(clientId) {
   return {
     path: `/feeds?cid=${clientId}`,
@@ -55,9 +62,9 @@ function createGetFeedsRequest(clientId) {
   };
 }
 
-export function getSubscribedFeeds(clientId) {
-  const request = createGetFeedsRequest(clientId);
+export function getSubscribedFeeds() {
   return (dispatch, getState) => {
+    const request = createGetFeedsRequest(getState().pushNotification.id);
     dispatch(requestFeeds());
     query(request).then((json) => {
       dispatch(receivedFeeds(json));

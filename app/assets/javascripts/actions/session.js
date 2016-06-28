@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import { query } from '../helpers/push_feeds';
 import { serverError } from './serverError';
+import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -53,11 +54,12 @@ function parseLoginErrorResponse(error) {
   return [{ msg: error, key: errorKeys++ }];
 }
 
-function createRegisterRequest(email, password, confirmPassword) {
+function createRegisterRequest(email, password, confirmPassword, clientId) {
   return {
     path: '/users.json',
     method: 'POST',
     body: {
+      cid: clientId,
       user: {
         email,
         password,
@@ -68,8 +70,8 @@ function createRegisterRequest(email, password, confirmPassword) {
 }
 
 export function registerUser(email, password, confirmPassword) {
-  const request = createRegisterRequest(email, password, confirmPassword);
   return (dispatch, getState) => {
+    const request = createRegisterRequest(email, password, confirmPassword, getState().pushNotification.id);
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
@@ -80,11 +82,12 @@ export function registerUser(email, password, confirmPassword) {
   };
 }
 
-function createLoginRequest(email, password) {
+function createLoginRequest(email, password, clientId) {
   return {
     path: '/users/sign_in.json',
     method: 'POST',
     body: {
+      cid: clientId,
       user: {
         email,
         password,
@@ -94,11 +97,12 @@ function createLoginRequest(email, password) {
 }
 
 export function loginUser(email, password) {
-  const request = createLoginRequest(email, password);
   return (dispatch, getState) => {
+    const request = createLoginRequest(email, password, getState().pushNotification.id);
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
+      dispatch(getSubscribedFeeds());
       dispatch(push('/'));
     }).catch((error) => {
       dispatch(serverError(parseLoginErrorResponse(error.error)));
@@ -119,6 +123,9 @@ export function logoutUser() {
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedOut());
+      if (!getState().pushNotification.pushSubscription) {
+        dispatch(clearFeeds());
+      }
       dispatch(push('/'));
     });
   };

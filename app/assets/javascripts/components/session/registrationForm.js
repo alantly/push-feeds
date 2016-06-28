@@ -67,6 +67,9 @@ const RegistrationForm = ({ dispatch }) => {
         <div className="form-group">
           <button type="submit" className="btn btn-block">Sign Up</button>
         </div>
+        <div className="form-group text-center">
+          <p>Register will link local account to user. Current subscribed feeds converted to user&rsquo;s subscribed feeds</p>
+        </div>
       </form>
     </div>
   );
