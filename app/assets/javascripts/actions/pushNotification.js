@@ -103,7 +103,7 @@ export function registerPushSubscription(serviceWorkerRegistration) {
         getServerPushSubscription(pushSubscription).then((json) => {
           if (json) {
             dispatch(receivePushSubscription(pushSubscription, json.id));
-            dispatch(getSubscribedFeeds(json.id));
+            dispatch(getSubscribedFeeds());
           } else {
             pushSubscription.unsubscribe();
             dispatch(receiveRemoveSubscription());

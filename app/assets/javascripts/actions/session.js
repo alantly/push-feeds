@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import { query } from '../helpers/push_feeds';
 import { serverError } from './serverError';
-import { getSubscribedFeeds } from './subscribedFeeds';
+import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
 export const SIGNED_IN = 'SIGNED_IN';
@@ -121,6 +121,9 @@ export function logoutUser() {
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedOut());
+      if (!getState().pushNotification.pushSubscription) {
+        dispatch(clearFeeds());
+      }
       dispatch(push('/'));
     });
   };

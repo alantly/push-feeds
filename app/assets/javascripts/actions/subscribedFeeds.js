@@ -62,9 +62,9 @@ function createGetFeedsRequest(clientId) {
   };
 }
 
-export function getSubscribedFeeds(clientId) {
-  const request = createGetFeedsRequest(clientId);
+export function getSubscribedFeeds() {
   return (dispatch, getState) => {
+    const request = createGetFeedsRequest(getState().pushNotification.id);
     dispatch(requestFeeds());
     query(request).then((json) => {
       dispatch(receivedFeeds(json));

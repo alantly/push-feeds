@@ -17,7 +17,7 @@ export default function Landing() {
       </p>
       <h3>Syncing Devices</h3>
       <p>
-        Creating an account allows the user to link their feeds to their user account instead of the browser. This allows better RSS feed link syncing across multiple browsers.
+        Creating an account allows the user to link their feeds to their user account instead of the browser. This allows better RSS feed link syncing across multiple browsers. When syncing browser accounts to a user account, the local browser feed links will be replaced with the user feed links. Once a browser is synced, it will always alter the user feed links even if logged out. The only way to remove the sync is to unsubscribe to push notifications.
       </p>
     </div>
   );
