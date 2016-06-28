@@ -16,7 +16,7 @@ const NavigationBar = function navigationBar({ email, signedIn, atLanding, onLog
           </div>
           <ul className="nav navbar-nav navbar-right">
             <li>
-              <Link to="/description">Getting Started</Link>
+              <Link to="/description">User Guide</Link>
             </li>
             {signedIn?
               <li>

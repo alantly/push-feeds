@@ -4,7 +4,8 @@ import {
   ADD_FEED,
   DELETE_FEED,
   PROCESS_ADD_FEED,
-  PROCESS_DELETE_FEED } from '../actions/subscribedFeeds';
+  PROCESS_DELETE_FEED,
+  CLEAR_FEEDS } from '../actions/subscribedFeeds';
 
 function feed(item, action) {
   switch (action.type) {
@@ -55,6 +56,10 @@ function feeds(state, action) {
       return Object.assign({}, state, {
         items: state.items.filter((item) => item.id !== action.id),
       });
+    case CLEAR_FEEDS:
+      return Object.assign({}, state, {
+        items: [],
+      });
     default:
       return state;
   }
@@ -72,6 +77,7 @@ export default function subscribedFeeds(state = {
     case PROCESS_DELETE_FEED:
     case ADD_FEED:
     case DELETE_FEED:
+    case CLEAR_FEEDS:
       return Object.assign({}, state, feeds(state, action));
     default:
       return state;

@@ -6,6 +6,7 @@ export const ADD_FEED = 'ADD_FEED';
 export const DELETE_FEED = 'DELETE_FEED';
 export const PROCESS_ADD_FEED = 'PROCESS_ADD_FEED';
 export const PROCESS_DELETE_FEED = 'PROCESS_DELETE_FEED';
+export const CLEAR_FEEDS = 'CLEAR_FEEDS';
 
 function requestFeeds() {
   return {
@@ -45,6 +46,12 @@ function deleteFeed(id) {
   return {
     type: DELETE_FEED,
     id,
+  };
+}
+
+export function clearFeeds() {
+  return {
+    type: CLEAR_FEEDS,
   };
 }
 
