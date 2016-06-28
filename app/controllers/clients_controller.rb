@@ -18,7 +18,7 @@ class ClientsController < ApplicationController
   def destroy
     @client = Client.find(params.require(:id))
     if @client
-      if @client.device_set.clients.length == 1 and not @client.device_set.user
+      if @client.device_set.clients.length == 1 and not @client.linked
         @client.device_set.destroy
       else
         @client.destroy
