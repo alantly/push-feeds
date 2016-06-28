@@ -54,11 +54,12 @@ function parseLoginErrorResponse(error) {
   return [{ msg: error, key: errorKeys++ }];
 }
 
-function createRegisterRequest(email, password, confirmPassword) {
+function createRegisterRequest(email, password, confirmPassword, clientId) {
   return {
     path: '/users.json',
     method: 'POST',
     body: {
+      cid: clientId,
       user: {
         email,
         password,
@@ -69,8 +70,8 @@ function createRegisterRequest(email, password, confirmPassword) {
 }
 
 export function registerUser(email, password, confirmPassword) {
-  const request = createRegisterRequest(email, password, confirmPassword);
   return (dispatch, getState) => {
+    const request = createRegisterRequest(email, password, confirmPassword, getState().pushNotification.id);
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));
@@ -81,11 +82,12 @@ export function registerUser(email, password, confirmPassword) {
   };
 }
 
-function createLoginRequest(email, password) {
+function createLoginRequest(email, password, clientId) {
   return {
     path: '/users/sign_in.json',
     method: 'POST',
     body: {
+      cid: clientId,
       user: {
         email,
         password,
@@ -95,8 +97,8 @@ function createLoginRequest(email, password) {
 }
 
 export function loginUser(email, password) {
-  const request = createLoginRequest(email, password);
   return (dispatch, getState) => {
+    const request = createLoginRequest(email, password, getState().pushNotification.id);
     dispatch(processUser());
     query(request).then((json) => {
       dispatch(signedIn(json.email));

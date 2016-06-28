@@ -6,11 +6,9 @@ class User < ActiveRecord::Base
   has_one :device_set, dependent: :destroy
   has_many :clients, through: :device_set
   has_many :feeds, through: :device_set
-  after_create :create_user_device_set
 
-  private
-
-  def create_user_device_set
-    DeviceSet.create(:user_id => self.id)
+  def add_device client
+    self.device_set.clients << client
   end
+
 end
