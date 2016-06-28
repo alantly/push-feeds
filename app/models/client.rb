@@ -56,6 +56,10 @@ class Client < ActiveRecord::Base
     self.device_set.user = user
   end
 
+  def local_account
+    self.device_set.clients.length == 1 and not self.linked
+  end
+
   private
 
   def normalize_endpoint
