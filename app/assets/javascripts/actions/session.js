@@ -4,12 +4,19 @@ import { serverError } from './serverError';
 import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
+export const PROCESS_FAIL = 'PROCESS_FAIL';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGNED_OUT = 'SIGNED_OUT';
 
 function processUser() {
   return {
     type: PROCESS_USER,
+  };
+}
+
+function processFail() {
+  return {
+    type: PROCESS_FAIL,
   };
 }
 
@@ -77,6 +84,7 @@ export function registerUser(email, password, confirmPassword) {
       dispatch(signedIn(json.email));
       dispatch(push('/'));
     }).catch((error) => {
+      dispatch(processFail());
       dispatch(serverError(parseRegistrationErrorResponse(error.errors)));
     });
   };
@@ -105,6 +113,7 @@ export function loginUser(email, password) {
       dispatch(getSubscribedFeeds());
       dispatch(push('/'));
     }).catch((error) => {
+      dispatch(processFail());
       dispatch(serverError(parseLoginErrorResponse(error.error)));
     });
   };
@@ -127,6 +136,6 @@ export function logoutUser() {
         dispatch(clearFeeds());
       }
       dispatch(push('/'));
-    });
+    }).catch(err => dispatch(processFail()));
   };
 }
