@@ -5,7 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
     super do |user|
       client = Client.find_by_id client_params
       if client
-        if client.linked
+        if not client.linked
           user.device_set.destroy
           client.link user
         else
