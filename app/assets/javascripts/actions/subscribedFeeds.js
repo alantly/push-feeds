@@ -1,16 +1,25 @@
 import { query } from '../helpers/push_feeds';
 
 export const REQUEST_FEEDS = 'REQUEST_FEEDS';
+export const REQUEST_FEEDS_FAIL = 'REQUEST_FEEDS_FAIL';
 export const RECEIVED_FEEDS = 'RECEIVED_FEEDS';
 export const ADD_FEED = 'ADD_FEED';
 export const DELETE_FEED = 'DELETE_FEED';
 export const PROCESS_ADD_FEED = 'PROCESS_ADD_FEED';
+export const PROCESS_ADD_FAIL = 'PROCESS_ADD_FAIL';
 export const PROCESS_DELETE_FEED = 'PROCESS_DELETE_FEED';
+export const PROCESS_DELETE_FAIL = 'PROCESS_DELETE_FAIL';
 export const CLEAR_FEEDS = 'CLEAR_FEEDS';
 
 function requestFeeds() {
   return {
     type: REQUEST_FEEDS,
+  };
+}
+
+function requestFeedsFail() {
+  return {
+    type: REQUEST_FEEDS_FAIL,
   };
 }
 
@@ -27,9 +36,22 @@ function processAddFeed() {
   };
 }
 
+function processAddFail() {
+  return {
+    type: PROCESS_ADD_FAIL,
+  };
+}
+
 function processDeleteFeed(id) {
   return {
     type: PROCESS_DELETE_FEED,
+    id,
+  };
+}
+
+function processDeleteFail(id) {
+  return {
+    type: PROCESS_DELETE_FAIL,
     id,
   };
 }
@@ -69,6 +91,7 @@ export function getSubscribedFeeds() {
     query(request).then((json) => {
       dispatch(receivedFeeds(json));
     }).catch((error) => {
+      dispatch(requestFeedsFail());
       debugger;
     });
   };
@@ -94,7 +117,7 @@ export function requestToAddFeed(url) {
     query(request).then((json) => {
       dispatch(addFeed(json.id, json.url));
     }).catch((error) => {
-      debugger;
+      dispatch(processAddFail());
     });
   };
 }
@@ -113,6 +136,7 @@ export function requestToDeleteFeed(id) {
     query(request).then((json) => {
       dispatch(deleteFeed(id));
     }).catch((error) => {
+      dispatch(processDeleteFail(id));
       debugger;
     });
   };
