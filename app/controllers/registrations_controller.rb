@@ -4,11 +4,13 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     super do |user|
       client = Client.find_by_id client_params
-      if client and not client.linked
-        client.link user
-      else
-        DeviceSet.create(:user_id => user.id)
-        user.add_device client
+      if client
+        if client.linked
+          user.device_set.destroy
+          client.link user
+        else
+          user.add_device client
+        end
       end
     end
   end
