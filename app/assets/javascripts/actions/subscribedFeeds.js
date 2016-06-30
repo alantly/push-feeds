@@ -1,4 +1,5 @@
 import { query } from '../helpers/push_feeds';
+import { showErrors } from './serverError';
 
 export const REQUEST_FEEDS = 'REQUEST_FEEDS';
 export const REQUEST_FEEDS_FAIL = 'REQUEST_FEEDS_FAIL';
@@ -92,7 +93,7 @@ export function getSubscribedFeeds() {
       dispatch(receivedFeeds(json));
     }).catch((error) => {
       dispatch(requestFeedsFail());
-      debugger;
+      dispatch(showErrors([{ msg: 'Unable to load feed subscriptions.' }]));
     });
   };
 }
@@ -118,6 +119,7 @@ export function requestToAddFeed(url) {
       dispatch(addFeed(json.id, json.url));
     }).catch((error) => {
       dispatch(processAddFail());
+      dispatch(showErrors([{ msg: 'Push Notifications subscription missing. Please subscribe first!' }]));
     });
   };
 }
@@ -137,7 +139,7 @@ export function requestToDeleteFeed(id) {
       dispatch(deleteFeed(id));
     }).catch((error) => {
       dispatch(processDeleteFail(id));
-      debugger;
+      dispatch(showErrors([{ msg: 'Unable to delete. Please try again later.' }]));
     });
   };
 }
