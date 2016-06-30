@@ -1,15 +1,22 @@
 import { push } from 'react-router-redux';
 import { query } from '../helpers/push_feeds';
-import { serverError } from './serverError';
+import { showErrors } from './serverError';
 import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
 
 export const PROCESS_USER = 'PROCESS_USER';
+export const PROCESS_FAIL = 'PROCESS_FAIL';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGNED_OUT = 'SIGNED_OUT';
 
 function processUser() {
   return {
     type: PROCESS_USER,
+  };
+}
+
+function processFail() {
+  return {
+    type: PROCESS_FAIL,
   };
 }
 
@@ -26,32 +33,22 @@ function signedOut() {
   };
 }
 
-let errorKeys = 0;
 function parseRegistrationErrorResponse(errors) {
   let errorMsgs = [];
   if (errors.email) {
-    errorMsgs = errorMsgs.concat(errors.email.map((msg) => ({
-      msg: `Email ${msg}`,
-      key: errorKeys++,
-    })));
+    errorMsgs = errorMsgs.concat(errors.email.map((msg) => ({ msg: `Email ${msg}` })));
   }
   if (errors.password) {
-    errorMsgs = errorMsgs.concat(errors.password.map((msg) => ({
-      msg: `Password ${msg}`,
-      key: errorKeys++,
-    })));
+    errorMsgs = errorMsgs.concat(errors.password.map((msg) => ({ msg: `Password ${msg}` })));
   }
   if (errors.password_confirmation) {
-    errorMsgs = errorMsgs.concat(errors.password_confirmation.map((msg) => ({
-      msg: `Password Confirmation ${msg}`,
-      key: errorKeys++,
-    })));
+    errorMsgs = errorMsgs.concat(errors.password_confirmation.map((msg) => ({ msg: `Password Confirmation ${msg}` })));
   }
   return errorMsgs;
 }
 
 function parseLoginErrorResponse(error) {
-  return [{ msg: error, key: errorKeys++ }];
+  return [{ msg: error }];
 }
 
 function createRegisterRequest(email, password, confirmPassword, clientId) {
@@ -77,7 +74,8 @@ export function registerUser(email, password, confirmPassword) {
       dispatch(signedIn(json.email));
       dispatch(push('/'));
     }).catch((error) => {
-      dispatch(serverError(parseRegistrationErrorResponse(error.errors)));
+      dispatch(processFail());
+      dispatch(showErrors(parseRegistrationErrorResponse(error.errors)));
     });
   };
 }
@@ -105,7 +103,8 @@ export function loginUser(email, password) {
       dispatch(getSubscribedFeeds());
       dispatch(push('/'));
     }).catch((error) => {
-      dispatch(serverError(parseLoginErrorResponse(error.error)));
+      dispatch(processFail());
+      dispatch(showErrors(parseLoginErrorResponse(error.error)));
     });
   };
 }
@@ -127,6 +126,6 @@ export function logoutUser() {
         dispatch(clearFeeds());
       }
       dispatch(push('/'));
-    });
+    }).catch(err => dispatch(processFail()));
   };
 }
