@@ -14,7 +14,7 @@ export default function getRoutes(store) {
 
   return (
     <Route path="/" component={App}>
-      <IndexRoute component={SubscribedFeeds} />
+      <IndexRoute onLeave={clearServerErrorMsgs} component={SubscribedFeeds} />
       <Route path="login" onLeave={clearServerErrorMsgs} component={Session} />
       <Route path="description" component={Landing} />
       <Route path="*" component={Rekt} />
