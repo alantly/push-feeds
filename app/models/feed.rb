@@ -8,10 +8,11 @@ class Feed < ActiveRecord::Base
 
   def subscribe_to_superfeedr
     # TODO: Set website name on success
-    Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret }) do |body, success, response|
-      unless success
+    Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret, retrieve: true }) do |body, success, response|
+      test_response = JSON.parse(body)
+      if not success or test_response["items"].length == 0
         self.destroy!
-        raise IOError, "Error with subscribing to #{self.url}"
+        raise IOError, "Error with subscribing to '#{self.url}'. Try this as an example  'https://www.producthunt.com/feed.atom'."
       end
     end
   end

@@ -9,16 +9,22 @@ class FeedsController < ApplicationController
     @feed = Feed.new(feed_params)
     @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
     begin
+      @user = get_current_user
       ActiveRecord::Base.transaction do
         @feed.save!
         @feed.subscribe_to_superfeedr
-        get_current_user.feeds << @feed
+        @user.feeds << @feed
       end
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = @feed.errors.messages
       error_msg[:error] = e.message
+      render json: error_msg, status: :unprocessable_entity
+    rescue ActionController::ParameterMissing => e
+      puts "Unable to create #{feed_params} due to: #{e.message}."
+      error_msg = {}
+      error_msg[:error] = "Push Notifications subscription missing. Please subscribe first!"
       render json: error_msg, status: :unprocessable_entity
     end
   end

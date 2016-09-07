@@ -23,7 +23,7 @@ function subscription(state, action) {
       return Object.assign({}, state, {
         isProcessing: false,
         pushSubscription: null,
-        id: -1,
+        id: null,
       });
     default:
       return state;
@@ -34,7 +34,7 @@ export default function pushNotification(state = {
   isProcessing: false,
   pushManager: null,
   pushSubscription: null,
-  id: -1,
+  id: null,
 }, action) {
   switch (action.type) {
     case REGISTER_PUSH_MANAGER:

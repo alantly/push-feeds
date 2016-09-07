@@ -117,9 +117,9 @@ export function requestToAddFeed(url) {
     dispatch(processAddFeed());
     query(request).then((json) => {
       dispatch(addFeed(json.id, json.url));
-    }).catch((error) => {
+    }).catch((err) => {
       dispatch(processAddFail());
-      dispatch(showErrors([{ msg: 'Push Notifications subscription missing. Please subscribe first!' }]));
+      dispatch(showErrors([{ msg: err.error }]));
     });
   };
 }

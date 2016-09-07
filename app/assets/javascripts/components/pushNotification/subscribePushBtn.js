@@ -6,7 +6,7 @@ function SubscribePushBtn({ pushManager, pushSubscription, subscriptionId, isPro
   let subscribeBtn;
   if (isProcessing) {
     subscribeBtn = (
-      <i className="fa fa-spinner fa-lg" aria-hidden="true">
+      <i className="fa fa-spinner fa-pulse fa-lg" aria-hidden="true">
         <span className="fa-tag-text">Loading...</span>
       </i>
     );
