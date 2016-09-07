@@ -52,7 +52,7 @@ const LoginForm = ({ dispatch }) => {
           <button type="submit" className="btn btn-block">Login</button>
         </div>
         <div className="form-group text-center">
-          <p>Login will link local account to user. Current subscribed feeds will be replaced with user&rsquo;s subscribed feeds.</p>
+          <p>Login will link browser subscription to user. Current feeds will be replaced with user&rsquo;s subscribed feeds.</p>
         </div>
       </form>
     </div>

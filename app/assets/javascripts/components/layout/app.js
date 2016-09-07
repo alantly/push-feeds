@@ -12,7 +12,7 @@ function App({ children, location, errors }) {
       <footer id="footer">
         <div className="container">
           <div className="col-md-offset-5 col-md-1" style={{ marginTop: '20px' }}>
-            <a href="https://github.com/alantly/push-feeds">
+            <a target="_blank" href="https://github.com/alantly/push-feeds">
               <i className="fa fa-github fa-lg" aria-hidden="true"><span className="fa-tag-text">Github</span></i>
             </a>
           </div>
