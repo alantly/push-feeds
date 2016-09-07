@@ -6,7 +6,7 @@ class NotificationsController < ApplicationController
     superfeedr_update["items"].each do |item|
       notification = {
         id: item['id'],
-        title: "New Push-Feeds Notification!",
+        title: superfeedr_update['title'],
         message: item['title'],
         url: item['permalinkUrl']
       }
