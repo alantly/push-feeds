@@ -9,6 +9,15 @@ function App({ children, location, errors }) {
       <NavigationBar {...location} />
       <ErrorAlert errors={errors} />
       {children}
+      <footer id="footer">
+        <div className="container">
+          <div className="col-md-offset-5 col-md-1" style={{ marginTop: '20px' }}>
+            <a href="https://github.com/alantly/push-feeds">
+              <i className="fa fa-github fa-lg" aria-hidden="true"><span className="fa-tag-text">Github</span></i>
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

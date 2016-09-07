@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/layout/app';
-import Landing from './components/landing/landing';
+import Landing from './components/about/about';
 import Session from './components/session/session';
 import SubscribedFeeds from './components/feed/subscribedFeeds';
 import Rekt from './components/error/rekt';
@@ -16,7 +16,7 @@ export default function getRoutes(store) {
     <Route path="/" component={App}>
       <IndexRoute onLeave={clearServerErrorMsgs} component={SubscribedFeeds} />
       <Route path="login" onLeave={clearServerErrorMsgs} component={Session} />
-      <Route path="description" component={Landing} />
+      <Route path="about" component={Landing} />
       <Route path="*" component={Rekt} />
     </Route>
   );
