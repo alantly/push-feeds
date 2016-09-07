@@ -9,6 +9,7 @@ class ClientsController < ApplicationController
     @client = Client.new(client_params)
     if @client.save
       current_device_set.clients << @client
+      push_welcome_message @client
       render json: @client
     else
       render json: @client.errors, status: :unprocessable_entity
@@ -24,12 +25,6 @@ class ClientsController < ApplicationController
         @client.destroy
       end
     end
-    head :no_content
-  end
-
-  def send_notification
-    @client = Client.find_by_endpoint(params.require(:endpoint))
-    @client.notify
     head :no_content
   end
 
@@ -49,4 +44,15 @@ class ClientsController < ApplicationController
       DeviceSet.create
     end
   end
+
+  def push_welcome_message client
+    notification = {
+      id: "push_feed_default_id",
+      title: "New Push-Feeds Notification!",
+      message: "Welcome to Push-Feeds!",
+      url: '<%= "https://"+ENV["hostname"] %>'
+    }
+    client.push notification
+  end
+
 end
