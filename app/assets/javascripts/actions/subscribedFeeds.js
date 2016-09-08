@@ -57,11 +57,10 @@ function processDeleteFail(id) {
   };
 }
 
-function addFeed(id, url) {
+function addFeed(feed) {
   return {
     type: ADD_FEED,
-    id,
-    url,
+    feed,
   };
 }
 
@@ -116,7 +115,7 @@ export function requestToAddFeed(url) {
     const request = createAddFeedRequest(url, getState().pushNotification.id);
     dispatch(processAddFeed());
     query(request).then((json) => {
-      dispatch(addFeed(json.id, json.url));
+      dispatch(addFeed(json));
     }).catch((err) => {
       dispatch(processAddFail());
       dispatch(showErrors([{ msg: err.error }]));

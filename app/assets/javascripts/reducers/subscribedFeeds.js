@@ -13,11 +13,9 @@ import {
 function feed(item, action) {
   switch (action.type) {
     case ADD_FEED:
-      return {
-        id: action.id,
-        url: action.url,
+      return Object.assign({}, action.feed, {
         isProcessingDelete: false,
-      };
+      });
     case PROCESS_DELETE_FEED:
       if (item.id !== action.id) {
         return item;
