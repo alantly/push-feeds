@@ -8,8 +8,9 @@ function FeedsTable({ feeds, onDeleteClick }) {
     <table className="table table-striped">
       <thead>
         <tr>
-          <th>Your Feed Subscriptions</th>
-          <th>Actions</th>
+          <th>Subscribed Feed</th>
+          <th>Feed Endpoint</th>
+          <th>Remove</th>
         </tr>
       </thead>
       <tbody>

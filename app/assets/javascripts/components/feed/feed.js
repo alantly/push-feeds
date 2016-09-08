@@ -1,8 +1,9 @@
 import React from 'react';
 
-export default function Feed({ url, onDeleteClick, isProcessingDelete }) {
+export default function Feed({ name, url, onDeleteClick, isProcessingDelete }) {
   return (
     <tr>
+      <td>{name}</td>
       <td>{url}</td>
       <td>
         <button className="btn btn-danger" onClick={onDeleteClick} disabled={isProcessingDelete}>
@@ -17,6 +18,7 @@ export default function Feed({ url, onDeleteClick, isProcessingDelete }) {
 }
 
 Feed.propTypes = {
+  name: React.PropTypes.string,
   url: React.PropTypes.string,
   onDeleteClick: React.PropTypes.func,
   isProcessingDelete: React.PropTypes.bool,
