@@ -9,9 +9,9 @@ const NavigationBar = function navigationBar({ email, signedIn, atLanding, onLog
       <nav className={`navbar ${atLanding? 'navbar-static-top':'navbar-default'}`} >
         <div className="container">
           <div className="navbar-header">
-            <Link to="/" className="navbar-brand" id="logo">
-              <i className="fa fa-rss fa-lg"></i>
-              <span className="fa-tag-text" id="app-title">Push-Feeds</span>
+            <Link to="/" className="navbar-brand" id="app-title">
+              <span className="fa-tag-text"><i className="fa fa-rss fa-lg"></i></span>
+              Push-Feeds
             </Link>
           </div>
           <ul className="nav navbar-nav navbar-right">

@@ -11,9 +11,10 @@ function App({ children, location, errors }) {
       {children}
       <footer id="footer">
         <div className="container">
-          <div className="col-md-offset-5 col-md-1" style={{ marginTop: '20px' }}>
+          <div id="footer-text" className="col-md-offset-5 col-md-2">
             <a target="_blank" href="https://github.com/alantly/push-feeds">
-              <i className="fa fa-github fa-lg" aria-hidden="true"><span className="fa-tag-text">Github</span></i>
+              <span className="fa-tag-text"><i className="fa fa-github fa-lg" aria-hidden="true"></i></span>
+              Github
             </a>
           </div>
         </div>
