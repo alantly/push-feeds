@@ -10,6 +10,7 @@ class Feed < ActiveRecord::Base
     Rack::Superfeedr.subscribe(self.url, self.id, { format: "json", secret: self.secret, retrieve: true }) do |body, success, response|
       test_response = JSON.parse(body)
       if not success or test_response["items"].length == 0
+        self.unsubscribe_to_superfeedr
         self.destroy!
         raise IOError, "Error with subscribing to '#{self.url}'. Try this as an example  'https://www.producthunt.com/feed.atom'."
       end
