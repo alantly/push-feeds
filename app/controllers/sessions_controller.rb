@@ -16,6 +16,6 @@ class SessionsController < Devise::SessionsController
   private
 
   def client_params
-    params.require(:cid)
+    params[:cid]
   end
 end

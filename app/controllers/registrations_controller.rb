@@ -18,7 +18,7 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def client_params
-    params.require(:cid)
+    params[:cid]
   end
 
 end
