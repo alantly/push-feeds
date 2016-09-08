@@ -19,14 +19,16 @@ class FeedsController < ApplicationController
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = { error: "Error with subscribing to '#{feed_params[:url]}'. Try this as an example  'https://www.producthunt.com/feed.atom'." }
+      render json: error_msg, status: :unprocessable_entity
     rescue ActionController::ParameterMissing => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = { error: "Push Notifications subscription missing. Please subscribe first!" }
+      render json: error_msg, status: :unprocessable_entity
     rescue ActiveRecord::RecordInvalid => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
       error_msg = { error: "Unable to parse URL." }
+      render json: error_msg, status: :unprocessable_entity
     end
-    render json: error_msg, status: :unprocessable_entity
   end
 
   def subscribe
