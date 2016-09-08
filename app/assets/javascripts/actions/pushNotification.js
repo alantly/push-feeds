@@ -61,7 +61,7 @@ export function requestPushSubscription(pushManager) {
       dispatch(createSubscription(request, subscription));
     }).catch((err) => {
       dispatch(processFail());
-      dispatch(showErrors([{ msg: 'Error creating subscription.' }]));
+      dispatch(showErrors([{ msg: 'Error creating subscription. Please check site permissions for Notifications.' }]));
     });
   };
 }
