@@ -6,9 +6,9 @@ class FeedsController < ApplicationController
   end
 
   def create
-    @feed = Feed.new(feed_params)
-    @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
     begin
+      @feed = Feed.new(feed_params)
+      @feed.secret = Digest::SHA256.hexdigest "#{@feed.url}:#{Time.now.to_s}"
       @user = get_current_user
       ActiveRecord::Base.transaction do
         @feed.save!
@@ -18,15 +18,15 @@ class FeedsController < ApplicationController
       render json: @feed
     rescue IOError => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
-      error_msg = @feed.errors.messages
-      error_msg[:error] = e.message
-      render json: error_msg, status: :unprocessable_entity
+      error_msg = { error: "Error with subscribing to '#{feed_params[:url]}'. Try this as an example  'https://www.producthunt.com/feed.atom'." }
     rescue ActionController::ParameterMissing => e
       puts "Unable to create #{feed_params} due to: #{e.message}."
-      error_msg = {}
-      error_msg[:error] = "Push Notifications subscription missing. Please subscribe first!"
-      render json: error_msg, status: :unprocessable_entity
+      error_msg = { error: "Push Notifications subscription missing. Please subscribe first!" }
+    rescue ActiveRecord::RecordInvalid => e
+      puts "Unable to create #{feed_params} due to: #{e.message}."
+      error_msg = { error: "Unable to parse URL." }
     end
+    render json: error_msg, status: :unprocessable_entity
   end
 
   def subscribe
