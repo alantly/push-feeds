@@ -50,7 +50,7 @@ class ClientsController < ApplicationController
       id: "push_feed_default_id",
       title: "New Push-Feeds Notification!",
       message: "Welcome to Push-Feeds!",
-      url: '<%= "https://"+ENV["hostname"] %>'
+      url: "https://"+ENV["hostname"]
     }
     client.push notification
   end
