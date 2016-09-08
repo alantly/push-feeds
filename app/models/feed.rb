@@ -12,7 +12,7 @@ class Feed < ActiveRecord::Base
       if not success or test_response["items"].length == 0
         self.unsubscribe_to_superfeedr
         self.destroy!
-        raise IOError, "Error with subscribing to '#{self.url}'. Try this as an example  'https://www.producthunt.com/feed.atom'."
+        raise IOError, "Error with subscribing to '#{self.url}'"
       end
       self.update(name: test_response["title"])
     end
