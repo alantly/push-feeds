@@ -1,7 +1,8 @@
 import { REGISTER_PUSH_MANAGER,
   PROCESS_PUSH_SUBSCRIPTION,
   RECEIVE_PUSH_SUBSCRIPTION,
-  RECEIVE_REMOVE_SUBSCRIPTION } from '../actions/pushNotification';
+  RECEIVE_REMOVE_SUBSCRIPTION,
+  PROCESS_SUBSCRIPTION_FAIL } from '../actions/pushNotification';
 
 function subscription(state, action) {
   switch (action.type) {
@@ -25,6 +26,10 @@ function subscription(state, action) {
         pushSubscription: null,
         id: null,
       });
+    case PROCESS_SUBSCRIPTION_FAIL:
+      return Object.assign({}, state, {
+        isProcessing: false,
+      });
     default:
       return state;
   }
@@ -41,6 +46,7 @@ export default function pushNotification(state = {
     case PROCESS_PUSH_SUBSCRIPTION:
     case RECEIVE_PUSH_SUBSCRIPTION:
     case RECEIVE_REMOVE_SUBSCRIPTION:
+    case PROCESS_SUBSCRIPTION_FAIL:
       return Object.assign({}, state, subscription(state, action));
     default:
       return state;

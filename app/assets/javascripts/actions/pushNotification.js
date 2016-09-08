@@ -1,10 +1,12 @@
 import { query } from '../helpers/push_feeds';
 import { getSubscribedFeeds, clearFeeds } from './subscribedFeeds';
+import { showErrors } from './serverError';
 
 export const REGISTER_PUSH_MANAGER = 'REGISTER_PUSH_MANAGER';
 export const PROCESS_PUSH_SUBSCRIPTION = 'PROCESS_PUSH_SUBSCRIPTION';
 export const RECEIVE_PUSH_SUBSCRIPTION = 'RECEIVE_PUSH_SUBSCRIPTION';
 export const RECEIVE_REMOVE_SUBSCRIPTION = 'RECEIVE_REMOVE_SUBSCRIPTION';
+export const PROCESS_SUBSCRIPTION_FAIL = 'PROCESS_SUBSCRIPTION_FAIL';
 
 export function registerPushManager(pushManager) {
   return {
@@ -33,6 +35,12 @@ function receiveRemoveSubscription() {
   };
 }
 
+function processFail() {
+  return {
+    type: PROCESS_SUBSCRIPTION_FAIL,
+  };
+}
+
 function createSubscription(request, subscription) {
   return dispatch => query(request).then((json) => {
     dispatch(receivePushSubscription(subscription, json.id));
@@ -51,6 +59,9 @@ export function requestPushSubscription(pushManager) {
         },
       };
       dispatch(createSubscription(request, subscription));
+    }).catch((err) => {
+      dispatch(processFail());
+      dispatch(showErrors([{ msg: 'Error creating subscription.' }]));
     });
   };
 }
@@ -73,6 +84,9 @@ export function requestSubscribeRemove(subscription, subscriptionId) {
         method: 'DELETE',
       };
       dispatch(removeSubscription(request));
+    }).catch((err) => {
+      dispatch(processFail());
+      dispatch(showErrors([{ msg: 'Error removing subscription.' }]));
     });
   };
 }
@@ -108,6 +122,9 @@ export function registerPushSubscription(serviceWorkerRegistration) {
             pushSubscription.unsubscribe();
             dispatch(receiveRemoveSubscription());
           }
+        }).catch((err) => {
+          dispatch(processFail());
+          dispatch(showErrors([{ msg: 'Error found when check for a valid subscription.' }]));
         });
       }
     });
