@@ -1,7 +1,7 @@
 {
   "name": "push-feeds",
   "version": "1.0.0",
-  "description": "= Push-Feeds == Description: Implementation of a RSS Feed Notifier web service using service workers and Chrome Push Notification API. To receive push notifications, the user must be link a feed, and subscribed to the web service. Both are required to get push notifications on the RSS Feed. The purpose of the app is to read web novels without having to refresh for a new chapter.",
+  "description": "= Push-Feeds == Description: Implementation of a RSS Feed Notifier web service using service workers and Chrome Push Notification API.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
